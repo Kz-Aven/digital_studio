@@ -64,6 +64,10 @@ const itemSchema = z.object({
   editorialOrder: z.int().positive(),
   featured: z.boolean().optional(),
   excerpt: z.string().optional(),
+  cover: z.object({
+    src: z.string().startsWith('/images/writing/'),
+    alt: z.string().min(1),
+  }).optional(),
 });
 
 export type WritingItem = z.infer<typeof itemSchema>;

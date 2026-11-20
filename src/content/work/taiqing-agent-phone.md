@@ -8,6 +8,13 @@ status: '已上线'
 featured: false
 tags: ['Enterprise AI', 'Mobile Agent', 'Product Strategy', 'Workflow', 'Reliability']
 description: 从销售工具到软硬件一体化 Agent，记录移动端获客、客户承接和任务可靠性的关键产品决策。
+cover:
+  src: /images/work/agent-phone-cover.webp
+  small: /images/work/agent-phone-cover-small.webp
+  alt: 一台黑屏手机通过虚线与透明及红色模块相连
+  caption: 智能体手机连接移动端任务的示意图
+  width: 1440
+  height: 811
 decisions:
   - 首版聚焦抖音与微信，先打通公域到私域的业务链路。
   - 拆分判断、调度和端侧执行，以消息实际发出衡量任务是否成功。

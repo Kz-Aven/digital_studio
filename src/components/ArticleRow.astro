@@ -10,7 +10,7 @@ interface Props {
 const { entry, level: Heading = 'h2', compact = false } = Astro.props;
 ---
 <article
-  class:list={['writing-row', { 'writing-row--compact': compact }]}
+  class:list={['writing-row', { 'writing-row--compact': compact, 'writing-row--illustrated': entry.cover }]}
   id={`wx-${entry.id}`}
   tabindex={compact ? undefined : '-1'}
   data-writing-row
@@ -36,4 +36,15 @@ const { entry, level: Heading = 'h2', compact = false } = Astro.props;
     </ul>
     <slot />
   </div>
+  {entry.cover && (
+    <img
+      class="writing-cover"
+      src={entry.cover.src}
+      alt={entry.cover.alt}
+      width="384"
+      height="216"
+      loading="lazy"
+      decoding="async"
+    />
+  )}
 </article>

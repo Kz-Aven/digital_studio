@@ -10,7 +10,11 @@
     "publishedAt": null,
     "dateStatus": "unknown",
     "editorialOrder": 1,
-    "featured": true
+    "featured": true,
+    "cover": {
+      "src": "/images/writing/enterprise-ai-business.webp",
+      "alt": "订单变更要核对库存、权限和生产条件"
+    }
   },
   {
     "id": "Uia5U12gP_fEN0vVTLaqxA",
@@ -23,7 +27,11 @@
     "publishedAt": null,
     "dateStatus": "unknown",
     "editorialOrder": 2,
-    "featured": true
+    "featured": true,
+    "cover": {
+      "src": "/images/writing/bounded-decisions.webp",
+      "alt": "复杂输入经过分拣，形成有限范围的决策"
+    }
   },
   {
     "id": "-Wf5pLRD9Ep_rrCsqq1PnQ",
@@ -36,7 +44,11 @@
     "publishedAt": null,
     "dateStatus": "unknown",
     "editorialOrder": 3,
-    "featured": false
+    "featured": false,
+    "cover": {
+      "src": "/images/writing/enterprise-ai-adoption.webp",
+      "alt": "企业和人才面对 AI 落地的不确定性"
+    }
   },
   {
     "id": "tAH5WuHwR7yhE0pFQtaMCQ",
@@ -51,7 +63,11 @@
     "editorialOrder": 4,
     "featured": true,
     "series": "factory-ai",
-    "seriesOrder": 1
+    "seriesOrder": 1,
+    "cover": {
+      "src": "/images/writing/factory-data-alignment.webp",
+      "alt": "将不同表格的工厂数据对齐"
+    }
   },
   {
     "id": "l0cu8aFTZIWIXJ5yhflz5g",
@@ -66,7 +82,11 @@
     "editorialOrder": 5,
     "featured": false,
     "series": "factory-ai",
-    "seriesOrder": 2
+    "seriesOrder": 2,
+    "cover": {
+      "src": "/images/writing/factory-product-master.webp",
+      "alt": "将产品信息汇总到一张底表"
+    }
   },
   {
     "id": "qNm8TF_V-UKQaU6xwYf4fA",
@@ -81,7 +101,11 @@
     "editorialOrder": 6,
     "featured": false,
     "series": "factory-ai",
-    "seriesOrder": 3
+    "seriesOrder": 3,
+    "cover": {
+      "src": "/images/writing/factory-production-reporting.webp",
+      "alt": "将报工操作简化为两项"
+    }
   },
   {
     "id": "cwyCyacPSqRq7p4TDBSBXQ",
@@ -96,7 +120,11 @@
     "editorialOrder": 7,
     "featured": false,
     "series": "factory-ai",
-    "seriesOrder": 4
+    "seriesOrder": 4,
+    "cover": {
+      "src": "/images/writing/factory-delivery-first.webp",
+      "alt": "先填写送货单，再由系统记账"
+    }
   },
   {
     "id": "WeAv7Gg4G2ihP71lPFkWow",
@@ -111,7 +139,11 @@
     "editorialOrder": 8,
     "featured": false,
     "series": "factory-ai",
-    "seriesOrder": 5
+    "seriesOrder": 5,
+    "cover": {
+      "src": "/images/writing/data-before-agent.webp",
+      "alt": "工厂的数据基础与 Agent 的关系"
+    }
   },
   {
     "id": "Cjm9MOB1TGAgvErPuEgCww",
@@ -126,7 +158,11 @@
     "editorialOrder": 9,
     "featured": false,
     "series": "factory-ai",
-    "seriesOrder": 6
+    "seriesOrder": 6,
+    "cover": {
+      "src": "/images/writing/factory-data-cleaning.webp",
+      "alt": "AI 整理产品数据后由人工核验"
+    }
   },
   {
     "id": "AI0uPB9hX4Z28z9IF9ot6Q",
@@ -141,7 +177,11 @@
     "editorialOrder": 10,
     "featured": false,
     "series": "factory-ai",
-    "seriesOrder": 7
+    "seriesOrder": 7,
+    "cover": {
+      "src": "/images/writing/one-to-many-materials.webp",
+      "alt": "一料多品对应关系由人工复核"
+    }
   },
   {
     "id": "gVXSnoMRqFJ9WRL6dRst_A",
@@ -156,7 +196,11 @@
     "editorialOrder": 11,
     "featured": false,
     "series": "factory-ai",
-    "seriesOrder": 8
+    "seriesOrder": 8,
+    "cover": {
+      "src": "/images/writing/asynchronous-ledger.webp",
+      "alt": "送货和入账的时间差"
+    }
   },
   {
     "id": "iHhBEhaqV9ZWyAm17aBGhQ",
@@ -171,7 +215,11 @@
     "editorialOrder": 12,
     "featured": true,
     "series": "agent-evidence",
-    "seriesOrder": 2
+    "seriesOrder": 2,
+    "cover": {
+      "src": "/images/writing/agent-evaluation-evidence.webp",
+      "alt": "Momo 核对客户文件夹和跟进记录的归属"
+    }
   },
   {
     "id": "o7F9T4T_3LtshESv4yn6JA",
@@ -184,7 +232,11 @@
     "publishedAt": null,
     "dateStatus": "unknown",
     "editorialOrder": 13,
-    "featured": true
+    "featured": true,
+    "cover": {
+      "src": "/images/writing/workbuddy-weknora.webp",
+      "alt": "Momo 整理文档并生成答案卡"
+    }
   },
   {
     "id": "w4fxHa-nOajiCdNmvj3IPA",
@@ -197,7 +249,11 @@
     "publishedAt": null,
     "dateStatus": "unknown",
     "editorialOrder": 14,
-    "featured": false
+    "featured": false,
+    "cover": {
+      "src": "/images/writing/collecting-experience.webp",
+      "alt": "Momo 为业务经验补齐来源、条件和验证"
+    }
   },
   {
     "id": "3PMSaeTz5mN9grGPFs4QUg",
@@ -210,7 +266,11 @@
     "publishedAt": null,
     "dateStatus": "unknown",
     "editorialOrder": 15,
-    "featured": false
+    "featured": false,
+    "cover": {
+      "src": "/images/writing/trusted-knowledge-base.webp",
+      "alt": "Momo 分拣通用知识、专业知识和实践经验"
+    }
   },
   {
     "id": "H1tTu9JIV4S0X-GkCLv95w",
@@ -223,7 +283,11 @@
     "publishedAt": null,
     "dateStatus": "unknown",
     "editorialOrder": 16,
-    "featured": false
+    "featured": false,
+    "cover": {
+      "src": "/images/writing/trusted-context.webp",
+      "alt": "Momo 标记需要进一步验证的设备读数"
+    }
   },
   {
     "id": "7OR89j1hl777hbgnEVtPVA",
@@ -236,7 +300,11 @@
     "publishedAt": null,
     "dateStatus": "unknown",
     "editorialOrder": 17,
-    "featured": false
+    "featured": false,
+    "cover": {
+      "src": "/images/writing/manufacturing-ai-models.webp",
+      "alt": "Momo 将更新后的交期交给排产模型"
+    }
   },
   {
     "id": "6N9fvZu4MHmo8HxR4WkbmA",
@@ -251,7 +319,11 @@
     "editorialOrder": 18,
     "featured": false,
     "series": "business-experience",
-    "seriesOrder": 2
+    "seriesOrder": 2,
+    "cover": {
+      "src": "/images/writing/business-experience-part-two.webp",
+      "alt": "围绕客户组织多种业务对象及其关系"
+    }
   },
   {
     "id": "K-zRdgKEE2IOr7K3DIIc9A",
@@ -266,7 +338,11 @@
     "editorialOrder": 19,
     "featured": false,
     "series": "business-experience",
-    "seriesOrder": 1
+    "seriesOrder": 1,
+    "cover": {
+      "src": "/images/writing/business-experience-part-one.webp",
+      "alt": "将业务经验拆分为五类资产"
+    }
   },
   {
     "id": "YwZZgT0EzIxy7B14i_VEDw",
@@ -279,7 +355,11 @@
     "publishedAt": null,
     "dateStatus": "unknown",
     "editorialOrder": 20,
-    "featured": false
+    "featured": false,
+    "cover": {
+      "src": "/images/writing/agent-identity.webp",
+      "alt": "工牌与 Agent 身份档案对应"
+    }
   },
   {
     "id": "SEXofEYuIsKmN4Por-KtxQ",
@@ -294,7 +374,11 @@
     "editorialOrder": 21,
     "featured": false,
     "series": "esp32-iphone",
-    "seriesOrder": 2
+    "seriesOrder": 2,
+    "cover": {
+      "src": "/images/writing/esp32-iphone-tutorial.webp",
+      "alt": "ESP32 手机实验的画面观察与输入执行链路"
+    }
   },
   {
     "id": "kDYAePIU6eWH5PIyrqR_qQ",
@@ -309,7 +393,11 @@
     "editorialOrder": 22,
     "featured": false,
     "series": "esp32-iphone",
-    "seriesOrder": 1
+    "seriesOrder": 1,
+    "cover": {
+      "src": "/images/writing/esp32-iphone-experiment.webp",
+      "alt": "Tiro 为 Agent 接入观察手机和操作手机的装置"
+    }
   },
   {
     "id": "Y6q9L9jSUg8Qu2_ZF9janA",
@@ -322,7 +410,11 @@
     "publishedAt": null,
     "dateStatus": "unknown",
     "editorialOrder": 23,
-    "featured": true
+    "featured": true,
+    "cover": {
+      "src": "/images/writing/enterprise-agent-governance.webp",
+      "alt": "Agent 在企业设定的授权范围内执行任务"
+    }
   },
   {
     "id": "ps0P1gkuaGlX6USEIJGdsA",
@@ -335,7 +427,11 @@
     "publishedAt": null,
     "dateStatus": "unknown",
     "editorialOrder": 24,
-    "featured": false
+    "featured": false,
+    "cover": {
+      "src": "/images/writing/scope-and-permissions.webp",
+      "alt": "红色门闩控制透明闸门，示意权限边界"
+    }
   },
   {
     "id": "sau_GoCzjvDoF0vkZEp1-A",
@@ -348,7 +444,11 @@
     "publishedAt": null,
     "dateStatus": "unknown",
     "editorialOrder": 25,
-    "featured": false
+    "featured": false,
+    "cover": {
+      "src": "/images/writing/factory-ai-process.webp",
+      "alt": "零件沿着红色导轨排列，示意工厂操作流程"
+    }
   },
   {
     "id": "OwpiaCLN4V1Ey4OFRHaz_A",
@@ -361,7 +461,11 @@
     "publishedAt": null,
     "dateStatus": "unknown",
     "editorialOrder": 26,
-    "featured": false
+    "featured": false,
+    "cover": {
+      "src": "/images/writing/agent-hook-status-light.webp",
+      "alt": "桌面红绿灯显示 Agent 的工作状态"
+    }
   },
   {
     "id": "qC-hGxDWm1J5PMBgIXlkVQ",
@@ -374,7 +478,11 @@
     "publishedAt": null,
     "dateStatus": "unknown",
     "editorialOrder": 27,
-    "featured": false
+    "featured": false,
+    "cover": {
+      "src": "/images/writing/building-tigerose.webp",
+      "alt": "循环运行和完成交付之间的差别"
+    }
   },
   {
     "id": "bHFAuHVX-Fv9NGxPwdFtdw",
@@ -387,7 +495,11 @@
     "publishedAt": null,
     "dateStatus": "unknown",
     "editorialOrder": 28,
-    "featured": false
+    "featured": false,
+    "cover": {
+      "src": "/images/writing/decision-models.webp",
+      "alt": "阶梯量块与透明棱镜并放，示意不同决策工具"
+    }
   },
   {
     "id": "JgRRpNRBAUnq-tayHk6igg",
@@ -402,6 +514,10 @@
     "editorialOrder": 29,
     "featured": false,
     "series": "agent-evidence",
-    "seriesOrder": 1
+    "seriesOrder": 1,
+    "cover": {
+      "src": "/images/writing/agent-work-records.webp",
+      "alt": "半透明索引纸与红色标签，示意工作记录可追溯"
+    }
   }
 ]
