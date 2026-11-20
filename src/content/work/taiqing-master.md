@@ -6,6 +6,7 @@ role: 'Agent 产品设计主导'
 period: '2026 — 至今'
 status: '已正式上线'
 featured: true
+order: 1
 tags: ['Enterprise AI', 'Agent Platform', 'Product Strategy', 'Workflow', 'Governance']
 description: 从智能体手机出发，设计面向企业的数智员工创造与管理平台。案例记录了岗位定义、系统接入、验证和授权的关键产品取舍。
 cover:
