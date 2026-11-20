@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import StudioItem from '../../components/StudioItem.astro';
+import { publicStudio } from '../../config/content';
+import { site } from '../../config/site';
+
+const entries = await publicStudio();
+---
+<BaseLayout title="Studio / 个人创造" description={site.studioDescription}>
+  <Container class="page-content">
+    <header class="page-intro">
+      <p class="eyebrow" lang="en">Studio</p>
+      <h1>个人创造</h1>
+      <p class="page-description">{site.studioDescription}</p>
+    </header>
+    {entries.length > 0 ? <div class="studio-grid">
+      {entries.map((entry) => <StudioItem entry={entry} />)}
+    </div> : <p class="empty-content">暂无公开作品。</p>}
+  </Container>
+</BaseLayout>

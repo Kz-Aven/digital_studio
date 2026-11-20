@@ -14,7 +14,18 @@
 .prose blockquote > * + * { margin-top: .8em; }
 .prose pre { padding: 1rem 1.25rem; overflow-x: auto; font-size: .875rem; }
 .prose :not(pre) > code { background: var(--color-surface); padding: .15em .25em; }
-.prose table { display: block; overflow-x: auto; border-collapse: collapse; font-size: .9375rem; }
+.prose-table { overflow-x: auto; }
+.prose table { border-collapse: collapse; font-size: .9375rem; }
 .prose th, .prose td { border: 1px solid var(--color-border); padding: .55rem .75rem; min-width: 8rem; text-align: start; }
 .prose th { background: var(--color-surface); }
 .prose img { height: auto; max-width: 100%; }
+.prose img[src^="/images/writing/"] { aspect-ratio: auto 1200 / 676; }
+@media (max-width: 767px) {
+  .prose-table::before {
+    content: "表格可横向滚动";
+    display: block;
+    color: var(--color-faint);
+    font-size: .8125rem;
+    margin-bottom: .35rem;
+  }
+}

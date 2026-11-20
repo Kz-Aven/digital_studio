@@ -5,9 +5,11 @@ interface Props {
   description: string;
   image?: { src: string; alt: string };
   noindex?: boolean;
+  type?: 'website' | 'article';
+  structuredData?: Record<string, unknown>;
 }
 
-const { title, description, image = { src: '/images/studio-og.png', alt: site.englishName }, noindex = false } = Astro.props;
+const { title, description, image = { src: '/images/studio-og.png', alt: site.englishName }, noindex = false, type = 'website', structuredData } = Astro.props;
 const fullTitle = title ? `${title} · ${site.name}` : site.name;
 const canonical = Astro.site && !noindex ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 ---
@@ -16,7 +18,7 @@ const canonical = Astro.site && !noindex ? new URL(Astro.url.pathname, Astro.sit
 {canonical && <link rel="canonical" href={canonical} />}
 {noindex && <meta name="robots" content="noindex" />}
 <meta property="og:site_name" content={site.name} />
-<meta property="og:type" content="website" />
+<meta property="og:type" content={type} />
 <meta property="og:locale" content="zh_CN" />
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />
@@ -25,3 +27,4 @@ const canonical = Astro.site && !noindex ? new URL(Astro.url.pathname, Astro.sit
   <meta property="og:image" content={new URL(image.src, canonical).href} />
   <meta property="og:image:alt" content={image.alt} />
 </>}
+{structuredData && <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')} />}

@@ -3,14 +3,15 @@ import type { MarkdownHeading } from 'astro';
 
 interface Props {
   headings: MarkdownHeading[];
+  label?: string;
 }
-const { headings } = Astro.props;
+const { headings, label = '案例目录' } = Astro.props;
 const sections = headings.filter(({ depth }) => depth === 2);
 ---
 {sections.length > 0 && (
-  <nav class="case-toc" aria-label="案例目录">
+  <nav class="case-toc" aria-label={label} data-pagefind-ignore>
     <details open>
-      <summary>案例目录</summary>
+      <summary>{label}</summary>
       <ol>
         {sections.map(({ slug, text }) => (
           <li><a href={`#${slug}`}>{text.replace(/^\d+\s*\/\s*/, '')}</a></li>

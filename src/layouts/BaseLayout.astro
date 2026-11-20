@@ -9,7 +9,11 @@ interface Props {
   description: string;
   image?: { src: string; alt: string };
   noindex?: boolean;
+  type?: 'website' | 'article';
+  structuredData?: Record<string, unknown>;
+  searchable?: boolean;
 }
+const { searchable, ...seoProps } = Astro.props;
 ---
 <!doctype html>
 <html lang="zh-CN">
@@ -17,12 +21,13 @@ interface Props {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <SEOHead {...Astro.props} />
+    <link rel="alternate" type="application/rss+xml" title="研究与写作" href="/rss.xml" />
+    <SEOHead {...seoProps} />
   </head>
   <body>
     <a class="skip-link" href="#main">跳至主要内容</a>
     <SiteHeader />
-    <main id="main" tabindex="-1"><slot /></main>
+    <main id="main" tabindex="-1" data-pagefind-body={searchable ? '' : undefined}><slot /></main>
     <SiteFooter />
   </body>
 </html>

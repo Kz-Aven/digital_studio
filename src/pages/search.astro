@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+---
+<BaseLayout title="搜索" description="搜索项目案例、个人作品和研究文章。" noindex>
+  <Container class="page-content">
+    <header class="page-intro">
+      <p class="eyebrow" lang="en">Search</p>
+      <h1>搜索</h1>
+      <p class="page-description">搜索项目案例、个人作品和研究文章。</p>
+    </header>
+    <div class="search-panel">
+      <form class="search-form" action="/search/" method="get" role="search">
+        <label for="search-query">关键词</label>
+        <div>
+          <input id="search-query" name="q" type="search" placeholder="如 企业 AI、评测、排产" required />
+          <button class="button" type="submit">搜索</button>
+        </div>
+      </form>
+      <noscript><p>请启用 JavaScript 后使用搜索。</p></noscript>
+      <p id="search-status" class="search-status" role="status"></p>
+      <ol id="search-results" aria-label="搜索结果"></ol>
+    </div>
+  </Container>
+</BaseLayout>
+
+<script>
+  const input = document.querySelector<HTMLInputElement>('#search-query')!;
+  const status = document.querySelector('#search-status')!;
+  const list = document.querySelector('#search-results')!;
+  const query = new URLSearchParams(location.search).get('q')?.trim();
+  if (query) {
+    input.value = query;
+    status.textContent = '正在搜索…';
+    const bundle = '/pagefind/pagefind.js';
+    try {
+      const pagefind = await import(/* @vite-ignore */ bundle);
+      const { results } = await pagefind.search(query);
+      const matches = await Promise.all(results.slice(0, 25).map((result: {
+        data: () => Promise<{ url: string; plain_excerpt: string; meta: { title: string } }>;
+      }) => result.data()));
+      for (const match of matches) {
+        const item = document.createElement('li');
+        const link = document.createElement('a');
+        const summary = document.createElement('p');
+        link.href = match.url;
+        link.textContent = match.meta.title;
+        summary.textContent = match.plain_excerpt;
+        item.append(link, summary);
+        list.append(item);
+      }
+      status.textContent = results.length
+        ? `找到 ${results.length} 条结果${results.length > matches.length ? `，显示前 ${matches.length} 条` : ''}。`
+        : '未找到相关内容，可以换个关键词试试。';
+    } catch {
+      status.textContent = '搜索暂时无法使用，请稍后重试。';
+    }
+  }
+</script>

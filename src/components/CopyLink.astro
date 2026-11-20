@@ -1,0 +1,18 @@
+<button class="text-link" type="button" id="copy-link" hidden>复制链接</button>
+<span id="copy-link-status" class="article-meta" role="status"></span>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('#copy-link');
+  const status = document.querySelector('#copy-link-status');
+  if (button && status && navigator.clipboard) {
+    button.hidden = false;
+    button.addEventListener('click', async () => {
+      status.textContent = '';
+      const url = new URL(location.pathname, location.origin);
+      status.textContent = await navigator.clipboard.writeText(url.href).then(
+        () => '链接已复制',
+        () => '复制失败，请使用浏览器地址栏复制链接。',
+      );
+    });
+  }
+</script>

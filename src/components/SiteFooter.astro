@@ -10,11 +10,12 @@ const { email, github, linkedIn } = site.contact;
       <p>{site.positioning}</p>
     </div>
     <div class="footer-meta">
-      {(email || github || linkedIn) && <ul class="contact-links">
+      <ul class="contact-links">
         {email && <li><a href={`mailto:${email}`}>Email</a></li>}
         {github && <li><a href={github}>GitHub</a></li>}
         {linkedIn && <li><a href={linkedIn}>LinkedIn</a></li>}
-      </ul>}
+        <li><a href="/rss.xml">RSS</a></li>
+      </ul>
       <small>© {new Date().getFullYear()} {site.author === 'YOUR_NAME' ? site.englishName : site.author}</small>
     </div>
   </Container>

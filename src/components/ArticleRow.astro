@@ -1,0 +1,22 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatDate, readingMinutes } from '../config/content';
+import TagList from './TagList.astro';
+
+interface Props {
+  entry: CollectionEntry<'writing'>;
+  level?: 'h2' | 'h3';
+  compact?: boolean;
+}
+const { entry, level: Heading = 'h2', compact = false } = Astro.props;
+const { data } = entry;
+---
+<article class="article-row">
+  <time datetime={data.publishedAt.toISOString()}>{formatDate(data.publishedAt)}</time>
+  <div>
+    <Heading><a href={`/writing/${entry.id}/`}>{data.title}</a></Heading>
+    {!compact && <p class="entry-description">{data.description}</p>}
+    <p class="article-meta">{data.category} <span aria-hidden="true">·</span> 约 {readingMinutes(entry.body)} 分钟</p>
+    {!compact && <TagList tags={data.tags} />}
+  </div>
+</article>

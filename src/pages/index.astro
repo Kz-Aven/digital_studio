@@ -4,10 +4,13 @@ import Container from '../components/Container.astro';
 import HeroIntro from '../components/HeroIntro.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import ProjectRow from '../components/ProjectRow.astro';
+import StudioItem from '../components/StudioItem.astro';
+import ArticleRow from '../components/ArticleRow.astro';
 import { site } from '../config/site';
-import { publicWork } from '../config/work';
+import { publicStudio, publicWork, publicWriting } from '../config/content';
 
-const featured = (await publicWork()).filter(({ data }) => data.featured).slice(0, 3);
+const [work, studio, writing] = await Promise.all([publicWork(), publicStudio(), publicWriting()]);
+const featured = work.filter(({ data }) => data.featured).slice(0, 3);
 const { email, github, linkedIn } = site.contact;
 ---
 <BaseLayout description={site.heroDescription}>
@@ -19,6 +22,16 @@ const { email, github, linkedIn } = site.contact;
         {featured.map((entry, index) => <ProjectRow entry={entry} level="h3" eager={index === 0} />)}
       </section>
     )}
+    {studio.length > 0 && <section class="home-section" aria-labelledby="building">
+      <SectionHeading id="building" title="近期创造" label="Studio" link={{ href: '/studio/', text: '查看全部作品' }} />
+      <div class="studio-grid">
+        {studio.slice(0, 3).map((entry) => <StudioItem entry={entry} level="h3" compact />)}
+      </div>
+    </section>}
+    {writing.length > 0 && <section class="home-section" aria-labelledby="recent-writing">
+      <SectionHeading id="recent-writing" title="最近研究" label="Writing" link={{ href: '/writing/', text: '查看全部文章' }} />
+      {writing.slice(0, 4).map((entry) => <ArticleRow entry={entry} level="h3" compact />)}
+    </section>}
     <div class="home-notes">
       <section aria-labelledby="about-preview">
         <SectionHeading id="about-preview" title="关于我" label="About" />

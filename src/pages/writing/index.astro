@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import ArticleRow from '../../components/ArticleRow.astro';
+import { publicWriting } from '../../config/content';
+import { site } from '../../config/site';
+
+const entries = await publicWriting();
+---
+<BaseLayout title="Writing / 研究与写作" description={site.writingDescription}>
+  <Container class="page-content">
+    <header class="page-intro">
+      <p class="eyebrow" lang="en">Writing</p>
+      <h1>研究与写作</h1>
+      <p class="page-description">{site.writingDescription}</p>
+      <a class="text-link" href="/rss.xml">订阅 RSS</a>
+    </header>
+    {entries.length > 0
+      ? entries.map((entry) => <ArticleRow entry={entry} />)
+      : <p class="empty-content">暂无公开文章。</p>}
+  </Container>
+</BaseLayout>

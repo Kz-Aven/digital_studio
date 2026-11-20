@@ -1,0 +1,21 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { studioStatuses } from '../config/content';
+import Figure from './Figure.astro';
+import TagList from './TagList.astro';
+
+interface Props {
+  entry: CollectionEntry<'studio'>;
+  level?: 'h2' | 'h3';
+  compact?: boolean;
+}
+const { entry, level: Heading = 'h2', compact = false } = Astro.props;
+const { data } = entry;
+---
+<article class="studio-item">
+  <p class="eyebrow">{studioStatuses[data.status]}</p>
+  <Heading><a href={`/studio/${entry.id}/`}>{data.title}</a></Heading>
+  <p class="entry-description">{data.description}</p>
+  <TagList tags={data.tags} />
+  {data.cover && !compact && <Figure cover={data.cover} sizes="(max-width: 767px) 100vw, 360px" />}
+</article>
