@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+---
+<BaseLayout title="页面未找到" description="你要找的页面可能已移动。" noindex>
+  <Container class="page-content not-found">
+    <p class="eyebrow">404</p>
+    <h1>页面未找到</h1>
+    <p class="page-description">你要找的页面可能已移动。</p>
+    <div class="flex flex-wrap items-center gap-6">
+      <a class="button" href="/">返回首页</a>
+      <a class="text-link" href="/work/">查看项目</a>
+    </div>
+  </Container>
+</BaseLayout>

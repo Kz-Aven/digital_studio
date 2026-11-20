@@ -1,0 +1,52 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+const { headings } = Astro.props;
+const sections = headings.filter(({ depth }) => depth === 2);
+---
+{sections.length > 0 && (
+  <nav class="case-toc" aria-label="案例目录">
+    <details open>
+      <summary>案例目录</summary>
+      <ol>
+        {sections.map(({ slug, text }) => (
+          <li><a href={`#${slug}`}>{text.replace(/^\d+\s*\/\s*/, '')}</a></li>
+        ))}
+      </ol>
+    </details>
+  </nav>
+)}
+
+<script>
+  const toc = document.querySelector<HTMLDetailsElement>('.case-toc details');
+  if (toc) {
+    const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>('a'));
+    const sections = links.map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))));
+    const mobile = window.matchMedia('(max-width: 767px)');
+    const sync = () => { toc.open = !mobile.matches; };
+    sync();
+    mobile.addEventListener('change', sync);
+
+    let active = -1;
+    let frame = 0;
+    const update = () => {
+      const atEnd = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+      const next = atEnd ? links.length - 1 : sections.findLastIndex((section) =>
+        section && section.getBoundingClientRect().top <= parseFloat(getComputedStyle(section).scrollMarginTop) + 1,
+      );
+      if (next !== active) {
+        links[active]?.removeAttribute('aria-current');
+        links[next]?.setAttribute('aria-current', 'location');
+        active = next;
+      }
+      frame = 0;
+    };
+    update();
+    window.addEventListener('scroll', () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    }, { passive: true });
+  }
+</script>

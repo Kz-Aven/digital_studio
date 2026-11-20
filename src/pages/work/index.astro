@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import ProjectRow from '../../components/ProjectRow.astro';
+import { site } from '../../config/site';
+import { publicWork } from '../../config/work';
+
+const work = await publicWork();
+---
+<BaseLayout title="Work / 产品实践" description={site.workDescription}>
+  <Container class="page-content">
+    <header class="page-intro">
+      <p class="eyebrow" lang="en">Work</p>
+      <h1>产品实践</h1>
+      <p class="page-description">{site.workDescription}</p>
+    </header>
+    {work.length > 0
+      ? work.map((entry, index) => <ProjectRow entry={entry} eager={index === 0} />)
+      : <p>暂无公开的项目案例。</p>}
+  </Container>
+</BaseLayout>

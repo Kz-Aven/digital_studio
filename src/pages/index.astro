@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import HeroIntro from '../components/HeroIntro.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ProjectRow from '../components/ProjectRow.astro';
+import { site } from '../config/site';
+import { publicWork } from '../config/work';
+
+const featured = (await publicWork()).filter(({ data }) => data.featured).slice(0, 3);
+const { email, github, linkedIn } = site.contact;
+---
+<BaseLayout description={site.heroDescription}>
+  <Container>
+    <HeroIntro />
+    {featured.length > 0 && (
+      <section class="home-work" aria-labelledby="selected-work">
+        <SectionHeading id="selected-work" label="Selected Work" title="精选项目" link={{ href: '/work/', text: '查看全部项目' }} />
+        {featured.map((entry, index) => <ProjectRow entry={entry} level="h3" eager={index === 0} />)}
+      </section>
+    )}
+    <div class="home-notes">
+      <section aria-labelledby="about-preview">
+        <SectionHeading id="about-preview" title="关于我" label="About" />
+        <p>{site.positioning}。我的工作聚焦 Agent 平台、复杂 B2B 系统、业务权限与评测。</p>
+        <a class="text-link" href="/about/">了解我的工作方式</a>
+      </section>
+      <section aria-labelledby="now">
+        <SectionHeading id="now" title="近期关注" label="Now" />
+        <p>{site.now}</p>
+      </section>
+    </div>
+    {(email || github || linkedIn) && <section class="home-contact" aria-labelledby="home-contact">
+      <SectionHeading id="home-contact" title="聊聊你的业务场景" label="Contact" />
+      <ul class="contact-links">
+        {email && <li><a href={`mailto:${email}`}>邮件联系</a></li>}
+        {github && <li><a href={github}>GitHub</a></li>}
+        {linkedIn && <li><a href={linkedIn}>LinkedIn</a></li>}
+      </ul>
+    </section>}
+  </Container>
+</BaseLayout>

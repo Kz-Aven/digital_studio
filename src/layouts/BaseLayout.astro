@@ -1,0 +1,28 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description: string;
+  image?: { src: string; alt: string };
+  noindex?: boolean;
+}
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <SEOHead {...Astro.props} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳至主要内容</a>
+    <SiteHeader />
+    <main id="main" tabindex="-1"><slot /></main>
+    <SiteFooter />
+  </body>
+</html>

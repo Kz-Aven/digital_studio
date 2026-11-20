@@ -1,0 +1,20 @@
+.prose { color: #292929; font-size: clamp(1rem, 1.55vw, 1.0625rem); line-height: 1.9; overflow-wrap: anywhere; }
+.prose > * + * { margin-top: 1.1em; }
+.prose h2 { font-size: clamp(1.55rem, 3vw, 2rem); color: var(--color-text); margin-top: 2em; border-top: 1px solid var(--color-border); padding-top: .8em; }
+.prose h3 { font-size: clamp(1.125rem, 2.2vw, 1.32rem); font-weight: 680; line-height: 1.5; color: var(--color-text); margin-top: 1.5em; }
+.prose h2 + h3 { margin-top: .8em; }
+.prose p { line-height: inherit; }
+.prose ul, .prose ol { padding-inline-start: 1.45em; }
+.prose ul { list-style: disc; }
+.prose ol { list-style: decimal; }
+.prose li + li { margin-top: .55em; }
+.prose strong { color: var(--color-text); }
+.prose a { text-decoration: underline; text-underline-offset: .2em; }
+.prose blockquote { border-inline-start: 2px solid #c8c8c8; background: var(--color-surface); padding: 1rem 1.25rem; }
+.prose blockquote > * + * { margin-top: .8em; }
+.prose pre { padding: 1rem 1.25rem; overflow-x: auto; font-size: .875rem; }
+.prose :not(pre) > code { background: var(--color-surface); padding: .15em .25em; }
+.prose table { display: block; overflow-x: auto; border-collapse: collapse; font-size: .9375rem; }
+.prose th, .prose td { border: 1px solid var(--color-border); padding: .55rem .75rem; min-width: 8rem; text-align: start; }
+.prose th { background: var(--color-surface); }
+.prose img { height: auto; max-width: 100%; }

@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import { site } from '../config/site';
+
+const { email, github, linkedIn, resume } = site.contact;
+const skills = [
+  '企业 AI Agent 产品设计',
+  '复杂 B2B 系统',
+  '业务流程与权限治理',
+  'AI 产品评测与落地',
+];
+const methods = [
+  { title: '业务问题', text: '从角色、任务和现有流程入手，厘清产品需要解决的具体问题。' },
+  { title: '系统抽象', text: '将业务目标拆成可接入的数据、知识、工具和权限。' },
+  { title: '关键取舍', text: '根据任务风险决定哪里需要 Agent 判断，哪里需要确定性流程。' },
+  { title: '交付验证', text: '用真实任务检查产品表现，并据此调整能力与权限。' },
+];
+---
+<BaseLayout title="About / 关于" description={site.about}>
+  <Container class="page-content">
+    <header class="page-intro">
+      <p class="eyebrow" lang="en">About</p>
+      <h1>{site.author === 'YOUR_NAME' ? '关于我' : site.author}</h1>
+      <p class="about-positioning">{site.positioning}</p>
+      <p class="page-description">{site.about}</p>
+    </header>
+    <section class="about-section" aria-labelledby="expertise">
+      <h2 id="expertise">能力方向</h2>
+      <ul class="about-list">
+        {skills.map((skill) => <li>{skill}</li>)}
+      </ul>
+    </section>
+    <section class="about-section" aria-labelledby="process">
+      <h2 id="process">工作方式</h2>
+      <ol class="about-list">
+        {methods.map(({ title, text }) => <li><strong>{title}</strong><p>{text}</p></li>)}
+      </ol>
+    </section>
+    {site.experience.length > 0 && <section class="about-section" aria-labelledby="experience">
+      <h2 id="experience">经历</h2>
+      <ul class="about-list">
+        {site.experience.map(({ period, organization, role }) => <li><strong>{organization}</strong><p>{period} · {role}</p></li>)}
+      </ul>
+    </section>}
+    {(email || github || linkedIn || resume) && <section class="about-section" aria-labelledby="contact">
+      <h2 id="contact">联系方式</h2>
+      <ul class="contact-links">
+        {email && <li><a href={`mailto:${email}`}>{email}</a></li>}
+        {github && <li><a href={github}>GitHub</a></li>}
+        {linkedIn && <li><a href={linkedIn}>LinkedIn</a></li>}
+        {resume && <li><a href={resume}>简历 PDF</a></li>}
+      </ul>
+    </section>}
+  </Container>
+</BaseLayout>

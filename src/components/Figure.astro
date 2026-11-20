@@ -1,0 +1,23 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  cover: NonNullable<CollectionEntry<'work'>['data']['cover']>;
+  sizes: string;
+  eager?: boolean;
+}
+const { cover, sizes, eager = false } = Astro.props;
+---
+<figure class="figure">
+  <img
+    src={cover.src}
+    srcset={cover.small ? `${cover.small} 768w, ${cover.src} ${cover.width}w` : undefined}
+    sizes={cover.small ? sizes : undefined}
+    width={cover.width}
+    height={cover.height}
+    alt={cover.alt}
+    loading={eager ? 'eager' : 'lazy'}
+    decoding="async"
+  />
+  {cover.caption && <figcaption>{cover.caption}</figcaption>}
+</figure>

@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Figure from './Figure.astro';
+
+interface Props {
+  entry: CollectionEntry<'work'>;
+  level?: 'h2' | 'h3';
+  eager?: boolean;
+}
+const { entry, level: Heading = 'h2', eager = false } = Astro.props;
+const { data } = entry;
+---
+<article class:list={['project-row', { 'project-row--plain': !data.cover }]}>
+  <div class="project-copy">
+    <p class="eyebrow" lang="en">{data.category}</p>
+    <Heading class="project-title">
+      <a class="project-link" href={`/work/${entry.id}/`}>{data.title}</a>
+    </Heading>
+    <p class="project-description">{data.description}</p>
+    <ul class="project-meta" aria-label="项目信息">
+      {data.period && <li>{data.period}</li>}
+      {data.role && <li>{data.role}</li>}
+    </ul>
+  </div>
+  {data.cover && <Figure cover={data.cover} sizes="(max-width: 767px) 100vw, (max-width: 1279px) 43vw, 520px" eager={eager} />}
+</article>
