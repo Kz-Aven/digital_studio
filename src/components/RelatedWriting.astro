@@ -1,0 +1,12 @@
+---
+import { relatedWritingIds, writing } from '../config/writing';
+import ArticleRow from './ArticleRow.astro';
+
+interface Props { id: string }
+const ids = relatedWritingIds[Astro.props.id] ?? [];
+const articles = ids.map((id) => writing.find((entry) => entry.id === id)).filter((entry) => entry !== undefined);
+---
+{articles.length > 0 && <section class="case-end related-writing" aria-labelledby="related-writing" data-pagefind-ignore>
+  <h2 id="related-writing">相关文章</h2>
+  {articles.map((entry) => <ArticleRow entry={entry} level="h3" compact />)}
+</section>}

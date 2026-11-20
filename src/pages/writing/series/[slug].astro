@@ -1,0 +1,42 @@
+---
+import type { InferGetStaticPropsType } from 'astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Container from '../../../components/Container.astro';
+import ArticleRow from '../../../components/ArticleRow.astro';
+import { seriesIds, writing, writingSeries } from '../../../config/writing';
+
+export function getStaticPaths() {
+  return seriesIds.map((series) => ({ params: { slug: series }, props: { series } }));
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { series } = Astro.props;
+const { label, description } = writingSeries[series];
+const entries = writing.filter((entry) => entry.series === series)
+  .sort((a, b) => a.seriesOrder! - b.seriesOrder!);
+---
+<BaseLayout title={`${label} / Writing 专题`} description={description}>
+  <Container class="page-content writing-shell">
+    <header class="page-intro writing-intro">
+      <div>
+        <nav aria-label="面包屑"><a class="text-link" href="/writing/">← 返回 Writing</a></nav>
+        <p class="eyebrow writing-subtitle" lang="en">Series</p>
+        <h1>{label}</h1>
+        <p class="page-description">{description}</p>
+      </div>
+      <p class="writing-total"><strong>{entries.length}</strong> 篇文章</p>
+    </header>
+    <ol class="writing-series-entries" aria-label="专题阅读顺序">
+      {entries.map((entry, index) => (
+        <li>
+          <ArticleRow entry={entry}>
+            {entries.length > 1 && <nav class="writing-neighbors" aria-label={`第 ${index + 1} 篇的相邻文章`}>
+              {entries[index - 1] && <a href={`#wx-${entries[index - 1].id}`}>← 上一篇</a>}
+              {entries[index + 1] && <a href={`#wx-${entries[index + 1].id}`}>下一篇 →</a>}
+            </nav>}
+          </ArticleRow>
+        </li>
+      ))}
+    </ol>
+  </Container>
+</BaseLayout>

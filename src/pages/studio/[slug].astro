@@ -7,6 +7,7 @@ import CaseStudyTOC from '../../components/CaseStudyTOC.astro';
 import Figure from '../../components/Figure.astro';
 import Prose from '../../components/Prose.astro';
 import TagList from '../../components/TagList.astro';
+import RelatedWriting from '../../components/RelatedWriting.astro';
 import { publicStudio, studioStatuses } from '../../config/content';
 
 export async function getStaticPaths() {
@@ -38,6 +39,7 @@ const { Content, headings } = await render(entry);
         <div class="case-reading">
           {data.stack.length > 0 && <p class="article-meta stack-line">技术栈 · {data.stack.join(' / ')}</p>}
           <Prose><Content /></Prose>
+          <RelatedWriting id={entry.id} />
         </div>
       </div>
     </article>

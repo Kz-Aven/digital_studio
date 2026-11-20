@@ -23,19 +23,25 @@ pnpm preview
 
 ## 添加内容
 
-在相应的 `src/content/` 子目录新增 Markdown，文件名就是公开路由的 slug。
+Work 和 Studio 使用 `src/content/` 下的 Markdown，文件名就是公开路由的 slug。Writing 从 `src/data/writing.json` 读取公众号文章元数据。
 
 | 集合 | 参考内容 | 主要字段 |
 | --- | --- | --- |
 | `work` | `taiqing-master.md` | `title`、`description`、`category`；可选角色、时期、状态和关键取舍 |
 | `studio` | `tigerose.md` | `title`、`description`、`publishedAt`、`status`；状态为 `released`、`prototype` 或 `exploring` |
-| `writing` | `agent-evaluation-evidence.md` | `title`、`description`、`category`、`publishedAt`；可选 `updatedAt` 和 `externalUrl` |
 
-- 使用二级标题划分正文，目录由它们生成。Writing 的 `publishedAt` 是站内发布日期，文章元数据和 RSS 共用该字段。公众号原文链接确认后可填入 `externalUrl`。
-- 使用 `draft: true` 隐藏尚未确认公开的内容。草稿和空正文会从路由、列表、站点地图、RSS 及搜索中排除。私人或内部源文件请留在被 Git 忽略的目录。
-- `featured: true` 可将 Work 加入首页精选，并提升 Studio 项目排序。Writing 首页内容按发布日期倒序收录。
+- 使用二级标题划分 Markdown 正文，目录由它们生成。
+- 使用 `draft: true` 隐藏尚未确认公开的内容。草稿和空正文会从路由、列表、站点地图及搜索中排除。私人或内部源文件请留在被 Git 忽略的目录。
+- `featured: true` 可将 Work 加入首页精选，并提升 Studio 项目排序。Writing 首页展示标记为精选的公众号文章。
 - 配图放在 `public/images/` 下的相应目录。封面填写 `src`、`alt`、宽和高，正文图片使用根相对 URL。截图需有公开许可，示意图请在图注标明。
 - 站点定位、作者、联系方式和确认过的经历在 `src/config/site.ts` 配置。
+
+### Writing 数据
+
+- 按 `src/data/writing.json` 添加文章，保留公众号原题和 `https://mp.weixin.qq.com/s/<id>` 原文链接。
+- 未核实原文日期时，保留 `publishedAt: null` 和 `dateStatus: "unknown"`。核实后填入 `YYYY-MM-DD`，并改成 `verified`。默认先按已核实日期倒序，再按 `editorialOrder` 展示无日期文章。
+- `featured: true` 标记首页精选。指定 `series` 时需同时填写专题内唯一的 `seriesOrder`。分类、专题及 Work/Studio 关联维护在 `src/config/writing.ts`。
+- 写作列表和全站搜索使用标题与标签，RSS 链接指向原文。旧站内全文地址由 Cloudflare Pages 的 `public/_redirects` 跳转到原文。
 
 ## Cloudflare Pages
 

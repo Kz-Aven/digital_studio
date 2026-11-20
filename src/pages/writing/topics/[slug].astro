@@ -1,0 +1,35 @@
+---
+import type { InferGetStaticPropsType } from 'astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Container from '../../../components/Container.astro';
+import ArticleRow from '../../../components/ArticleRow.astro';
+import WritingSeriesLinks from '../../../components/WritingSeriesLinks.astro';
+import { seriesIds, topicIds, writing, writingTopics } from '../../../config/writing';
+
+export function getStaticPaths() {
+  return topicIds.map((topic) => ({ params: { slug: topic }, props: { topic } }));
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { topic } = Astro.props;
+const { label, description } = writingTopics[topic];
+const entries = writing.filter((entry) => entry.topic === topic);
+const relatedSeries = seriesIds.filter((id) => entries.some((entry) => entry.series === id));
+---
+<BaseLayout title={`${label} / Writing`} description={description}>
+  <Container class="page-content writing-shell">
+    <header class="page-intro writing-intro">
+      <div>
+        <nav aria-label="面包屑"><a class="text-link" href="/writing/">← 返回 Writing</a></nav>
+        <p class="eyebrow writing-subtitle" lang="en">Research Topic</p>
+        <h1>{label}</h1>
+        <p class="page-description">{description}</p>
+      </div>
+      <p class="writing-total"><strong>{entries.length}</strong> 篇文章</p>
+    </header>
+    <WritingSeriesLinks ids={relatedSeries} label="相关专题" />
+    <section aria-label="领域文章">
+      {entries.map((entry) => <ArticleRow entry={entry} />)}
+    </section>
+  </Container>
+</BaseLayout>

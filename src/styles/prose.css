@@ -19,7 +19,6 @@
 .prose th, .prose td { border: 1px solid var(--color-border); padding: .55rem .75rem; min-width: 8rem; text-align: start; }
 .prose th { background: var(--color-surface); }
 .prose img { height: auto; max-width: 100%; }
-.prose img[src^="/images/writing/"] { aspect-ratio: auto 1200 / 676; }
 @media (max-width: 767px) {
   .prose-table::before {
     content: "表格可横向滚动";

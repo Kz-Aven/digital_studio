@@ -11,7 +11,7 @@ export const site = {
   now: '如何验证一个数智员工可以上岗，以及如何根据风险逐步开放它的权限。',
   workDescription: '记录企业 AI 与复杂 B2B 产品从问题定义、方案取舍到交付验证的过程。',
   studioDescription: '我做的工具与实验，关注 Agent 如何协作、留下证据并进入日常工作。',
-  writingDescription: '关于企业 AI、制造业与 Agent 产品的研究和写作，记录真实流程里的问题与取舍。',
+  writingDescription: '从企业 AI 落地、制造业实践到 Agent 工具，按研究领域整理已发表的公众号文章。',
   contact: { github: 'https://github.com/Kz-Aven' } as Partial<{ email: string; github: string; linkedIn: string; resume: string }>,
   experience: [] as { period: string; organization: string; role: string }[],
 };

@@ -47,14 +47,4 @@ const studio = defineCollection({
   }),
 });
 
-const writing = defineCollection({
-  loader: glob({ base: './src/content/writing', pattern: '*.md' }),
-  schema: common.extend({
-    publishedAt: z.coerce.date(),
-    updatedAt: z.coerce.date().optional(),
-    category: z.string(),
-    externalUrl: z.url({ protocol: /^https$/ }).optional(),
-  }),
-});
-
-export const collections = { work, studio, writing };
+export const collections = { work, studio };

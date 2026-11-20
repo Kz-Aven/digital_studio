@@ -7,9 +7,10 @@ import ProjectRow from '../components/ProjectRow.astro';
 import StudioItem from '../components/StudioItem.astro';
 import ArticleRow from '../components/ArticleRow.astro';
 import { site } from '../config/site';
-import { publicStudio, publicWork, publicWriting } from '../config/content';
+import { publicStudio, publicWork } from '../config/content';
+import { featuredWriting } from '../config/writing';
 
-const [work, studio, writing] = await Promise.all([publicWork(), publicStudio(), publicWriting()]);
+const [work, studio] = await Promise.all([publicWork(), publicStudio()]);
 const featured = work.filter(({ data }) => data.featured).slice(0, 3);
 const { email, github, linkedIn } = site.contact;
 ---
@@ -28,9 +29,9 @@ const { email, github, linkedIn } = site.contact;
         {studio.slice(0, 3).map((entry) => <StudioItem entry={entry} level="h3" compact />)}
       </div>
     </section>}
-    {writing.length > 0 && <section class="home-section" aria-labelledby="recent-writing">
-      <SectionHeading id="recent-writing" title="最近研究" label="Writing" link={{ href: '/writing/', text: '查看全部文章' }} />
-      {writing.slice(0, 4).map((entry) => <ArticleRow entry={entry} level="h3" compact />)}
+    {featuredWriting.length > 0 && <section class="home-section" aria-labelledby="featured-writing">
+      <SectionHeading id="featured-writing" title="编辑精选" label="Writing" link={{ href: '/writing/', text: '查看全部文章' }} />
+      {featuredWriting.slice(0, 4).map((entry) => <ArticleRow entry={entry} level="h3" compact />)}
     </section>}
     <div class="home-notes">
       <section aria-labelledby="about-preview">

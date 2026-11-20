@@ -1,0 +1,15 @@
+---
+import { writingSeries, type WritingSeries } from '../config/writing';
+
+interface Props {
+  ids: WritingSeries[];
+  label: string;
+}
+const { ids, label } = Astro.props;
+---
+{ids.length > 0 && <nav class="writing-series-links" aria-label={label}>
+  <span>{label}</span>
+  <ul>
+    {ids.map((id) => <li><a href={`/writing/series/${id}/`}>{writingSeries[id].label}</a></li>)}
+  </ul>
+</nav>}

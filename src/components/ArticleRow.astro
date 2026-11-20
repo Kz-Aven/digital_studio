@@ -1,22 +1,39 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import { formatDate, readingMinutes } from '../config/content';
-import TagList from './TagList.astro';
+import { formatDate } from '../config/content';
+import { writingSeries, writingTopics, writingTypes, type WritingItem } from '../config/writing';
 
 interface Props {
-  entry: CollectionEntry<'writing'>;
+  entry: WritingItem;
   level?: 'h2' | 'h3';
   compact?: boolean;
 }
 const { entry, level: Heading = 'h2', compact = false } = Astro.props;
-const { data } = entry;
 ---
-<article class="article-row">
-  <time datetime={data.publishedAt.toISOString()}>{formatDate(data.publishedAt)}</time>
-  <div>
-    <Heading><a href={`/writing/${entry.id}/`}>{data.title}</a></Heading>
-    {!compact && <p class="entry-description">{data.description}</p>}
-    <p class="article-meta">{data.category} <span aria-hidden="true">·</span> 约 {readingMinutes(entry.body)} 分钟</p>
-    {!compact && <TagList tags={data.tags} />}
+<article
+  class:list={['writing-row', { 'writing-row--compact': compact }]}
+  id={`wx-${entry.id}`}
+  tabindex={compact ? undefined : '-1'}
+  data-writing-row
+  data-topic={entry.topic}
+  data-type={entry.type}
+  data-featured={entry.featured ? '' : undefined}
+  data-editorial-order={entry.editorialOrder}
+  data-search={[entry.title, ...entry.tags].join(' ')}
+>
+  <div class="writing-row-copy">
+    <Heading>
+      <a class="writing-original" href={entry.sourceUrl} target="_blank" rel="noopener noreferrer">
+        {entry.title}<span class="writing-link-icon" aria-hidden="true">↗</span>
+        <span class="sr-only">（公众号原文，在新标签页打开）</span>
+      </a>
+    </Heading>
+    <ul class="writing-meta" aria-label="文章信息">
+      <li class="writing-source">公众号原文</li>
+      <li><a href={`/writing/topics/${entry.topic}/`}>{writingTopics[entry.topic].label}</a></li>
+      <li>{writingTypes[entry.type]}</li>
+      {entry.series && !compact && <li><a href={`/writing/series/${entry.series}/`}>{writingSeries[entry.series].label}</a></li>}
+      {entry.publishedAt && <li><time datetime={entry.publishedAt}>{formatDate(new Date(entry.publishedAt))}</time></li>}
+    </ul>
+    <slot />
   </div>
 </article>

@@ -1,6 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';
+import { writing, writingTopics } from '../config/writing';
+const articleMetadata = writing.map((entry) => ({
+  title: entry.title,
+  url: entry.sourceUrl,
+  tags: entry.tags,
+  topic: writingTopics[entry.topic].label,
+}));
 ---
 <BaseLayout title="搜索" description="搜索项目案例、个人作品和研究文章。" noindex>
   <Container class="page-content">
@@ -20,11 +27,15 @@ import Container from '../components/Container.astro';
       <noscript><p>请启用 JavaScript 后使用搜索。</p></noscript>
       <p id="search-status" class="search-status" role="status"></p>
       <ol id="search-results" aria-label="搜索结果"></ol>
+      <script id="search-writing" type="application/json" is:inline set:html={JSON.stringify(articleMetadata).replace(/</g, '\\u003c')} />
     </div>
   </Container>
 </BaseLayout>
 
 <script>
+  import { writingMatchesQuery } from '../config/writing-query';
+
+  type SearchMatch = { title: string; url: string; excerpt: string; external?: boolean };
   const input = document.querySelector<HTMLInputElement>('#search-query')!;
   const status = document.querySelector('#search-status')!;
   const list = document.querySelector('#search-results')!;
@@ -32,28 +43,48 @@ import Container from '../components/Container.astro';
   if (query) {
     input.value = query;
     status.textContent = '正在搜索…';
+    const articles: { title: string; url: string; tags: string[]; topic: string }[] = JSON.parse(
+      document.querySelector('#search-writing')!.textContent!,
+    );
+    const matches: SearchMatch[] = articles
+      .filter((article) => writingMatchesQuery([article.title, ...article.tags].join(' '), query))
+      .map((article) => ({ title: article.title, url: article.url, excerpt: article.topic, external: true }));
+    let total = matches.length;
+    let siteSearchFailed = false;
     const bundle = '/pagefind/pagefind.js';
     try {
       const pagefind = await import(/* @vite-ignore */ bundle);
       const { results } = await pagefind.search(query);
-      const matches = await Promise.all(results.slice(0, 25).map((result: {
+      const siteMatches = await Promise.all(results.slice(0, Math.max(0, 25 - total)).map((result: {
         data: () => Promise<{ url: string; plain_excerpt: string; meta: { title: string } }>;
       }) => result.data()));
-      for (const match of matches) {
-        const item = document.createElement('li');
-        const link = document.createElement('a');
-        const summary = document.createElement('p');
-        link.href = match.url;
-        link.textContent = match.meta.title;
-        summary.textContent = match.plain_excerpt;
-        item.append(link, summary);
-        list.append(item);
-      }
-      status.textContent = results.length
-        ? `找到 ${results.length} 条结果${results.length > matches.length ? `，显示前 ${matches.length} 条` : ''}。`
-        : '未找到相关内容，可以换个关键词试试。';
+      total += results.length;
+      matches.push(...siteMatches.map((match) => ({ title: match.meta.title, url: match.url, excerpt: match.plain_excerpt })));
     } catch {
-      status.textContent = '搜索暂时无法使用，请稍后重试。';
+      siteSearchFailed = true;
     }
+
+    for (const match of matches.slice(0, 25)) {
+      const item = document.createElement('li');
+      const link = document.createElement('a');
+      const summary = document.createElement('p');
+      link.href = match.url;
+      link.textContent = match.title;
+      if (match.external) {
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        const hint = document.createElement('span');
+        hint.className = 'sr-only';
+        hint.textContent = '（公众号原文，在新标签页打开）';
+        link.append(hint);
+      }
+      summary.textContent = match.external ? `公众号原文 · ${match.excerpt}` : match.excerpt;
+      item.append(link, summary);
+      list.append(item);
+    }
+    const count = total
+      ? `找到 ${total} 条结果${total > 25 ? '，显示前 25 条' : ''}。`
+      : '未找到相关内容，可以换个关键词试试。';
+    status.textContent = siteSearchFailed ? `站内搜索暂时不可用。${count}` : count;
   }
 </script>

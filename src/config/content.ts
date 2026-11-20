@@ -22,11 +22,6 @@ export async function publicStudio() {
   );
 }
 
-export async function publicWriting() {
-  const entries = await publicEntries('writing');
-  return entries.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf() || a.id.localeCompare(b.id));
-}
-
 export const studioStatuses = {
   released: '已发布',
   prototype: '原型',
@@ -37,11 +32,4 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', { dateStyle: 'long', time
 
 export function formatDate(date: Date) {
   return dateFormatter.format(date);
-}
-
-export function readingMinutes(markdown = '') {
-  const text = markdown.replace(/!\[[^\]]*\]\([^)]*\)/g, '').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1');
-  const chinese = text.match(/\p{Script=Han}/gu)?.length ?? 0;
-  const words = text.match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*/g)?.length ?? 0;
-  return Math.max(1, Math.ceil(chinese / 400 + words / 220));
 }
