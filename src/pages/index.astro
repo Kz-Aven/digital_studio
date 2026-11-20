@@ -44,7 +44,7 @@ const { email, github, linkedIn } = site.contact;
       </section>
     </div>
     {(email || github || linkedIn) && <section class="home-contact" aria-labelledby="home-contact">
-      <SectionHeading id="home-contact" title="聊聊你的业务场景" label="Contact" />
+      <SectionHeading id="home-contact" title="保持联系" label="Contact" />
       <ul class="contact-links">
         {email && <li><a href={`mailto:${email}`}>邮件联系</a></li>}
         {github && <li><a href={github}>GitHub</a></li>}

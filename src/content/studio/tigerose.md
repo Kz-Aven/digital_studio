@@ -1,6 +1,6 @@
 ---
 title: Tigerose
-description: 一款本地优先的 macOS 多 Agent 工作台，让助理在项目群里分工、协作与验收。
+description: 本地优先的 macOS 多 Agent 工作台，在项目群里分工、协作和验收。
 publishedAt: 2026-09-24
 status: released
 tags: [多 Agent 协作, macOS]

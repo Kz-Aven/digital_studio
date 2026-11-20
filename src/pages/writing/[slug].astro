@@ -49,7 +49,7 @@ const { Content, headings } = await render(entry);
         <h1 data-pagefind-meta="title">{data.title}</h1>
         <p class="page-description">{data.description}</p>
         <p class="article-meta article-byline">
-          <time datetime={data.publishedAt.toISOString()}>{formatDate(data.publishedAt)}</time>
+          站内发布于 <time datetime={data.publishedAt.toISOString()}>{formatDate(data.publishedAt)}</time>
           <span aria-hidden="true">·</span> 约 {readingMinutes(entry.body)} 分钟
         </p>
         <TagList tags={data.tags} />

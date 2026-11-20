@@ -6,6 +6,7 @@ category: Agent 评测
 tags: [企业 Agent, 循证评估]
 cover:
   src: /images/writing/agent-evaluation-evidence/01-customer-mismatch.webp
+  small: /images/writing/agent-evaluation-evidence/01-customer-mismatch-small.webp
   alt: Momo 核对客户文件夹，发现跟进记录可能错绑
   caption: 任务记录与评测文章配图
   width: 1200

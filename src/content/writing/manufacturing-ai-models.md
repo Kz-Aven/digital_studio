@@ -6,6 +6,7 @@ category: 制造业 AI
 tags: [企业 AI, 排产]
 cover:
   src: /images/writing/manufacturing-ai-models/01-fresh-input.webp
+  small: /images/writing/manufacturing-ai-models/01-fresh-input-small.webp
   alt: Momo 更换过时交期，让已有模型用上新的业务信息
   caption: 制造业 AI 文章配图
   width: 1200

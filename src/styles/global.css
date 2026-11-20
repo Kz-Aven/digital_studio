@@ -272,7 +272,7 @@ a:hover { color: var(--color-link-hover); }
   min-height: 44px;
   padding-block: .3rem;
 }
-.entry-description { color: var(--color-muted); line-height: 1.8; max-width: 39rem; }
+.entry-description { color: var(--color-muted); line-height: 1.8; max-width: 41rem; text-wrap: pretty; }
 .tag-list {
   display: flex;
   flex-wrap: wrap;
