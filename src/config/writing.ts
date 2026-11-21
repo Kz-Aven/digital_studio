@@ -64,6 +64,7 @@ const itemSchema = z.object({
   editorialOrder: z.int().positive(),
   featured: z.boolean().optional(),
   excerpt: z.string().optional(),
+  localSlug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
   cover: z.object({
     src: z.string().startsWith('/images/writing/'),
     alt: z.string().min(1),
@@ -76,6 +77,7 @@ const writingSchema = z.array(itemSchema).superRefine((items, context) => {
   const ids = new Set<string>();
   const urls = new Set<string>();
   const positions = new Set<string>();
+  const slugs = new Set<string>();
   items.forEach((item, index) => {
     const report = (key: keyof WritingItem, message: string) => context.addIssue({
       code: 'custom', path: [index, key], message,
@@ -88,6 +90,10 @@ const writingSchema = z.array(itemSchema).superRefine((items, context) => {
     }
     ids.add(item.id);
     urls.add(item.sourceUrl);
+    if (item.localSlug) {
+      if (slugs.has(item.localSlug)) report('localSlug', '站内文章路径重复');
+      slugs.add(item.localSlug);
+    }
 
     if ((item.publishedAt !== null) !== (item.dateStatus === 'verified')) {
       report('publishedAt', '日期和核实状态不一致');

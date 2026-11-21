@@ -1,0 +1,45 @@
+---
+import type { MarkdownHeading } from 'astro';
+import BaseLayout from './BaseLayout.astro';
+import CaseStudyTOC from '../components/CaseStudyTOC.astro';
+import '../styles/reading.css';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: { src: string; alt: string };
+  headings: MarkdownHeading[];
+  back: { label: string; href: string };
+}
+const { headings, back, ...meta } = Astro.props;
+---
+<BaseLayout {...meta} type="article" searchable>
+  <div class="reading-progress" aria-hidden="true"></div>
+  <div class="reading-canvas">
+    <article class="reading-paper">
+      <a class="reading-back text-link" href={back.href} data-pagefind-ignore>← {back.label}</a>
+      <slot name="header" />
+      <div class="reading-text">
+        <CaseStudyTOC headings={headings} label="目录" />
+        <slot />
+      </div>
+    </article>
+  </div>
+</BaseLayout>
+
+<script>
+  const paper = document.querySelector<HTMLElement>('.reading-paper')!;
+  const bar = document.querySelector<HTMLElement>('.reading-progress')!;
+  let frame = 0;
+  function update() {
+    const bounds = paper.getBoundingClientRect();
+    const travel = bounds.height - innerHeight;
+    const progress = travel > 0 ? Math.min(1, Math.max(0, -bounds.top / travel)) : 0;
+    bar.style.transform = `scaleX(${progress})`;
+    frame = 0;
+  }
+  const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+  addEventListener('scroll', schedule, { passive: true });
+  addEventListener('resize', schedule);
+  update();
+</script>

@@ -23,7 +23,7 @@ pnpm preview
 
 ## 添加内容
 
-Work 和 Studio 使用 `src/content/` 下的 Markdown，文件名就是公开路由的 slug。Writing 从 `src/data/writing.json` 读取公众号文章元数据。
+Work 和 Studio 使用 `src/content/` 下的 Markdown，文件名就是公开路由的 slug。Writing 从 `src/data/writing.json` 读取公众号文章元数据，站内正文保存于 `src/content/writing/`。
 
 | 集合 | 参考内容 | 主要字段 |
 | --- | --- | --- |
@@ -41,7 +41,7 @@ Work 和 Studio 使用 `src/content/` 下的 Markdown，文件名就是公开路
 - 按 `src/data/writing.json` 添加文章，保留公众号原题和 `https://mp.weixin.qq.com/s/<id>` 原文链接。
 - 未核实原文日期时，保留 `publishedAt: null` 和 `dateStatus: "unknown"`。核实后填入 `YYYY-MM-DD`，并改成 `verified`。默认先按已核实日期倒序，再按 `editorialOrder` 展示无日期文章。
 - `featured: true` 标记首页精选。指定 `series` 时需同时填写专题内唯一的 `seriesOrder`。分类、专题及 Work/Studio 关联维护在 `src/config/writing.ts`。
-- 写作列表和全站搜索使用标题与标签，RSS 链接指向原文。旧站内全文地址由 Cloudflare Pages 的 `public/_redirects` 跳转到原文。
+- 给条目填写 `localSlug` 并添加同名 Markdown 后，列表标题直达站内正文，正文进入 Pagefind 索引。只有原文链接的条目继续跳转公众号。RSS 指向公众号原文。
 
 ## Cloudflare Pages
 

@@ -6,32 +6,11 @@ const path = Astro.url.pathname;
 ---
 <header class="site-header">
   <Container class="header-inner">
-    <a class="wordmark" href="/" aria-current={path === '/' ? 'page' : undefined}>
-      <span class="brand-mark" aria-hidden="true"></span>
-      {site.name}
-    </a>
-    <nav class="desktop-nav" aria-label="主导航">
+    <a class="wordmark" href="/"><span class="brand-mark" aria-hidden="true"></span>{site.name}</a>
+    <nav class="site-nav" aria-label="主导航">
       {navigation.map(({ href, label }) => (
-        <a href={href} aria-current={path === href ? 'page' : path.startsWith(href) ? 'location' : undefined}>{label}</a>
+        <a href={href} aria-current={path === href ? 'page' : href !== '/' && path.startsWith(href) ? 'location' : undefined}>{label}</a>
       ))}
     </nav>
-    <details class="mobile-menu">
-      <summary>菜单</summary>
-      <nav aria-label="主导航">
-        {navigation.map(({ href, label }) => (
-          <a href={href} aria-current={path === href ? 'page' : path.startsWith(href) ? 'location' : undefined}>{label}</a>
-        ))}
-      </nav>
-    </details>
   </Container>
 </header>
-
-<script>
-  const menu = document.querySelector<HTMLDetailsElement>('.mobile-menu');
-  menu?.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && menu.open) {
-      menu.open = false;
-      menu.querySelector('summary')?.focus();
-    }
-  });
-</script>

@@ -1,10 +1,8 @@
 ---
 import { render } from 'astro:content';
+import ReadingPage from '../../layouts/ReadingPage.astro';
 import type { InferGetStaticPropsType } from 'astro';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Container from '../../components/Container.astro';
 import CaseStudyHeader from '../../components/CaseStudyHeader.astro';
-import CaseStudyTOC from '../../components/CaseStudyTOC.astro';
 import Figure from '../../components/Figure.astro';
 import Prose from '../../components/Prose.astro';
 import RelatedWriting from '../../components/RelatedWriting.astro';
@@ -24,29 +22,24 @@ const { entry, next } = Astro.props;
 const { data } = entry;
 const { Content, headings } = await render(entry);
 ---
-<BaseLayout title={data.title} description={data.seoDescription ?? data.description} image={data.cover} searchable>
-  <Container class="case-content">
-    <article>
-      <CaseStudyHeader data={data} />
-      {data.cover && <Figure cover={data.cover} sizes="(max-width: 1279px) 100vw, 1200px" eager />}
-      <div class="case-grid">
-        <CaseStudyTOC headings={headings} />
-        <div class="case-reading">
-          {data.decisions && data.decisions.length > 0 && <section class="decisions" aria-labelledby="key-decisions">
-            <h2 class="eyebrow" id="key-decisions">Key Decisions / 关键取舍</h2>
-            <ol>
-              {data.decisions.map((decision) => <li>{decision}</li>)}
-            </ol>
-          </section>}
-          <Prose><Content /></Prose>
-          <RelatedWriting id={entry.id} />
-          <div class="case-end flex flex-wrap gap-x-8 gap-y-2" data-pagefind-ignore>
-            {next && <a class="text-link" href={`/work/${next.id}/`}>下一个项目：{next.data.title}</a>}
-            <a class="text-link" href="/about/">了解作者</a>
-            {site.contact.email && <a class="text-link" href={`mailto:${site.contact.email}`}>邮件联系</a>}
-          </div>
-        </div>
-      </div>
-    </article>
-  </Container>
-</BaseLayout>
+<ReadingPage
+  title={data.title}
+  description={data.seoDescription ?? data.description}
+  image={data.cover}
+  headings={headings}
+  back={{ label: '项目案例', href: '/work/' }}
+>
+  <CaseStudyHeader slot="header" data={data} />
+  {data.cover && <Figure cover={data.cover} sizes="(max-width: 767px) 100vw, 700px" eager />}
+  {data.decisions && data.decisions.length > 0 && <section class="decisions" aria-labelledby="key-decisions">
+    <h2 class="eyebrow" id="key-decisions">关键取舍</h2>
+    <ol>{data.decisions.map((decision) => <li>{decision}</li>)}</ol>
+  </section>}
+  <Prose><Content /></Prose>
+  <RelatedWriting id={entry.id} />
+  <div class="case-end flex flex-wrap gap-x-8 gap-y-2" data-pagefind-ignore>
+    {next && <a class="text-link" href={`/work/${next.id}/`}>下一个项目：{next.data.title}</a>}
+    <a class="text-link" href="/about/">了解作者</a>
+    {site.contact.email && <a class="text-link" href={`mailto:${site.contact.email}`}>邮件联系</a>}
+  </div>
+</ReadingPage>

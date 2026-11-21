@@ -47,4 +47,8 @@ const studio = defineCollection({
   }),
 });
 
-export const collections = { work, studio };
+const writing = defineCollection({
+  loader: glob({ base: './src/content/writing', pattern: '*.md' }),
+});
+
+export const collections = { work, studio, writing };

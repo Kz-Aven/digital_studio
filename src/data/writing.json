@@ -14,7 +14,8 @@
     "cover": {
       "src": "/images/writing/enterprise-ai-business.webp",
       "alt": "订单变更要核对库存、权限和生产条件"
-    }
+    },
+    "localSlug": "enterprise-ai-business"
   },
   {
     "id": "Uia5U12gP_fEN0vVTLaqxA",
@@ -31,7 +32,8 @@
     "cover": {
       "src": "/images/writing/bounded-decisions.webp",
       "alt": "复杂输入经过分拣，形成有限范围的决策"
-    }
+    },
+    "localSlug": "bounded-decisions"
   },
   {
     "id": "-Wf5pLRD9Ep_rrCsqq1PnQ",
@@ -48,7 +50,8 @@
     "cover": {
       "src": "/images/writing/enterprise-ai-adoption.webp",
       "alt": "企业和人才面对 AI 落地的不确定性"
-    }
+    },
+    "localSlug": "enterprise-ai-adoption"
   },
   {
     "id": "tAH5WuHwR7yhE0pFQtaMCQ",
@@ -67,7 +70,8 @@
     "cover": {
       "src": "/images/writing/factory-data-alignment.webp",
       "alt": "将不同表格的工厂数据对齐"
-    }
+    },
+    "localSlug": "factory-data-alignment"
   },
   {
     "id": "l0cu8aFTZIWIXJ5yhflz5g",
@@ -86,7 +90,8 @@
     "cover": {
       "src": "/images/writing/factory-product-master.webp",
       "alt": "将产品信息汇总到一张底表"
-    }
+    },
+    "localSlug": "factory-product-master"
   },
   {
     "id": "qNm8TF_V-UKQaU6xwYf4fA",
@@ -105,7 +110,8 @@
     "cover": {
       "src": "/images/writing/factory-production-reporting.webp",
       "alt": "将报工操作简化为两项"
-    }
+    },
+    "localSlug": "factory-production-reporting"
   },
   {
     "id": "cwyCyacPSqRq7p4TDBSBXQ",
@@ -124,7 +130,8 @@
     "cover": {
       "src": "/images/writing/factory-delivery-first.webp",
       "alt": "先填写送货单，再由系统记账"
-    }
+    },
+    "localSlug": "factory-delivery-first"
   },
   {
     "id": "WeAv7Gg4G2ihP71lPFkWow",
@@ -143,7 +150,8 @@
     "cover": {
       "src": "/images/writing/data-before-agent.webp",
       "alt": "工厂的数据基础与 Agent 的关系"
-    }
+    },
+    "localSlug": "data-before-agent"
   },
   {
     "id": "Cjm9MOB1TGAgvErPuEgCww",
@@ -162,7 +170,8 @@
     "cover": {
       "src": "/images/writing/factory-data-cleaning.webp",
       "alt": "AI 整理产品数据后由人工核验"
-    }
+    },
+    "localSlug": "factory-data-cleaning"
   },
   {
     "id": "AI0uPB9hX4Z28z9IF9ot6Q",
@@ -181,7 +190,8 @@
     "cover": {
       "src": "/images/writing/one-to-many-materials.webp",
       "alt": "一料多品对应关系由人工复核"
-    }
+    },
+    "localSlug": "one-to-many-materials"
   },
   {
     "id": "gVXSnoMRqFJ9WRL6dRst_A",
@@ -200,7 +210,8 @@
     "cover": {
       "src": "/images/writing/asynchronous-ledger.webp",
       "alt": "送货和入账的时间差"
-    }
+    },
+    "localSlug": "asynchronous-ledger"
   },
   {
     "id": "iHhBEhaqV9ZWyAm17aBGhQ",
@@ -219,7 +230,8 @@
     "cover": {
       "src": "/images/writing/agent-evaluation-evidence.webp",
       "alt": "Momo 核对客户文件夹和跟进记录的归属"
-    }
+    },
+    "localSlug": "agent-evaluation-evidence"
   },
   {
     "id": "o7F9T4T_3LtshESv4yn6JA",
@@ -236,7 +248,8 @@
     "cover": {
       "src": "/images/writing/workbuddy-weknora.webp",
       "alt": "Momo 整理文档并生成答案卡"
-    }
+    },
+    "localSlug": "workbuddy-weknora"
   },
   {
     "id": "w4fxHa-nOajiCdNmvj3IPA",
@@ -253,7 +266,8 @@
     "cover": {
       "src": "/images/writing/collecting-experience.webp",
       "alt": "Momo 为业务经验补齐来源、条件和验证"
-    }
+    },
+    "localSlug": "collecting-experience"
   },
   {
     "id": "3PMSaeTz5mN9grGPFs4QUg",
@@ -270,7 +284,8 @@
     "cover": {
       "src": "/images/writing/trusted-knowledge-base.webp",
       "alt": "Momo 分拣通用知识、专业知识和实践经验"
-    }
+    },
+    "localSlug": "trusted-knowledge-base"
   },
   {
     "id": "H1tTu9JIV4S0X-GkCLv95w",
@@ -287,7 +302,8 @@
     "cover": {
       "src": "/images/writing/trusted-context.webp",
       "alt": "Momo 标记需要进一步验证的设备读数"
-    }
+    },
+    "localSlug": "trusted-context"
   },
   {
     "id": "7OR89j1hl777hbgnEVtPVA",
@@ -304,7 +320,8 @@
     "cover": {
       "src": "/images/writing/manufacturing-ai-models.webp",
       "alt": "Momo 将更新后的交期交给排产模型"
-    }
+    },
+    "localSlug": "manufacturing-ai-models"
   },
   {
     "id": "6N9fvZu4MHmo8HxR4WkbmA",
@@ -323,7 +340,8 @@
     "cover": {
       "src": "/images/writing/business-experience-part-two.webp",
       "alt": "围绕客户组织多种业务对象及其关系"
-    }
+    },
+    "localSlug": "business-experience-part-two"
   },
   {
     "id": "K-zRdgKEE2IOr7K3DIIc9A",
@@ -342,7 +360,8 @@
     "cover": {
       "src": "/images/writing/business-experience-part-one.webp",
       "alt": "将业务经验拆分为五类资产"
-    }
+    },
+    "localSlug": "business-experience-part-one"
   },
   {
     "id": "YwZZgT0EzIxy7B14i_VEDw",
@@ -359,7 +378,8 @@
     "cover": {
       "src": "/images/writing/agent-identity.webp",
       "alt": "工牌与 Agent 身份档案对应"
-    }
+    },
+    "localSlug": "agent-identity"
   },
   {
     "id": "SEXofEYuIsKmN4Por-KtxQ",
@@ -378,7 +398,8 @@
     "cover": {
       "src": "/images/writing/esp32-iphone-tutorial.webp",
       "alt": "ESP32 手机实验的画面观察与输入执行链路"
-    }
+    },
+    "localSlug": "esp32-iphone-tutorial"
   },
   {
     "id": "kDYAePIU6eWH5PIyrqR_qQ",
@@ -397,7 +418,8 @@
     "cover": {
       "src": "/images/writing/esp32-iphone-experiment.webp",
       "alt": "Tiro 为 Agent 接入观察手机和操作手机的装置"
-    }
+    },
+    "localSlug": "esp32-iphone-experiment"
   },
   {
     "id": "Y6q9L9jSUg8Qu2_ZF9janA",
@@ -414,7 +436,8 @@
     "cover": {
       "src": "/images/writing/enterprise-agent-governance.webp",
       "alt": "Agent 在企业设定的授权范围内执行任务"
-    }
+    },
+    "localSlug": "enterprise-agent-governance"
   },
   {
     "id": "ps0P1gkuaGlX6USEIJGdsA",
@@ -431,7 +454,8 @@
     "cover": {
       "src": "/images/writing/scope-and-permissions.webp",
       "alt": "红色门闩控制透明闸门，示意权限边界"
-    }
+    },
+    "localSlug": "scope-and-permissions"
   },
   {
     "id": "sau_GoCzjvDoF0vkZEp1-A",
@@ -465,7 +489,8 @@
     "cover": {
       "src": "/images/writing/agent-hook-status-light.webp",
       "alt": "桌面红绿灯显示 Agent 的工作状态"
-    }
+    },
+    "localSlug": "agent-hook-status-light"
   },
   {
     "id": "qC-hGxDWm1J5PMBgIXlkVQ",
@@ -482,7 +507,8 @@
     "cover": {
       "src": "/images/writing/building-tigerose.webp",
       "alt": "循环运行和完成交付之间的差别"
-    }
+    },
+    "localSlug": "building-tigerose"
   },
   {
     "id": "bHFAuHVX-Fv9NGxPwdFtdw",

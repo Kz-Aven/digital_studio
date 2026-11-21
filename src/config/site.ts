@@ -17,6 +17,7 @@ export const site = {
 };
 
 export const navigation = [
+  { label: '首页', href: '/' },
   { label: 'Work', href: '/work/' },
   { label: 'Studio', href: '/studio/' },
   { label: 'Writing', href: '/writing/' },

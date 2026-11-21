@@ -6,15 +6,15 @@ interface Props {
   label?: string;
 }
 const { headings, label = '案例目录' } = Astro.props;
-const sections = headings.filter(({ depth }) => depth === 2);
+const sections = headings.filter(({ depth }) => depth === 2 || depth === 3);
 ---
 {sections.length > 0 && (
   <nav class="case-toc" aria-label={label} data-pagefind-ignore>
-    <details open>
+    <details>
       <summary>{label}</summary>
       <ol>
-        {sections.map(({ slug, text }) => (
-          <li><a href={`#${slug}`}>{text.replace(/^\d+\s*\/\s*/, '')}</a></li>
+        {sections.map(({ slug, text, depth }) => (
+          <li class:list={{ 'toc-subsection': depth === 3 }}><a href={`#${slug}`}>{text.replace(/^\d+\s*\/\s*/, '')}</a></li>
         ))}
       </ol>
     </details>
@@ -26,11 +26,6 @@ const sections = headings.filter(({ depth }) => depth === 2);
   if (toc) {
     const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>('a'));
     const sections = links.map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))));
-    const mobile = window.matchMedia('(max-width: 767px)');
-    const sync = () => { toc.open = !mobile.matches; };
-    sync();
-    mobile.addEventListener('change', sync);
-
     let active = -1;
     let frame = 0;
     const update = () => {

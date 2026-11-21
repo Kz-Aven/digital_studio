@@ -1,10 +1,7 @@
 ---
 import { render } from 'astro:content';
+import ReadingPage from '../../layouts/ReadingPage.astro';
 import type { InferGetStaticPropsType } from 'astro';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Container from '../../components/Container.astro';
-import CaseStudyTOC from '../../components/CaseStudyTOC.astro';
-import Figure from '../../components/Figure.astro';
 import Prose from '../../components/Prose.astro';
 import TagList from '../../components/TagList.astro';
 import RelatedWriting from '../../components/RelatedWriting.astro';
@@ -19,29 +16,24 @@ const { entry } = Astro.props;
 const { data } = entry;
 const { Content, headings } = await render(entry);
 ---
-<BaseLayout title={data.title} description={data.seoDescription ?? data.description} image={data.cover} searchable>
-  <Container class="case-content studio-detail">
-    <article>
-      <header class="case-header">
-        <a class="text-link" data-pagefind-ignore href="/studio/">← 返回 Studio</a>
-        <p class="eyebrow case-label"><span lang="en">Studio</span> / {studioStatuses[data.status]}</p>
-        <h1 data-pagefind-meta="title">{data.title}</h1>
-        <p class="page-description">{data.description}</p>
-        <TagList tags={data.tags} />
-        <div class="article-actions" data-pagefind-ignore>
-          {data.githubUrl && <a class="text-link" href={data.githubUrl}>GitHub 源码</a>}
-          {data.demoUrl && <a class="text-link" href={data.demoUrl}>查看 Demo</a>}
-        </div>
-      </header>
-      {data.cover && <Figure cover={data.cover} sizes="(max-width: 767px) 100vw, 720px" eager />}
-      <div class="case-grid">
-        <CaseStudyTOC headings={headings} label="作品目录" />
-        <div class="case-reading">
-          {data.stack.length > 0 && <p class="article-meta stack-line">技术栈 · {data.stack.join(' / ')}</p>}
-          <Prose><Content /></Prose>
-          <RelatedWriting id={entry.id} />
-        </div>
-      </div>
-    </article>
-  </Container>
-</BaseLayout>
+<ReadingPage
+  title={data.title}
+  description={data.seoDescription ?? data.description}
+  image={data.cover}
+  headings={headings}
+  back={{ label: '个人创造', href: '/studio/' }}
+>
+  <header class="case-header" slot="header">
+    <p class="eyebrow case-label"><span lang="en">Studio</span> / {studioStatuses[data.status]}</p>
+    <h1 data-pagefind-meta="title">{data.title}</h1>
+    <p class="page-description">{data.description}</p>
+    <div class="article-actions" data-pagefind-ignore>
+      {data.githubUrl && <a class="text-link" href={data.githubUrl}>GitHub README</a>}
+      {data.demoUrl && <a class="text-link" href={data.demoUrl}>查看 Demo</a>}
+    </div>
+    <TagList tags={data.tags} />
+  </header>
+  {data.stack.length > 0 && <p class="article-meta stack-line">技术栈 · {data.stack.join(' / ')}</p>}
+  <Prose><Content /></Prose>
+  <RelatedWriting id={entry.id} />
+</ReadingPage>

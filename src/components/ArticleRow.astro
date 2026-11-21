@@ -8,6 +8,7 @@ interface Props {
   compact?: boolean;
 }
 const { entry, level: Heading = 'h2', compact = false } = Astro.props;
+const href = entry.localSlug ? `/writing/${entry.localSlug}/` : entry.sourceUrl;
 ---
 <article
   class:list={['writing-row', { 'writing-row--compact': compact, 'writing-row--illustrated': entry.cover }]}
@@ -22,13 +23,17 @@ const { entry, level: Heading = 'h2', compact = false } = Astro.props;
 >
   <div class="writing-row-copy">
     <Heading>
-      <a class="writing-original" href={entry.sourceUrl} target="_blank" rel="noopener noreferrer">
-        {entry.title}<span class="writing-link-icon" aria-hidden="true">↗</span>
-        <span class="sr-only">（公众号原文，在新标签页打开）</span>
+      <a class="writing-original" href={href} target={entry.localSlug ? undefined : '_blank'} rel={entry.localSlug ? undefined : 'noopener noreferrer'}>
+        {entry.title}
+        {!entry.localSlug && <><span class="writing-link-icon" aria-hidden="true">↗</span><span class="sr-only">（公众号原文，在新标签页打开）</span></>}
       </a>
     </Heading>
     <ul class="writing-meta" aria-label="文章信息">
-      <li class="writing-source">公众号原文</li>
+      <li class="writing-source">
+        {entry.localSlug
+          ? <a href={entry.sourceUrl} target="_blank" rel="noopener noreferrer">公众号原文 <span aria-hidden="true">↗</span></a>
+          : '公众号原文'}
+      </li>
       <li><a href={`/writing/topics/${entry.topic}/`}>{writingTopics[entry.topic].label}</a></li>
       <li>{writingTypes[entry.type]}</li>
       {entry.series && !compact && <li><a href={`/writing/series/${entry.series}/`}>{writingSeries[entry.series].label}</a></li>}
