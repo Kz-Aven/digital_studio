@@ -1,11 +1,13 @@
 ---
 import { site } from '../config/site';
+import HeroField from './HeroField.astro';
 ---
 <section class="home-hero" aria-labelledby="intro-title">
+  <HeroField />
   <div class="home-hero-meta" data-reveal>
     {site.heroMeta.map((line) => <p class="mono">{line}</p>)}
   </div>
-  <h1 id="intro-title" data-reveal="2">{site.name}<span>{site.heroStatement}</span></h1>
+  <h1 id="intro-title" data-reveal="2">{site.name.split(' ')[0]} <span class="hero-dot-word" data-dot-word>{site.name.split(' ').slice(1).join(' ')}</span><span>{site.heroStatement}</span></h1>
   <p class="home-hero-lede" data-reveal="3">{site.heroDescription}</p>
   <div class="home-hero-now" data-reveal="3"><b>NOW · {site.nowUpdated}</b>{site.now}</div>
 </section>

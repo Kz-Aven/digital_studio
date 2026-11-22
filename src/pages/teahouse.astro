@@ -28,7 +28,7 @@ const sections = [
       </div>
 
       <h1 class="sr-only">一间茶舍</h1>
-      <a class="home-logo" href="/" aria-label={`${site.name}，返回首页`}><span class="brand-mark" aria-hidden="true">文</span>{site.name}</a>
+      <a class="home-logo" href="/" aria-label={`${site.name}，返回首页`}><img class="brand-logo" src="/images/logo-mark-light.png" width="282" height="400" alt="" />{site.name}</a>
       <output class="scene-status" hidden></output>
 
       <dialog id="tea-guide" aria-labelledby="guide-title">
@@ -114,6 +114,7 @@ const sections = [
     font-weight: 700;
     font-size: .95rem;
   }
+  .home-logo .brand-logo { display: block; width: auto; height: 26px; }
   .home-logo:hover { background: #3a261bef; color: #fff; }
 
   .scene-status {

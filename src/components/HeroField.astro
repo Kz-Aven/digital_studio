@@ -1,0 +1,226 @@
+---
+/**
+ * Dot field behind the home hero (canvas 2D).
+ * Left: a disc of concentric grooves around the studio logo.
+ * Heading: "Huang" is re-drawn as dots in deep teal.
+ * Right: an orbit disc cropped by the edge — rings with a few agent nodes.
+ * Pointer pushes dots away; click / tap sends a ripple.
+ */
+---
+<canvas class="hero-field" data-hero-field aria-hidden="true"></canvas>
+
+<script>
+  const canvas = document.querySelector<HTMLCanvasElement>('[data-hero-field]');
+  const hero = canvas?.parentElement;
+  if (canvas && hero) {
+    const ctx = canvas.getContext('2d')!;
+    const TAU = Math.PI * 2;
+    // ink, stone, seal red, pale red, mute
+    const HEX = ['#16140f', '#bdb9ad', '#c8402b', '#d9b9b0', '#8f8b80', '#123f3d'];
+    const RED = 2, WORD = 5, LEVELS = 6, LIFE = 1200;
+    let logo: Uint8ClampedArray | null = null, logoW = 282, logoH = 400, wordReady = false;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    const coarse = matchMedia('(hover: none)');
+
+    let W = 0, H = 0, dpr = 1, N = 0;
+    let hx: Float32Array, hy: Float32Array, dx: Float32Array, dy: Float32Array;
+    let rad: Float32Array, alpha: Float32Array, hot: Float32Array, tone: Uint8Array;
+    let mx = -1e4, my = -1e4, on = 0, target = 0, last = 0, raf = 0, visible = true;
+    let ripples: { x: number; y: number; t: number }[] = [];
+    const P = { gap: 7, R: 96, F: 26, speed: .42, width: 26, amp: 10 };
+
+    function build() {
+      const r = canvas!.getBoundingClientRect();
+      const left = hero!.getBoundingClientRect().left - r.left; // content column start, in canvas px
+      W = r.width; H = r.height; dpr = Math.min(2, devicePixelRatio || 1);
+      canvas!.width = Math.round(W * dpr); canvas!.height = Math.round(H * dpr);
+      const small = W < 700;
+      P.gap = small ? 6 : 7; P.R = small ? 70 : 96;
+      const A = { x: [] as number[], y: [] as number[], r: [] as number[], a: [] as number[], t: [] as number[] };
+      const g = P.gap;
+
+      // ① Logo disc (left): grooves around the studio mark, sampled from /images/logo-mark.png
+      const sR = small ? Math.min(118, W * .3) : Math.min(185, H * .28);
+      const sx = small ? W - sR * .62 : Math.max(sR * .6 + 10, left + sR * .1), sy = small ? sR * 1.08 : H * .76;
+      const LH = sR * 1.18, LW = LH * logoW / logoH, lx = sx - LW / 2, ly = sy - LH / 2;
+      const logoAt = (x: number, y: number) => {
+        const u = (x - lx) / LW, v = (y - ly) / LH;
+        if (u < 0 || u >= 1 || v < 0 || v >= 1 || !logo) return 0;
+        const i = ((v * logoH | 0) * logoW + (u * logoW | 0)) * 4;
+        if (logo[i + 3] < 110) return 0;
+        return logo[i] > 150 && logo[i + 1] < 120 ? 2 : 1;
+      };
+      for (let y = sy - sR; y <= sy + sR; y += g) for (let x = sx - sR; x <= sx + sR; x += g) {
+        const ux = x - sx, uy = y - sy, d = Math.hypot(ux, uy);
+        if (d > sR || x < -10 || x > W + 10 || y < -10 || y > H + 10) continue;
+        // keep a clear band around the mark so its silhouette reads
+        if (logoAt(x, y) || logoAt(x - g, y) || logoAt(x + g, y) || logoAt(x, y - g) || logoAt(x, y + g)) continue;
+        const edge = Math.min(1, (sR - d) / 14);
+        const groove = .6 + .3 * Math.cos(.42 * d);
+        const spoke = .78 + .22 * Math.sin(3 * Math.atan2(uy, ux) + .4);
+        A.x.push(x); A.y.push(y); A.r.push(1.05 + .55 * groove); A.a.push(groove * spoke * edge * .6 + .07); A.t.push(d > sR * .86 ? 4 : 1);
+      }
+      const fg = Math.max(2.8, g * .45);
+      for (let y = ly; y < ly + LH; y += fg) for (let x = lx; x < lx + LW; x += fg) {
+        const k = logoAt(x, y);
+        if (k) { A.x.push(x); A.y.push(y); A.r.push(fg * .42); A.a.push(.95); A.t.push(k === 2 ? RED : 0); }
+      }
+
+      // ③ "Huang": draw the real heading text off-screen at its exact baseline, sample it into dots
+      const word = hero!.querySelector<HTMLElement>('[data-dot-word]');
+      if (word && word.textContent?.trim()) {
+        const cs = getComputedStyle(word), wr = word.getBoundingClientRect();
+        const probe = document.createElement('i');
+        probe.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline';
+        word.append(probe);
+        const baseline = probe.getBoundingClientRect().top;
+        probe.remove();
+        const fs = parseFloat(cs.fontSize), pad = Math.ceil(fs * .2);
+        const off = document.createElement('canvas');
+        off.width = Math.ceil(wr.width + pad * 2); off.height = Math.ceil(wr.height + pad * 2);
+        const oc = off.getContext('2d', { willReadFrequently: true })!;
+        oc.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+        oc.textBaseline = 'alphabetic'; oc.fillStyle = '#000';
+        oc.fillText(word.textContent.trim(), pad, baseline - wr.top + pad);
+        const data = oc.getImageData(0, 0, off.width, off.height).data;
+        const st = Math.min(4, Math.max(2.4, fs / 30)), ox = wr.left - r.left - pad, oy = wr.top - r.top - pad;
+        for (let y = st / 2; y < off.height; y += st) for (let x = st / 2; x < off.width; x += st) {
+          if (data[((y | 0) * off.width + (x | 0)) * 4 + 3] <= 90) continue;
+          const n = .85 + .15 * Math.cos(.31 * x + .17 * y);
+          A.x.push(x + ox); A.y.push(y + oy); A.r.push(st * .5 * n); A.a.push(1); A.t.push(WORD);
+        }
+        wordReady = true;
+      }
+
+      // ② Orbit disc, cropped by the right edge
+      const oR = small ? Math.min(150, W * .42) : Math.min(260, H * .42);
+      const ox = small ? W + oR * .18 : W - oR * .22, oy = small ? H * .9 : H * .24;
+      const rings = [.38, .62, .86];
+      const nodes = [[.62, 2.55], [.86, 2.2], [.38, 3.4], [.86, 3.7]]; // [ring, angle]
+      for (let y = oy - oR; y <= oy + oR; y += g) for (let x = ox - oR; x <= ox + oR; x += g) {
+        const ux = x - ox, uy = y - oy, d = Math.hypot(ux, uy);
+        if (d > oR || x < -10 || x > W + 10 || y < -10 || y > H + 10) continue;
+        const ang = Math.atan2(uy, ux);
+        let isNode = false;
+        for (const [rr, a0] of nodes) { const nx = ox + Math.cos(a0) * oR * rr, ny = oy + Math.sin(a0) * oR * rr; if (Math.hypot(x - nx, y - ny) < g * 1.6) isNode = true; }
+        if (isNode) { A.x.push(x); A.y.push(y); A.r.push(2); A.a.push(.95); A.t.push(RED); continue; }
+        const onRing = rings.some((rr) => Math.abs(d - oR * rr) < g * .55);
+        const edge = Math.min(1, (oR - d) / 16);
+        if (onRing) { A.x.push(x); A.y.push(y); A.r.push(1.5); A.a.push(.55 * edge); A.t.push(0); continue; }
+        const shade = .5 + .5 * Math.cos(ang * 2 - 1);
+        A.x.push(x); A.y.push(y); A.r.push(.9 + .4 * shade); A.a.push((.1 + .22 * shade) * edge); A.t.push(d < oR * .38 ? 3 : 1);
+      }
+
+      N = A.x.length;
+      hx = Float32Array.from(A.x); hy = Float32Array.from(A.y);
+      dx = new Float32Array(N); dy = new Float32Array(N); hot = new Float32Array(N);
+      rad = Float32Array.from(A.r); alpha = Float32Array.from(A.a); tone = Uint8Array.from(A.t);
+      draw();
+      hero!.toggleAttribute('data-field-ready', wordReady);
+    }
+
+    function step(now: number) {
+      // rAF timestamps can be slightly earlier than performance.now() taken in kick(); clamp so dt is never negative.
+      const dt = Math.max(.25, Math.min(3, (now - last) / 16.667 || 1)); last = now;
+      const k = 1 - Math.pow(.82, dt);
+      on += (target - on) * k;
+      if (on < .003 && target === 0) on = 0;
+      ripples = ripples.filter((w) => now - w.t < LIFE);
+      const R2 = P.R * P.R;
+      let moving = on > .003 || ripples.length > 0;
+      for (let i = 0; i < N; i++) {
+        let tx = 0, ty = 0, h = 0;
+        if (on > .003) {
+          const ux = hx[i] - mx, uy = hy[i] - my, d2 = ux * ux + uy * uy;
+          if (d2 < R2) { const d = Math.sqrt(d2) || 1, f = P.F * (1 - d / P.R) ** 2 * on; tx += ux / d * f; ty += uy / d * f; h = (1 - d / P.R) * .8 * on; }
+        }
+        for (const w of ripples) {
+          const ux = hx[i] - w.x, uy = hy[i] - w.y, d = Math.hypot(ux, uy) || 1;
+          const q = (d - P.speed * (now - w.t)) / P.width, ring = Math.exp(-q * q);
+          if (ring < .003) continue;
+          const fade = 1 - (now - w.t) / LIFE;
+          tx += ux / d * ring * P.amp * fade; ty += uy / d * ring * P.amp * fade; h = Math.max(h, .85 * ring * fade);
+        }
+        dx[i] += (tx - dx[i]) * k; dy[i] += (ty - dy[i]) * k; hot[i] = h;
+        if (Math.abs(dx[i]) > .05 || Math.abs(dy[i]) > .05) moving = true;
+      }
+      return moving;
+    }
+
+    const buckets = Array.from({ length: HEX.length * LEVELS }, () => [] as number[]);
+    function draw() {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      for (const b of buckets) b.length = 0;
+      for (let i = 0; i < N; i++) {
+        const h = hot[i], a = Math.min(1, alpha[i] + .4 * h);
+        const t = h > .3 ? (tone[i] === RED ? 0 : RED) : tone[i];
+        buckets[t * LEVELS + Math.min(LEVELS - 1, (a * LEVELS) | 0)].push(i);
+      }
+      for (let t = 0; t < HEX.length; t++) {
+        ctx.fillStyle = HEX[t];
+        for (let lv = 0; lv < LEVELS; lv++) {
+          const b = buckets[t * LEVELS + lv]; if (!b.length) continue;
+          ctx.globalAlpha = (lv + .5) / LEVELS;
+          ctx.beginPath();
+          for (const i of b) { const x = hx[i] + dx[i], y = hy[i] + dy[i], r = rad[i] + .5 * hot[i]; ctx.moveTo(x + r, y); ctx.arc(x, y, r, 0, TAU); }
+          ctx.fill();
+        }
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function frame(now: number) {
+      raf = 0;
+      const moving = step(now);
+      draw();
+      if (moving && visible) raf = requestAnimationFrame(frame);
+    }
+    const kick = () => { if (!raf && !reduce.matches && visible) { last = performance.now(); raf = requestAnimationFrame(frame); } };
+    const local = (e: PointerEvent) => {
+      const r = canvas.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      return { x, y, inside: x >= 0 && x <= r.width && y >= 0 && y <= r.height };
+    };
+
+    addEventListener('pointermove', (e) => {
+      if (e.pointerType === 'touch') return;
+      const p = local(e);
+      if (!p.inside) { if (target) { target = 0; kick(); } return; }
+      mx = p.x; my = p.y; target = 1; kick();
+    }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', () => { target = 0; kick(); });
+    addEventListener('pointerdown', (e) => {
+      const p = local(e);
+      if (!p.inside || (e.target as Element).closest('a, button, input, dialog, header')) return;
+      ripples.push({ x: p.x, y: p.y, t: performance.now() });
+      if (ripples.length > 4) ripples.shift();
+      kick();
+    });
+
+    new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; if (visible) kick(); }).observe(hero);
+    let resizeT = 0;
+    new ResizeObserver(() => { clearTimeout(resizeT); resizeT = window.setTimeout(build, 120); }).observe(hero);
+    const img = new Image();
+    img.src = '/images/logo-mark.png';
+    const logoReady = img.decode().then(() => {
+      logoW = img.naturalWidth; logoH = img.naturalHeight;
+      const c = document.createElement('canvas'); c.width = logoW; c.height = logoH;
+      const cx = c.getContext('2d', { willReadFrequently: true })!; cx.drawImage(img, 0, 0);
+      logo = cx.getImageData(0, 0, logoW, logoH).data;
+    }).catch(() => {});
+    Promise.all([document.fonts?.ready, logoReady]).then(() => {
+      build();
+      // the heading slides in on load; re-measure "Huang" once it has settled
+      const h1 = hero.querySelector('h1');
+      h1?.addEventListener('transitionend', build, { once: true });
+      setTimeout(build, 1000);
+    });
+    if (coarse.matches) P.F = 0;
+  }
+</script>
+
+<style>
+  /* Full window width, so the discs crop at the window edges rather than the content column. */
+  .hero-field { position: absolute; top: 0; left: calc(50% - 50vw); z-index: 0; width: 100vw; height: 100%; pointer-events: none; }
+</style>
