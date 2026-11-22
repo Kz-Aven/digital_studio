@@ -24,6 +24,22 @@ const sections = headings.filter(({ depth }) => depth === 2 || depth === 3);
 <script>
   const toc = document.querySelector<HTMLDetailsElement>('.case-toc details');
   if (toc) {
+    const wide = matchMedia('(min-width: 78rem)');
+    const summary = toc.querySelector('summary')!;
+    toc.open = wide.matches;
+    wide.addEventListener('change', ({ matches }) => { toc.open = matches; });
+    toc.addEventListener('click', (event) => {
+      if (!wide.matches && event.target instanceof HTMLAnchorElement) toc.open = false;
+    });
+    window.addEventListener('click', (event) => {
+      if (!wide.matches && toc.open && event.target instanceof Node && !toc.contains(event.target)) toc.open = false;
+    });
+    window.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || !toc.open || !toc.contains(document.activeElement)) return;
+      toc.open = false;
+      summary.focus();
+    });
+
     const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>('a'));
     const sections = links.map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))));
     let active = -1;

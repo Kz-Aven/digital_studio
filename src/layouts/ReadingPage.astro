@@ -20,10 +20,10 @@ const { headings, back, ...meta } = Astro.props;
       <a class="reading-back text-link" href={back.href} data-pagefind-ignore>← {back.label}</a>
       <slot name="header" />
       <div class="reading-text">
-        <CaseStudyTOC headings={headings} label="目录" />
         <slot />
       </div>
     </article>
+    <CaseStudyTOC headings={headings} label="目录" />
   </div>
 </BaseLayout>
 

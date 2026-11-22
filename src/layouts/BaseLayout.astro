@@ -24,7 +24,7 @@ const { searchable, ...seoProps } = Astro.props;
     <link rel="alternate" type="application/rss+xml" title="研究与写作" href="/rss.xml" />
     <SEOHead {...seoProps} />
   </head>
-  <body>
+  <body class:list={{ 'home-page': Astro.url.pathname === '/' }}>
     <a class="skip-link" href="#main">跳至主要内容</a>
     <SiteHeader />
     <main id="main" tabindex="-1" data-pagefind-body={searchable ? '' : undefined}><slot /></main>
