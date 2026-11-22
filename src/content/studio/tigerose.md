@@ -4,6 +4,8 @@ description: 本地优先的 macOS 多 Agent 工作台，在项目群里分工�
 publishedAt: 2026-09-24
 status: released
 tags: [多 Agent 协作, macOS]
+tagline: 心有猛虎，细嗅蔷薇。
+platform: macOS
 stack: [SwiftUI, Python, MCP]
 githubUrl: https://github.com/Kz-Aven/Tigerose
 featured: true

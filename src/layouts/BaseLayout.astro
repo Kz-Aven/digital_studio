@@ -2,6 +2,10 @@
 import SEOHead from '../components/SEOHead.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import '@fontsource/noto-serif-sc/500.css';
+import '@fontsource/noto-serif-sc/700.css';
+import '@fontsource/noto-serif-sc/900.css';
+import '@fontsource/jetbrains-mono/500.css';
 import '../styles/global.css';
 
 interface Props {
@@ -20,6 +24,7 @@ const { searchable, ...seoProps } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#eeede8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate" type="application/rss+xml" title="研究与写作" href="/rss.xml" />
     <SEOHead {...seoProps} />
@@ -29,5 +34,9 @@ const { searchable, ...seoProps } = Astro.props;
     <SiteHeader />
     <main id="main" tabindex="-1" data-pagefind-body={searchable ? '' : undefined}><slot /></main>
     <SiteFooter />
+    <script>
+      const els = document.querySelectorAll('[data-reveal]');
+      requestAnimationFrame(() => els.forEach((el) => el.classList.add('is-in')));
+    </script>
   </body>
 </html>

@@ -1,16 +1,103 @@
 ---
+import { getCollection } from 'astro:content';
 import Container from './Container.astro';
 import { navigation, site } from '../config/site';
+import { writing, writingTopics } from '../config/writing';
 
 const path = Astro.url.pathname;
+const [work, studio] = await Promise.all([
+  getCollection('work', ({ data, body }) => !data.draft && Boolean(body?.trim())),
+  getCollection('studio', ({ data, body }) => !data.draft && Boolean(body?.trim())),
+]);
+const index = [
+  ...work.map((e) => ({ t: e.data.title.split('：')[0], k: '作品', u: `/work/${e.id}/` })),
+  ...studio.map((e) => ({ t: e.data.title, k: '工具', u: `/studio/${e.id}/` })),
+  ...writing.map((e) => ({ t: e.title, k: writingTopics[e.topic].short, u: e.localSlug ? `/writing/${e.localSlug}/` : e.sourceUrl, x: !e.localSlug })),
+];
 ---
-<header class="site-header">
+<header class="site-header" data-site-header>
   <Container class="header-inner">
-    <a class="wordmark" href="/"><span class="brand-mark" aria-hidden="true"></span>{site.name}</a>
+    <a class="wordmark" href="/"><span class="brand-mark" aria-hidden="true">文</span>{site.name}</a>
     <nav class="site-nav" aria-label="主导航">
-      {navigation.map(({ href, label }) => (
-        <a href={href} aria-current={path === href ? 'page' : href !== '/' && path.startsWith(href) ? 'location' : undefined}>{label}</a>
+      {navigation.map(({ href, label, optional }) => (
+        <a href={href} data-optional={optional ? '' : undefined} aria-current={path === href ? 'page' : path.startsWith(href) ? 'location' : undefined}>{label}</a>
       ))}
+      <button class="search-trigger" type="button" data-palette-open aria-haspopup="dialog" aria-controls="palette">
+        <span data-kbd>⌘K</span><span class="sr-only">搜索</span>
+      </button>
     </nav>
   </Container>
 </header>
+
+<dialog id="palette" class="palette" aria-label="搜索">
+  <input type="search" placeholder="搜索作品、工具、文章…" autocomplete="off" aria-controls="palette-list" data-palette-input />
+  <ul id="palette-list" role="listbox" data-palette-list></ul>
+  <div class="palette-foot"><span>↑↓ 选择 · ↵ 打开 · Esc 关闭</span><a href="/search/" data-palette-full>全文搜索 →</a></div>
+  <script type="application/json" data-palette-index is:inline set:html={JSON.stringify(index).replace(/</g, '\\u003c')} />
+</dialog>
+
+<script>
+  import { writingMatchesQuery } from '../config/writing-query';
+
+  type Item = { t: string; k: string; u: string; x?: boolean };
+  const header = document.querySelector<HTMLElement>('[data-site-header]')!;
+  const dialog = document.querySelector<HTMLDialogElement>('#palette')!;
+  const input = dialog.querySelector<HTMLInputElement>('[data-palette-input]')!;
+  const list = dialog.querySelector<HTMLUListElement>('[data-palette-list]')!;
+  const full = dialog.querySelector<HTMLAnchorElement>('[data-palette-full]')!;
+  const items: Item[] = JSON.parse(dialog.querySelector('[data-palette-index]')!.textContent!);
+  const kbd = document.querySelector('[data-kbd]')!;
+  if (!/Mac|iPhone|iPad/.test(navigator.platform)) kbd.textContent = 'Ctrl K';
+  if (matchMedia('(hover: none)').matches) kbd.textContent = '搜索';
+
+  let selected = 0;
+  let results: Item[] = [];
+  function render() {
+    const q = input.value.trim();
+    results = items.filter((item) => !q || writingMatchesQuery(`${item.t} ${item.k}`, q)).slice(0, 12);
+    selected = Math.min(selected, Math.max(0, results.length - 1));
+    full.href = q ? `/search/?q=${encodeURIComponent(q)}` : '/search/';
+    list.replaceChildren(...(results.length ? results.map((item, i) => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = item.u;
+      a.setAttribute('role', 'option');
+      a.setAttribute('aria-selected', String(i === selected));
+      if (item.x) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+      const title = document.createElement('span');
+      title.textContent = item.t;
+      const kind = document.createElement('span');
+      kind.textContent = item.x ? `${item.k} ↗` : item.k;
+      a.append(title, kind);
+      li.append(a);
+      return li;
+    }) : [Object.assign(document.createElement('li'), { className: 'palette-empty', textContent: '没有匹配。按回车进入全文搜索。' })]));
+  }
+  function open() { input.value = ''; selected = 0; render(); dialog.showModal(); input.focus(); }
+
+  document.querySelector('[data-palette-open]')!.addEventListener('click', open);
+  addEventListener('keydown', (event) => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); dialog.open ? dialog.close() : open(); }
+  });
+  input.addEventListener('input', () => { selected = 0; render(); });
+  input.addEventListener('keydown', (event) => {
+    const n = results.length;
+    if (event.key === 'ArrowDown' && n) { event.preventDefault(); selected = (selected + 1) % n; render(); }
+    else if (event.key === 'ArrowUp' && n) { event.preventDefault(); selected = (selected - 1 + n) % n; render(); }
+    else if (event.key === 'Enter') {
+      event.preventDefault();
+      const link = list.querySelectorAll('a')[selected];
+      (link ?? full).click();
+      dialog.close();
+    }
+  });
+  dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+
+  let lastY = scrollY;
+  addEventListener('scroll', () => {
+    const y = scrollY;
+    header.toggleAttribute('data-hidden', y > lastY && y > 240 && !dialog.open);
+    lastY = y;
+  }, { passive: true });
+  header.addEventListener('focusin', () => header.removeAttribute('data-hidden'));
+</script>

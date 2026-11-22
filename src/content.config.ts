@@ -31,7 +31,17 @@ const work = defineCollection({
     status: z.string().optional(),
     publishedAt: z.coerce.date().optional(),
     updatedAt: z.coerce.date().optional(),
-    decisions: z.array(z.string()).optional(),
+    thesis: z.string().optional(),
+    decisions: z.array(z.union([
+      z.string(),
+      z.object({
+        title: z.string(),
+        problem: z.string().optional(),
+        judgment: z.string().optional(),
+        cost: z.string().optional(),
+        principle: z.string().optional(),
+      }),
+    ])).optional(),
     order: z.number().optional(),
   }),
 });
@@ -42,6 +52,8 @@ const studio = defineCollection({
     publishedAt: z.coerce.date(),
     status: z.enum(['released', 'prototype', 'exploring']),
     stack: z.array(z.string()).default([]),
+    tagline: z.string().optional(),
+    platform: z.string().optional(),
     githubUrl: z.url({ protocol: /^https$/ }).optional(),
     demoUrl: z.url({ protocol: /^https$/ }).optional(),
   }),

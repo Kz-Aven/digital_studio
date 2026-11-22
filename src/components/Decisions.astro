@@ -1,0 +1,23 @@
+---
+type Decision = string | { title: string; problem?: string; judgment?: string; cost?: string; principle?: string };
+interface Props { items: Decision[] }
+const { items } = Astro.props;
+const rich = items.some((d) => typeof d !== 'string');
+---
+<section class="decisions" aria-labelledby="key-decisions">
+  <div class="decisions-head"><h2 id="key-decisions">{items.length} 个关键取舍</h2>{rich && <span class="mono">点击展开</span>}</div>
+  {rich ? items.map((d, i) => {
+    const item = typeof d === 'string' ? { title: d } : d;
+    return (
+      <details class="decision" open={i === 0}>
+        <summary><span class="n">{String(i + 1).padStart(2, '0')}</span><span class="t">{item.title}</span><span class="pm" aria-hidden="true">+</span></summary>
+        <div class="decision-body">
+          {item.problem && <section><h3>问题</h3><p>{item.problem}</p></section>}
+          {item.judgment && <section><h3>判断</h3><p>{item.judgment}</p></section>}
+          {item.cost && <section><h3>代价</h3><p>{item.cost}</p></section>}
+          {item.principle && <p class="principle">{item.principle}</p>}
+        </div>
+      </details>
+    );
+  }) : <ol class="decisions-simple">{items.map((d) => <li>{d as string}</li>)}</ol>}
+</section>

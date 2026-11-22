@@ -1,0 +1,239 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+import { navigation, site } from '../config/site';
+import '../styles/global.css';
+
+const sections = [
+  { href: '/work/', title: '项目案例' },
+  { href: '/studio/', title: '工具与实验' },
+  { href: '/writing/', title: '研究与写作' },
+  { href: '/about/', title: '关于我' },
+].map(({ href, title }) => ({ href, title, label: navigation.find(item => item.href === href)?.label }));
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <SEOHead title="一间茶舍" description={site.heroDescription} noindex />
+  </head>
+  <body>
+    <main class="teahouse">
+      <div class="scene" aria-label="一间茶舍 3D 场景">
+        <img class="poster" src="/teahouse-assets/poster.webp" alt="" fetchpriority="high" />
+        <button class="seat" type="button" aria-haspopup="dialog" aria-controls="tea-guide">
+          <span>坐下</span>
+        </button>
+      </div>
+
+      <h1 class="sr-only">一间茶舍</h1>
+      <a class="home-logo" href="/" aria-label={`${site.name}，返回首页`}><span class="brand-mark" aria-hidden="true">文</span>{site.name}</a>
+      <output class="scene-status" hidden></output>
+
+      <dialog id="tea-guide" aria-labelledby="guide-title">
+        <form method="dialog">
+          <button class="close" type="submit" aria-label="关闭导览" autofocus>×</button>
+        </form>
+        <h2 id="guide-title">茶舍导览</h2>
+        <nav aria-label="展示厅板块">
+          {sections.map(({ href, title, label }) => (
+            <a href={href}>
+              <span class="section-name">{label}</span>
+              <span class="section-title">{title}</span>
+              <span class="arrow" aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </nav>
+      </dialog>
+    </main>
+  </body>
+</html>
+
+<script>
+  const scene = document.querySelector<HTMLElement>('.scene')!;
+  const seat = scene.querySelector<HTMLButtonElement>('.seat')!;
+  const guide = document.querySelector<HTMLDialogElement>('#tea-guide')!;
+  const status = document.querySelector<HTMLOutputElement>('.scene-status')!;
+  const openGuide = () => guide.showModal();
+
+  seat.addEventListener('click', openGuide);
+  guide.addEventListener('click', event => {
+    if (event.target === guide) guide.close();
+  });
+
+  status.hidden = false;
+  status.textContent = '正在载入 3D 场景…';
+  import('../scripts/teahouse.js')
+    .then(({ showTeahouse }) => showTeahouse(scene, seat, openGuide))
+    .then(() => { status.textContent = '拖动环顾茶舍'; })
+    .catch(error => {
+      console.error(error);
+      status.hidden = true;
+    });
+</script>
+
+<style>
+  .teahouse {
+    position: relative;
+    isolation: isolate;
+    min-height: 100svh;
+    overflow: hidden;
+    background: #211712;
+    color: #fff8ee;
+  }
+
+  .scene, .poster, .scene :global(canvas) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .scene { container-type: size; }
+  .poster { object-fit: cover; }
+  .scene :global(canvas) { opacity: 0; touch-action: none; cursor: grab; }
+  .scene[data-ready] :global(canvas) { opacity: 1; }
+  .scene :global(canvas[data-over-seat]) { cursor: pointer; }
+  .scene :global(canvas:active) { cursor: grabbing; }
+
+  .home-logo {
+    position: absolute;
+    z-index: 2;
+    top: clamp(16px, 3vw, 38px);
+    left: clamp(16px, 3vw, 38px);
+    display: inline-flex;
+    align-items: center;
+    gap: .65rem;
+    min-height: 44px;
+    padding: .5rem 1rem .5rem .75rem;
+    border: 1px solid #fff0d756;
+    border-radius: 5px;
+    background: #291a13df;
+    color: #fff8ee;
+    font-weight: 700;
+    font-size: .95rem;
+  }
+  .home-logo:hover { background: #3a261bef; color: #fff; }
+
+  .scene-status {
+    position: absolute;
+    margin: 0;
+    border: 1px solid #fff0d756;
+    background: #291a13df;
+    pointer-events: none;
+  }
+
+  .scene-status {
+    bottom: max(20px, env(safe-area-inset-bottom));
+    left: 50%;
+    translate: -50% 0;
+    padding: .48rem .95rem;
+    border-radius: 24px;
+    font-size: .78rem;
+    white-space: nowrap;
+  }
+
+  .seat {
+    position: absolute;
+    z-index: 1;
+    /* Match the bench in the poster until its 3D position is available. */
+    top: calc(50% + max(100cqh, 75cqw) * .086);
+    left: calc(50% - max(100cqw, 133.333cqh) * .07);
+    translate: -50% -100%;
+    min-width: 68px;
+    min-height: 44px;
+    cursor: pointer;
+    color: #2c1b14;
+    font-weight: 650;
+    font-size: .9rem;
+  }
+
+  .seat span {
+    position: relative;
+    display: block;
+    padding: .55rem .9rem;
+    border: 1px solid #a58465;
+    border-radius: 22px;
+    background: #fff2df;
+    box-shadow: 0 5px 16px #2c1b1454;
+    animation: seat-pulse 2.6s ease-in-out infinite;
+  }
+
+  .seat span::after {
+    position: absolute;
+    left: 50%;
+    bottom: -5px;
+    width: 8px;
+    height: 8px;
+    border-bottom: 1px solid #a58465;
+    border-right: 1px solid #a58465;
+    background: inherit;
+    content: '';
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  .seat:hover span, .seat:focus-visible span { background: #fffaf1; }
+
+  @keyframes seat-pulse {
+    0%, 46%, 100% { transform: translateY(0); }
+    15% { transform: translateY(-7px); }
+    31% { transform: translateY(-4px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .seat span { animation: none; }
+  }
+
+  dialog {
+    position: fixed;
+    margin: auto;
+    width: min(760px, calc(100% - 32px));
+    max-height: calc(100dvh - 32px);
+    padding: clamp(20px, 4vw, 44px);
+    border: 1px solid #c7ae92;
+    border-radius: 14px;
+    background: #fbf4e9;
+    box-shadow: 0 22px 70px #21171259;
+    color: #2c2119;
+  }
+
+  dialog::backdrop { background: #24140c69; }
+
+  h2 {
+    margin: 0 44px 20px 0;
+    font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+    letter-spacing: .04em;
+  }
+
+  .close {
+    position: absolute;
+    top: 13px;
+    right: 13px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    font: 1.6rem/1 system-ui, sans-serif;
+  }
+
+  .close:hover { background: #eee0ce; }
+
+  nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(10px, 2vw, 18px); }
+
+  nav a {
+    position: relative;
+    display: grid;
+    align-content: center;
+    gap: .32rem;
+    min-height: clamp(86px, 15vw, 140px);
+    padding: clamp(12px, 2.5vw, 24px);
+    border: 1px solid #d3bc9f;
+    border-radius: 8px;
+    background: #fffaf2;
+  }
+  nav a:hover, nav a:focus-visible { color: #55341f; border-color: #a57d57; background: #f4e8d8; }
+  .section-name { font: clamp(1.28rem, 4vw, 2.6rem)/1.15 Georgia, serif; }
+  .section-title { color: #694e3c; font-size: .78rem; }
+  .arrow { position: absolute; top: 8px; right: 9px; color: #795b45; font-size: .8rem; }
+</style>

@@ -24,7 +24,7 @@ const sections = headings.filter(({ depth }) => depth === 2 || depth === 3);
 <script>
   const toc = document.querySelector<HTMLDetailsElement>('.case-toc details');
   if (toc) {
-    const wide = matchMedia('(min-width: 78rem)');
+    const wide = matchMedia('(min-width: 80rem)');
     const summary = toc.querySelector('summary')!;
     toc.open = wide.matches;
     wide.addEventListener('change', ({ matches }) => { toc.open = matches; });

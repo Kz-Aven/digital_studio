@@ -25,6 +25,7 @@ const { headings, back, ...meta } = Astro.props;
     </article>
     <CaseStudyTOC headings={headings} label="目录" />
   </div>
+  <slot name="after" />
 </BaseLayout>
 
 <script>

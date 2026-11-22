@@ -7,11 +7,11 @@ import { publicWork } from '../../config/content';
 
 const work = await publicWork();
 ---
-<BaseLayout title="Work / 产品实践" description={site.workDescription}>
+<BaseLayout title="作品" description={site.workDescription}>
   <Container class="page-content">
     <header class="page-intro">
-      <p class="eyebrow" lang="en">Work</p>
-      <h1>产品实践</h1>
+      
+      <h1>作品</h1>
       <p class="page-description">{site.workDescription}</p>
     </header>
     {work.length > 0

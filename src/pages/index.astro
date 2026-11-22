@@ -3,54 +3,85 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';
 import HeroIntro from '../components/HeroIntro.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import ProjectRow from '../components/ProjectRow.astro';
-import StudioItem from '../components/StudioItem.astro';
-import ArticleRow from '../components/ArticleRow.astro';
+import IndexRow from '../components/IndexRow.astro';
+import StudioCard from '../components/StudioCard.astro';
 import { site } from '../config/site';
-import { publicStudio, publicWork } from '../config/content';
-import { featuredWriting } from '../config/writing';
+import { publicStudio, publicWork, studioStatuses } from '../config/content';
+import { featuredWriting, writing, writingTopics } from '../config/writing';
 
 const [work, studio] = await Promise.all([publicWork(), publicStudio()]);
-const featured = work.filter(({ data }) => data.featured).slice(0, 3);
-const { email, github, linkedIn } = site.contact;
+const rows = [
+  ...work.map((e) => ({
+    href: `/work/${e.id}/`, title: e.data.title.split('：')[0], summary: e.data.subtitle ?? e.data.description,
+    role: e.data.role?.split('、')[0], year: e.data.period?.split(' ')[0], status: e.data.status, image: e.data.cover?.small ?? e.data.cover?.src,
+  })),
+  ...studio.map((e) => ({
+    href: `/studio/${e.id}/`, title: e.data.title, summary: e.data.description,
+    role: `开源 · ${e.data.stack[0] ?? ''}`, year: e.data.publishedAt.toISOString().slice(0, 7).replace('-', '.'),
+    status: e.data.status === 'released' ? undefined : studioStatuses[e.data.status], image: e.data.cover?.small ?? e.data.cover?.src,
+  })),
+];
+const years = rows.map((r) => r.year?.slice(0, 4)).filter(Boolean).sort();
 ---
 <BaseLayout description={site.heroDescription}>
   <Container>
     <HeroIntro />
-    {featured.length > 0 && (
-      <section class="home-work" aria-labelledby="selected-work">
-        <SectionHeading id="selected-work" label="Selected Work" title="精选项目" link={{ href: '/work/', text: '查看全部项目' }} />
-        {featured.map((entry, index) => <ProjectRow entry={entry} level="h3" eager={index === 0} />)}
-      </section>
-    )}
-    {studio.length > 0 && <section class="home-section" aria-labelledby="building">
-      <SectionHeading id="building" title="近期创造" label="Studio" link={{ href: '/studio/', text: '查看全部作品' }} />
-      <div class="studio-grid">
-        {studio.slice(0, 3).map((entry) => <StudioItem entry={entry} level="h3" compact />)}
-      </div>
-    </section>}
-    {featuredWriting.length > 0 && <section class="home-section" aria-labelledby="featured-writing">
-      <SectionHeading id="featured-writing" title="编辑精选" label="Writing" link={{ href: '/writing/', text: '查看全部文章' }} />
-      {featuredWriting.slice(0, 4).map((entry) => <ArticleRow entry={entry} level="h3" compact />)}
-    </section>}
-    <div class="home-notes">
-      <section aria-labelledby="about-preview">
-        <SectionHeading id="about-preview" title="关于我" label="About" />
-        <p>{site.positioning}。我的工作聚焦 Agent 平台、复杂 B2B 系统、业务权限与评测。</p>
-        <a class="text-link" href="/about/">了解我的工作方式</a>
-      </section>
-      <section aria-labelledby="now">
-        <SectionHeading id="now" title="近期关注" label="Now" />
-        <p>{site.now}</p>
-      </section>
-    </div>
-    {(email || github || linkedIn) && <section class="home-contact" aria-labelledby="home-contact">
-      <SectionHeading id="home-contact" title="保持联系" label="Contact" />
-      <ul class="contact-links">
-        {email && <li><a href={`mailto:${email}`}>邮件联系</a></li>}
-        {github && <li><a href={github}>GitHub</a></li>}
-        {linkedIn && <li><a href={linkedIn}>LinkedIn</a></li>}
-      </ul>
-    </section>}
+    <section aria-labelledby="work-index">
+      <SectionHeading id="work-index" title="作品索引" note={`${String(rows.length).padStart(2, '0')} 项 · ${years[0]}—${years.at(-1)}`} />
+      <ol class="index-list">
+        {rows.map((row, i) => <IndexRow no={i + 1} total={rows.length} {...row} />)}
+      </ol>
+    </section>
   </Container>
+
+  <section class="tea-band" aria-labelledby="tea-title">
+    <img src="/teahouse-assets/poster.webp" alt="" loading="lazy" decoding="async" />
+    <Container class="tea-band-inner">
+      <div class="tea-copy">
+        <p class="mono">实验 · 3D 高斯泼溅场景</p>
+        <h2 id="tea-title">一间茶舍</h2>
+        <p>{site.teahouse.description}</p>
+        <a class="tea-enter" href="/teahouse/">进入茶舍 <span class="mono">{site.teahouse.size}</span></a>
+      </div>
+    </Container>
+  </section>
+
+  <Container>
+    <div class="home-split">
+      {studio.length > 0 && <section aria-labelledby="studio-tools">
+        <SectionHeading id="studio-tools" title="正在做的工具" link={{ href: '/studio/', text: '全部工具' }} />
+        {studio.slice(0, 3).map((entry) => <StudioCard entry={entry} />)}
+      </section>}
+      {featuredWriting.length > 0 && <section aria-labelledby="featured-writing">
+        <SectionHeading id="featured-writing" title="写作" note={`${writing.length} 篇`} />
+        <ul class="feature-list">
+          {featuredWriting.slice(0, 5).map((e) => (
+            <li>
+              <a href={e.localSlug ? `/writing/${e.localSlug}/` : e.sourceUrl} target={e.localSlug ? undefined : '_blank'} rel={e.localSlug ? undefined : 'noopener noreferrer'}>{e.title}</a>
+              <div class="mono"><span>{writingTopics[e.topic].short}</span><span>{e.localSlug ? '站内' : '公众号 ↗'}</span></div>
+            </li>
+          ))}
+        </ul>
+        <a class="text-link" href="/writing/">全部 {writing.length} 篇 · 按领域浏览 →</a>
+      </section>}
+    </div>
+  </Container>
+  <div class="peek" data-peek-layer aria-hidden="true"></div>
 </BaseLayout>
+
+<script>
+  const peek = document.querySelector<HTMLElement>('[data-peek-layer]')!;
+  if (matchMedia('(hover: hover)').matches) {
+    for (const row of document.querySelectorAll<HTMLElement>('[data-peek]')) {
+      const src = row.dataset.peek;
+      if (!src) continue;
+      new Image().src = src;
+      row.addEventListener('mouseenter', () => { peek.style.backgroundImage = `url("${src}")`; peek.toggleAttribute('data-on', true); });
+      row.addEventListener('mouseleave', () => peek.removeAttribute('data-on'));
+      row.addEventListener('mousemove', (e) => {
+        peek.style.left = `${Math.min(e.clientX + 200, innerWidth - 180)}px`;
+        peek.style.top = `${Math.max(120, Math.min(e.clientY, innerHeight - 120))}px`;
+      });
+    }
+  }
+</script>

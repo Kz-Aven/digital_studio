@@ -3,37 +3,53 @@ import { render } from 'astro:content';
 import ReadingPage from '../../layouts/ReadingPage.astro';
 import type { InferGetStaticPropsType } from 'astro';
 import Prose from '../../components/Prose.astro';
-import TagList from '../../components/TagList.astro';
+import Figure from '../../components/Figure.astro';
 import RelatedWriting from '../../components/RelatedWriting.astro';
-import { publicStudio, studioStatuses } from '../../config/content';
+import Container from '../../components/Container.astro';
+import { pad, portfolio, publicStudio, studioStatuses } from '../../config/content';
 
 export async function getStaticPaths() {
-  return (await publicStudio()).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+  const entries = await publicStudio();
+  const { at } = await portfolio();
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry, ...at('studio', entry.id) } }));
 }
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
-const { entry } = Astro.props;
+const { entry, no, total, prev, next } = Astro.props;
+const short = (t: string) => t.split('：')[0];
 const { data } = entry;
 const { Content, headings } = await render(entry);
+const date = data.publishedAt.toISOString().slice(0, 7).replace('-', '.');
 ---
 <ReadingPage
   title={data.title}
   description={data.seoDescription ?? data.description}
   image={data.cover}
   headings={headings}
-  back={{ label: '个人创造', href: '/studio/' }}
+  back={{ label: '全部工具', href: '/studio/' }}
 >
   <header class="case-header" slot="header">
-    <p class="eyebrow case-label"><span lang="en">Studio</span> / {studioStatuses[data.status]}</p>
+    <p class="mono case-label">{[`No.${pad(no)} / ${pad(total)}`, data.platform, studioStatuses[data.status], date].filter(Boolean).join(' · ')}</p>
     <h1 data-pagefind-meta="title">{data.title}</h1>
+    {data.tagline && <p class="product-tagline">{data.tagline}</p>}
     <p class="page-description">{data.description}</p>
     <div class="article-actions" data-pagefind-ignore>
-      {data.githubUrl && <a class="text-link" href={data.githubUrl}>GitHub README</a>}
-      {data.demoUrl && <a class="text-link" href={data.demoUrl}>查看 Demo</a>}
+      {data.githubUrl && <a class="button" href={data.githubUrl}>GitHub 源码 <span aria-hidden="true">↗</span></a>}
+      {data.demoUrl && <a class="button button--ghost" href={data.demoUrl}>查看 Demo</a>}
     </div>
-    <TagList tags={data.tags} />
+    {(data.stack.length > 0 || data.tags.length > 0) && <div class="product-specs mono">
+      {data.stack.length > 0 && <span>{data.stack.join(' · ')}</span>}
+      {data.tags.map((t) => <span>{t}</span>)}
+    </div>}
   </header>
-  {data.stack.length > 0 && <p class="article-meta stack-line">技术栈 · {data.stack.join(' / ')}</p>}
+  {data.cover && <Figure cover={data.cover} sizes="(max-width: 767px) 100vw, 960px" eager />}
   <Prose><Content /></Prose>
   <RelatedWriting id={entry.id} />
+  <div class="case-end flex flex-wrap justify-between gap-x-8 gap-y-2 mono" data-pagefind-ignore>
+    {prev ? <a class="text-link" href={prev.href}>← No.{pad(no - 1)} {short(prev.title)}</a> : <a class="text-link" href="/">← 首页</a>}
+    <a class="text-link" href="/studio/">全部工具</a>
+  </div>
+  {next && <a slot="after" class="next-band" href={next.href} data-pagefind-ignore>
+    <Container><span class="mono">下一个 · No.{pad(no + 1)}</span><strong>{next.title}</strong><span class="arrow" aria-hidden="true">→</span></Container>
+  </a>}
 </ReadingPage>

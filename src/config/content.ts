@@ -22,6 +22,22 @@ export async function publicStudio() {
   );
 }
 
+/** Work then Studio, the order used by the home index and every detail page. */
+export async function portfolio() {
+  const [work, studio] = await Promise.all([publicWork(), publicStudio()]);
+  const items = [
+    ...work.map((entry) => ({ kind: 'work' as const, id: entry.id, title: entry.data.title, href: `/work/${entry.id}/` })),
+    ...studio.map((entry) => ({ kind: 'studio' as const, id: entry.id, title: entry.data.title, href: `/studio/${entry.id}/` })),
+  ];
+  const at = (kind: 'work' | 'studio', id: string) => {
+    const i = items.findIndex((item) => item.kind === kind && item.id === id);
+    return { no: i + 1, total: items.length, prev: items[i - 1], next: items[i + 1] };
+  };
+  return { items, at };
+}
+
+export const pad = (n: number) => String(n).padStart(2, '0');
+
 export const studioStatuses = {
   released: '已发布',
   prototype: '原型',

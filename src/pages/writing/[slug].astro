@@ -4,7 +4,7 @@ import type { InferGetStaticPropsType } from 'astro';
 import ReadingPage from '../../layouts/ReadingPage.astro';
 import Prose from '../../components/Prose.astro';
 import { formatDate } from '../../config/content';
-import { writing, writingTopics, writingTypes } from '../../config/writing';
+import { writing, writingSeries, writingTopics, writingTypes } from '../../config/writing';
 
 export async function getStaticPaths() {
   return Promise.all(writing.filter((entry) => entry.localSlug).map(async (entry) => {
@@ -18,22 +18,39 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { entry, markdown } = Astro.props;
 const { Content, headings } = await render(markdown);
 const topic = writingTopics[entry.topic];
+const minutes = Math.max(1, Math.round((markdown.body ?? '').replace(/\s/g, '').length / 500));
+const series = entry.series ? writing.filter((e) => e.series === entry.series).sort((a, b) => a.seriesOrder! - b.seriesOrder!) : [];
+const pos = series.findIndex((e) => e.id === entry.id);
+const hrefOf = (e: typeof entry) => e.localSlug ? `/writing/${e.localSlug}/` : e.sourceUrl;
 ---
 <ReadingPage
   title={entry.title}
   description={entry.excerpt ?? entry.title}
   image={entry.cover}
   headings={headings}
-  back={{ label: '研究与实践', href: '/writing/' }}
+  back={{ label: '全部写作', href: '/writing/' }}
 >
   <header class="case-header" slot="header">
-    <p class="eyebrow case-label">Writing / {writingTypes[entry.type]}</p>
-    <h1 data-pagefind-meta="title">{entry.title}</h1>
-    <div class="article-actions" data-pagefind-ignore>
-      <a class="text-link" href={`/writing/topics/${entry.topic}/`}>{topic.label}</a>
-      {entry.publishedAt && <time datetime={entry.publishedAt}>{formatDate(new Date(entry.publishedAt))}</time>}
+    <p class="mono case-label">
+      <a href={`/writing/topics/${entry.topic}/`}>{topic.label}</a> · {writingTypes[entry.type]} · 约 {minutes} 分钟
+    </p>
+    {series.length > 1 && <p class="mono">{writingSeries[entry.series!].label} · {String(pos + 1).padStart(2, '0')} / {String(series.length).padStart(2, '0')}</p>}
+    <h1 data-pagefind-meta="title">{entry.title.replace(/^[^｜]+｜/, '')}</h1>
+    {entry.excerpt && <p class="page-description">{entry.excerpt}</p>}
+    <div class="article-actions mono" data-pagefind-ignore>
+      {entry.publishedAt ? <time datetime={entry.publishedAt}>{formatDate(new Date(entry.publishedAt))}</time> : <span>发表日期待核实</span>}
       <a class="text-link" href={entry.sourceUrl} target="_blank" rel="noopener noreferrer">公众号原文 ↗</a>
     </div>
   </header>
+  {series.length > 1 && <nav class="series-rail" aria-label="专题进度" data-pagefind-ignore>
+    <div class="series-rail-top"><a href={`/writing/series/${entry.series}/`}>专题 · {writingSeries[entry.series!].label}</a><span class="mono">第 {pos + 1} 篇，共 {series.length} 篇</span></div>
+    <div class="series-steps" style={`--count:${series.length}`}>
+      {series.map((e, i) => <a href={hrefOf(e)} title={e.title} aria-current={i === pos ? 'page' : undefined} data-state={i < pos ? 'done' : undefined}>{String(i + 1).padStart(2, '0')}</a>)}
+    </div>
+  </nav>}
   <Prose><Content /></Prose>
+  {series.length > 1 && <nav class="case-end flex flex-wrap justify-between gap-x-8 gap-y-2" aria-label="同专题文章" data-pagefind-ignore>
+    {series[pos - 1] ? <a class="text-link" href={hrefOf(series[pos - 1])}>← {series[pos - 1].title.replace(/^[^｜]+｜/, '')}</a> : <span></span>}
+    {series[pos + 1] && <a class="text-link" href={hrefOf(series[pos + 1])}>{series[pos + 1].title.replace(/^[^｜]+｜/, '')} →</a>}
+  </nav>}
 </ReadingPage>

@@ -1,0 +1,20 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { studioStatuses } from '../config/content';
+
+interface Props { entry: CollectionEntry<'studio'> }
+const { entry } = Astro.props;
+const { data } = entry;
+---
+<article class="studio-card">
+  <div class:list={['shot', { 'shot--empty': !data.cover }]}>
+    {data.cover ? <img src={data.cover.small ?? data.cover.src} alt={data.cover.alt} loading="lazy" decoding="async" /> : '[ 产品截图 ]'}
+  </div>
+  <div>
+    <span class="mono">{[data.platform, studioStatuses[data.status]].filter(Boolean).join(' · ')}</span>
+    <h3><a href={`/studio/${entry.id}/`}>{data.title}</a></h3>
+    {data.tagline && <p class="tagline">{data.tagline}</p>}
+    <p>{data.description}</p>
+    {data.stack.length > 0 && <ul class="stack-list" aria-label="技术栈">{data.stack.map((s) => <li>{s}</li>)}</ul>}
+  </div>
+</article>

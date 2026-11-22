@@ -4,14 +4,15 @@ import Container from '../../components/Container.astro';
 import ArticleRow from '../../components/ArticleRow.astro';
 import WritingSeriesLinks from '../../components/WritingSeriesLinks.astro';
 import { site } from '../../config/site';
-import { seriesIds, topicIds, typeIds, writing, writingTopics, writingTypes } from '../../config/writing';
+import { seriesIds, topicIds as allTopicIds, writing, writingTopics } from '../../config/writing';
+const topicIds = allTopicIds.toSorted((a, b) => writing.filter((e) => e.topic === b).length - writing.filter((e) => e.topic === a).length);
 ---
-<BaseLayout title="Writing / 研究与实践" description={site.writingDescription}>
+<BaseLayout title="写作" description={site.writingDescription}>
   <Container class="page-content writing-shell">
     <header class="page-intro writing-intro">
       <div>
-        <p class="eyebrow" lang="en">Writing</p>
-        <h1>研究与实践</h1>
+        
+        <h1>写作</h1>
         <p class="page-description">{site.writingDescription}</p>
       </div>
       <p class="writing-total"><strong>{writing.length}</strong> 篇文章</p>
@@ -20,45 +21,28 @@ import { seriesIds, topicIds, typeIds, writing, writingTopics, writingTypes } fr
     <nav class="writing-topics" aria-label="研究领域">
       <a href="/writing/" data-topic-filter="" aria-current="true">全部 <span>{writing.length}</span></a>
       {topicIds.map((id) => (
-        <a href={`/writing/topics/${id}/`} data-topic-filter={id}>
+        <a href={`/writing/topics/${id}/`} data-topic-filter={id} style={`--n:${writing.filter(({ topic }) => topic === id).length}`}>
           {writingTopics[id].short} <span>{writing.filter(({ topic }) => topic === id).length}</span>
         </a>
       ))}
     </nav>
 
-    <form id="writing-filters" class="writing-filters" action="/writing/" role="search" aria-label="筛选文章" hidden>
-      <div class="writing-query">
-        <label for="writing-q">标题或标签</label>
-        <div>
-          <input id="writing-q" name="q" type="search" placeholder="例如，排产、评测" />
-          <button class="button" type="submit">搜索</button>
-        </div>
-      </div>
-      <div>
-        <label for="writing-type">文章类型</label>
-        <select id="writing-type" name="type">
-          <option value="">全部类型</option>
-          {typeIds.map((id) => <option value={id}>{writingTypes[id]}</option>)}
-        </select>
-      </div>
-      <div>
-        <label for="writing-order">排序</label>
-        <select id="writing-order" name="order">
-          <option value="">默认顺序</option>
-          <option value="featured">编辑精选</option>
-        </select>
-      </div>
-    </form>
-
     <WritingSeriesLinks ids={seriesIds} label="专题" />
 
-    <div class="writing-toolbar">
-      <p id="writing-result-count" role="status">{writing.length} 篇文章</p>
-      <div>
-        <a id="writing-topic-details" class="text-link" hidden>领域介绍</a>
-        <a id="writing-clear" class="text-link" href="/writing/" hidden>清空筛选</a>
+    <form id="writing-filters" class="writing-bar" action="/writing/" role="search" aria-label="筛选文章">
+      <label class="sr-only" for="writing-q">搜索标题或标签</label>
+      <input id="writing-q" name="q" type="search" placeholder="搜标题或标签，如 排产、评测" autocomplete="off" />
+      <input id="writing-type" name="type" type="hidden" />
+      <input id="writing-order" name="order" type="hidden" />
+      <div class="writing-seg" role="group" aria-label="排序">
+        <button type="button" data-order="" aria-pressed="true">编辑顺序</button>
+        <button type="button" data-order="featured" aria-pressed="false">精选优先</button>
       </div>
-    </div>
+      <p id="writing-result-count" class="mono" role="status">{writing.length} 篇</p>
+      <a id="writing-clear" class="mono writing-clear" href="/writing/" hidden>清空</a>
+      <a id="writing-topic-details" class="mono writing-clear" hidden>领域介绍 →</a>
+      <noscript><button class="button" type="submit">搜索</button></noscript>
+    </form>
     <div id="writing-articles" aria-label="文章列表">
       {writing.map((entry) => <ArticleRow entry={entry} />)}
     </div>
@@ -71,8 +55,9 @@ import { seriesIds, topicIds, typeIds, writing, writingTopics, writingTypes } fr
 
   const form = document.querySelector<HTMLFormElement>('#writing-filters')!;
   const search = document.querySelector<HTMLInputElement>('#writing-q')!;
-  const type = document.querySelector<HTMLSelectElement>('#writing-type')!;
-  const order = document.querySelector<HTMLSelectElement>('#writing-order')!;
+  const type = document.querySelector<HTMLInputElement>('#writing-type')!;
+  const order = document.querySelector<HTMLInputElement>('#writing-order')!;
+  const orderButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-order]')];
   const topics = document.querySelector<HTMLElement>('.writing-topics')!;
   const topicLinks = [...topics.querySelectorAll<HTMLAnchorElement>('[data-topic-filter]')];
   const list = document.querySelector('#writing-articles')!;
@@ -93,8 +78,8 @@ import { seriesIds, topicIds, typeIds, writing, writingTopics, writingTypes } fr
     selectedTopic = active.dataset.topicFilter!;
     search.value = params.get('q') ?? '';
     type.value = params.get('type') ?? '';
-    if (type.selectedIndex < 0) type.selectedIndex = 0;
     order.value = params.get('order') === 'featured' ? 'featured' : '';
+    for (const b of orderButtons) b.setAttribute('aria-pressed', String(b.dataset.order === order.value));
     for (const link of topicLinks) {
       if (link === active) link.setAttribute('aria-current', 'true');
       else link.removeAttribute('aria-current');
@@ -119,7 +104,7 @@ import { seriesIds, topicIds, typeIds, writing, writingTopics, writingTypes } fr
       if (!row.hidden) count++;
     }
     empty.hidden = count !== 0;
-    result.textContent = count === rows.length ? `${count} 篇文章` : `显示 ${count} / ${rows.length} 篇文章`;
+    result.textContent = count === rows.length ? `${count} 篇` : `${count} / ${rows.length} 篇`;
   }
 
   function navigate(params: URLSearchParams) {
@@ -145,8 +130,17 @@ import { seriesIds, topicIds, typeIds, writing, writingTopics, writingTypes } fr
     update();
   });
   form.addEventListener('submit', (event) => { event.preventDefault(); update(); });
-  type.addEventListener('change', update);
-  order.addEventListener('change', update);
+  for (const b of orderButtons) b.addEventListener('click', () => { order.value = b.dataset.order!; update(); });
+  let typing = 0;
+  search.addEventListener('input', () => {
+    clearTimeout(typing);
+    typing = window.setTimeout(() => {
+      const params = new URLSearchParams(location.search);
+      if (search.value.trim()) params.set('q', search.value.trim()); else params.delete('q');
+      history.replaceState(null, '', params.toString() ? `?${params}` : '/writing/');
+      apply();
+    }, 160);
+  });
   clear.addEventListener('click', (event) => {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
@@ -155,5 +149,4 @@ import { seriesIds, topicIds, typeIds, writing, writingTopics, writingTypes } fr
   });
   window.addEventListener('popstate', apply);
   apply();
-  form.hidden = false;
 </script>

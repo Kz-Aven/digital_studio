@@ -1,0 +1,21 @@
+---
+interface Props {
+  no: number;
+  total: number;
+  href: string;
+  title: string;
+  summary: string;
+  role?: string;
+  year?: string;
+  status?: string;
+  image?: string;
+}
+const { no, href, title, summary, role, year, status, image } = Astro.props;
+---
+<li class="index-row" data-peek={image}>
+  <span class="no">No.{String(no).padStart(2, '0')}</span>
+  <h3><a href={href}>{title}{status && <span class="status-tag">{status}</span>}</a><small>{summary}</small></h3>
+  <span class="mono c3">{role}</span>
+  <span class="mono c4">{year}</span>
+  <span class="arrow" aria-hidden="true">→</span>
+</li>

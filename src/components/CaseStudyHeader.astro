@@ -3,17 +3,19 @@ import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   data: CollectionEntry<'work'>['data'];
+  no?: number;
+  total?: number;
 }
-const { data } = Astro.props;
+const { data, no, total } = Astro.props;
 const metadata = [
-  { label: '我的角色', value: data.role },
-  { label: '项目时间', value: data.period },
+  { label: '角色', value: data.role },
+  { label: '时间', value: data.period },
   { label: '状态', value: data.status },
 ].filter(({ value }) => value);
 ---
 <header class="case-header">
-  <p class="eyebrow case-label" lang="en">Case Study / {data.category.split(' / ')[0]}</p>
-  <h1 data-pagefind-meta="title">{data.title}</h1>
+  <p class="mono case-label">{no ? `No.${String(no).padStart(2, '0')} / ${String(total).padStart(2, '0')}` : 'Case Study'} · {data.category.split(' / ')[0]}</p>
+  <h1 data-pagefind-meta="title">{data.title.split('：')[0]}</h1>
   <p class="page-description">{data.subtitle ?? data.description}</p>
   {metadata.length > 0 && <dl class="case-meta">
     {metadata.map(({ label, value }) => <div><dt>{label}</dt><dd>{value}</dd></div>)}

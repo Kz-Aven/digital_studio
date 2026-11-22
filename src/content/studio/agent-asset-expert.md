@@ -4,6 +4,8 @@ description: 记录本地 Agent 的任务过程、工具活动和结果，为复
 publishedAt: 2026-09-20
 status: released
 tags: [Agent 评测, 本地工具]
+tagline: 每一次工作，都该留下证据。
+platform: macOS
 stack: [Python, SQLite, MCP]
 githubUrl: https://github.com/Kz-Aven/agent-asset-expert
 featured: true
