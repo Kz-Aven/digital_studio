@@ -10,12 +10,12 @@ stack: [SwiftUI, Python, MCP]
 githubUrl: https://github.com/Kz-Aven/Tigerose
 featured: true
 cover:
-  src: /images/studio/tigerose-architecture.webp
-  small: /images/studio/tigerose-architecture-small.webp
-  alt: Tigerose 的项目群、Agent 协作、执行环境和本地数据架构
-  caption: 产品架构图，来自 Tigerose 公开仓库
-  width: 1200
-  height: 1096
+  src: /images/studio/tigerose-editorial-cover.webp
+  small: /images/studio/tigerose-editorial-cover-small.webp
+  alt: 三个不同的模块与一块橙红任务板排列在同一条金属轨道上，象征多个 Agent 协作
+  caption: Imagegen 生成的项目示意图
+  width: 1536
+  height: 1024
 ---
 
 **心有猛虎，细嗅蔷薇。**

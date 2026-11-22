@@ -7,15 +7,49 @@ import { site } from '../../config/site';
 
 const entries = await publicStudio();
 ---
-<BaseLayout title="工具" description={site.studioDescription}>
+<BaseLayout title="开源" description={site.studioDescription}>
   <Container class="page-content">
     <header class="page-intro">
       
-      <h1>工具</h1>
+      <h1>开源</h1>
       <p class="page-description">{site.studioDescription}</p>
     </header>
-    {entries.length > 0 ? <div>
+    {entries.length > 0 ? <div class="studio-list">
       {entries.map((entry) => <StudioCard entry={entry} />)}
-    </div> : <p class="empty-content">暂无公开作品。</p>}
+    </div> : <p class="empty-content">暂无开源项目。</p>}
   </Container>
 </BaseLayout>
+
+<style>
+  .studio-list :global(.studio-card) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .studio-list :global(.shot) {
+    width: min(100%, 16rem);
+    aspect-ratio: 3 / 2;
+    background: transparent;
+  }
+
+  .studio-list :global(.shot img) {
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  @media (min-width: 768px) {
+    .studio-list :global(.studio-card) {
+      grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+    }
+
+    .studio-list :global(.shot) {
+      position: relative;
+      align-self: stretch;
+      aspect-ratio: auto;
+    }
+
+    .studio-list :global(.shot img) {
+      position: absolute;
+      inset: 0;
+    }
+  }
+</style>

@@ -27,7 +27,7 @@ const years = rows.map((r) => r.year?.slice(0, 4)).filter(Boolean).sort();
   <Container>
     <HeroIntro />
     <section aria-labelledby="work-index">
-      <SectionHeading id="work-index" title="作品索引" note={`${String(rows.length).padStart(2, '0')} 项 · ${years[0]}—${years.at(-1)}`} />
+      <SectionHeading id="work-index" title="项目索引" note={`${String(rows.length).padStart(2, '0')} 项 · ${years[0]}—${years.at(-1)}`} />
       <ol class="index-list">
         {rows.map((row, i) => <IndexRow no={i + 1} total={rows.length} {...row} />)}
       </ol>
@@ -49,11 +49,11 @@ const years = rows.map((r) => r.year?.slice(0, 4)).filter(Boolean).sort();
   <Container>
     <div class="home-split">
       {studio.length > 0 && <section aria-labelledby="studio-tools">
-        <SectionHeading id="studio-tools" title="正在做的工具" link={{ href: '/studio/', text: '全部工具' }} />
+        <SectionHeading id="studio-tools" title="开源项目" link={{ href: '/studio/', text: '全部开源项目' }} />
         {studio.slice(0, 3).map((entry) => <StudioCard entry={entry} />)}
       </section>}
       {featuredWriting.length > 0 && <section aria-labelledby="featured-writing">
-        <SectionHeading id="featured-writing" title="写作" note={`${writing.length} 篇`} />
+        <SectionHeading id="featured-writing" title="文章" note={`${writing.length} 篇`} />
         <ul class="feature-list">
           {featuredWriting.slice(0, 5).map((e) => (
             <li>

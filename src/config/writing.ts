@@ -60,7 +60,7 @@ const itemSchema = z.object({
   series: z.enum(seriesIds).optional(),
   seriesOrder: z.int().positive().optional(),
   publishedAt: z.iso.date().nullable(),
-  dateStatus: z.enum(['verified', 'unknown']),
+  dateStatus: z.enum(['verified', 'local-edit', 'unknown']),
   editorialOrder: z.int().positive(),
   featured: z.boolean().optional(),
   excerpt: z.string().optional(),
@@ -95,7 +95,7 @@ const writingSchema = z.array(itemSchema).superRefine((items, context) => {
       slugs.add(item.localSlug);
     }
 
-    if ((item.publishedAt !== null) !== (item.dateStatus === 'verified')) {
+    if ((item.publishedAt !== null) !== (item.dateStatus !== 'unknown')) {
       report('publishedAt', '日期和核实状态不一致');
     }
     if (Boolean(item.series) !== (item.seriesOrder !== undefined)) {

@@ -10,12 +10,12 @@ stack: [Python, SQLite, MCP]
 githubUrl: https://github.com/Kz-Aven/agent-asset-expert
 featured: true
 cover:
-  src: /images/studio/agent-asset-expert-cover.webp
-  small: /images/studio/agent-asset-expert-cover-small.webp
-  alt: 示意图：Tigerose、Codex、WorkBuddy 的工作被采集为本机工作档案，再通过只读 MCP 整理成失败案例、人工修订和成功基线三类评测样本
-  caption: 示意图，根据项目 README 描述的数据流绘制；档案中的数字为示例
-  width: 1440
-  height: 1080
+  src: /images/studio/agent-asset-expert-editorial-cover.webp
+  small: /images/studio/agent-asset-expert-editorial-cover-small.webp
+  alt: 放大镜下的档案卡记录了一串过程标记和一个橙红色勾号，象征可复核的工作证据
+  caption: Imagegen 生成的项目示意图
+  width: 1536
+  height: 1024
 ---
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Kz-Aven/agent-asset-expert/blob/main/LICENSE)
@@ -32,6 +32,10 @@ cover:
 它面向 macOS 本地 Agent 工作流设计，默认在本机存储数据，通过只读 MCP 服务提供访问，并采用 MIT 许可证发布。
 
 > 它用于补充而非替代宿主 Agent 平台：既有会话、日志、权限和 Hook 仍由宿主平台控制；采集失败会与宿主 Agent 隔离。
+
+![Tigerose、Codex、WorkBuddy 的工作被采集为本机工作档案，再通过只读 MCP 整理成失败案例、人工修订和成功基线三类评测样本](/images/studio/agent-asset-expert-cover.webp)
+
+*数据流示意图，档案中的数字为示例。*
 
 ### 您将获得什么
 

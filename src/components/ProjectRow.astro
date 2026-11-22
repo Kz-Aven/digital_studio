@@ -22,5 +22,5 @@ const { data } = entry;
       {data.role && <li>{data.role}</li>}
     </ul>
   </div>
-  {data.cover && <Figure cover={data.cover} sizes="(max-width: 767px) 100vw, (max-width: 1279px) 43vw, 520px" eager={eager} />}
+  {data.cover && <Figure cover={{ ...data.cover, caption: undefined }} sizes="(max-width: 767px) 100vw, (max-width: 1279px) 43vw, 520px" eager={eager} />}
 </article>

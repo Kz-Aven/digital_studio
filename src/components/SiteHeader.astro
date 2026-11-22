@@ -10,8 +10,8 @@ const [work, studio] = await Promise.all([
   getCollection('studio', ({ data, body }) => !data.draft && Boolean(body?.trim())),
 ]);
 const index = [
-  ...work.map((e) => ({ t: e.data.title.split('：')[0], k: '作品', u: `/work/${e.id}/` })),
-  ...studio.map((e) => ({ t: e.data.title, k: '工具', u: `/studio/${e.id}/` })),
+  ...work.map((e) => ({ t: e.data.title.split('：')[0], k: '项目', u: `/work/${e.id}/` })),
+  ...studio.map((e) => ({ t: e.data.title, k: '开源', u: `/studio/${e.id}/` })),
   ...writing.map((e) => ({ t: e.title, k: writingTopics[e.topic].short, u: e.localSlug ? `/writing/${e.localSlug}/` : e.sourceUrl, x: !e.localSlug })),
 ];
 ---
@@ -30,7 +30,7 @@ const index = [
 </header>
 
 <dialog id="palette" class="palette" aria-label="搜索">
-  <input type="search" placeholder="搜索作品、工具、文章…" autocomplete="off" aria-controls="palette-list" data-palette-input />
+  <input type="search" placeholder="搜索项目、开源、文章…" autocomplete="off" aria-controls="palette-list" data-palette-input />
   <ul id="palette-list" role="listbox" data-palette-list></ul>
   <div class="palette-foot"><span>↑↓ 选择 · ↵ 打开 · Esc 关闭</span><a href="/search/" data-palette-full>全文搜索 →</a></div>
   <script type="application/json" data-palette-index is:inline set:html={JSON.stringify(index).replace(/</g, '\\u003c')} />

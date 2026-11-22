@@ -15,11 +15,11 @@ const { label, description } = writingSeries[series];
 const entries = writing.filter((entry) => entry.series === series)
   .sort((a, b) => a.seriesOrder! - b.seriesOrder!);
 ---
-<BaseLayout title={`${label} / Writing 专题`} description={description}>
+<BaseLayout title={`${label} / 文章专题`} description={description}>
   <Container class="page-content writing-shell">
     <header class="page-intro writing-intro">
       <div>
-        <nav aria-label="面包屑"><a class="text-link" href="/writing/">← 返回 Writing</a></nav>
+        <nav aria-label="面包屑"><a class="text-link" href="/writing/">← 返回文章</a></nav>
         <p class="eyebrow writing-subtitle" lang="en">Series</p>
         <h1>{label}</h1>
         <p class="page-description">{description}</p>

@@ -7,12 +7,12 @@ import { site } from '../../config/site';
 import { seriesIds, topicIds as allTopicIds, writing, writingTopics } from '../../config/writing';
 const topicIds = allTopicIds.toSorted((a, b) => writing.filter((e) => e.topic === b).length - writing.filter((e) => e.topic === a).length);
 ---
-<BaseLayout title="写作" description={site.writingDescription}>
+<BaseLayout title="文章" description={site.writingDescription}>
   <Container class="page-content writing-shell">
     <header class="page-intro writing-intro">
       <div>
         
-        <h1>写作</h1>
+        <h1>文章</h1>
         <p class="page-description">{site.writingDescription}</p>
       </div>
       <p class="writing-total"><strong>{writing.length}</strong> 篇文章</p>
@@ -35,7 +35,7 @@ const topicIds = allTopicIds.toSorted((a, b) => writing.filter((e) => e.topic ==
       <input id="writing-type" name="type" type="hidden" />
       <input id="writing-order" name="order" type="hidden" />
       <div class="writing-seg" role="group" aria-label="排序">
-        <button type="button" data-order="" aria-pressed="true">编辑顺序</button>
+        <button type="button" data-order="" aria-pressed="true">最新发布</button>
         <button type="button" data-order="featured" aria-pressed="false">精选优先</button>
       </div>
       <p id="writing-result-count" class="mono" role="status">{writing.length} 篇</p>

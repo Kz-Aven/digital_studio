@@ -13,7 +13,7 @@ const reads = featuredWriting.slice(0, 3);
       <p class="nf-code" aria-hidden="true">404</p>
       <div class="nf-copy">
         <p class="mono">页面未找到 · <span data-nf-path></span></p>
-        <h1>这一页不在了，但作品都还在。</h1>
+        <h1>这一页不在了，但项目都还在。</h1>
         <p class="nf-sub">链接可能已经改动。可以按 <kbd data-nf-kbd>⌘K</kbd> 搜索，或者从下面挑一个入口。</p>
         <div class="nf-actions">
           <a class="button" href="/">返回首页</a>
@@ -24,7 +24,7 @@ const reads = featuredWriting.slice(0, 3);
 
     <div class="nf-split">
       <section aria-labelledby="nf-work">
-        <h2 id="nf-work" class="mono">作品索引</h2>
+        <h2 id="nf-work" class="mono">项目索引</h2>
         <ol>
           {items.map((item, i) => <li><a href={item.href}><span class="mono">No.{pad(i + 1)}</span><span>{item.title.split('：')[0]}</span></a></li>)}
         </ol>

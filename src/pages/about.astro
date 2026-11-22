@@ -47,8 +47,8 @@ const skills = ['企业 AI Agent 产品设计', '复杂 B2B 系统', '业务流�
       <h2 id="ab-focus">关注的方向</h2>
       <div class="ab-focus">
         <ul class="ab-skills">{skills.map((s) => <li>{s}</li>)}</ul>
-        <div class="ab-topics" aria-label="写作领域分布">
-          <p class="mono">写作 · {writing.length} 篇</p>
+        <div class="ab-topics" aria-label="文章领域分布">
+          <p class="mono">文章 · {writing.length} 篇</p>
           {topics.map((t) => (
             <a href={`/writing/topics/${t.id}/`} style={`--w:${Math.round((t.n / maxTopic) * 100)}%`}><span>{t.label}</span><span class="mono">{t.n}</span></a>
           ))}
@@ -60,7 +60,7 @@ const skills = ['企业 AI Agent 产品设计', '复杂 B2B 系统', '业务流�
       <h2 id="ab-work">做过的东西</h2>
       <ol class="ab-index">
         {items.map((item, i) => (
-          <li><a href={item.href}><span class="mono">No.{pad(i + 1)}</span><span>{item.title.split('：')[0]}</span><span class="mono">{item.kind === 'work' ? '作品' : '工具'} →</span></a></li>
+          <li><a href={item.href}><span class="mono">No.{pad(i + 1)}</span><span>{item.title.split('：')[0]}</span><span class="mono">{item.kind === 'work' ? '项目' : '开源'} →</span></a></li>
         ))}
       </ol>
     </section>

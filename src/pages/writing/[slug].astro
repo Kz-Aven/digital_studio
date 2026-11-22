@@ -28,7 +28,7 @@ const hrefOf = (e: typeof entry) => e.localSlug ? `/writing/${e.localSlug}/` : e
   description={entry.excerpt ?? entry.title}
   image={entry.cover}
   headings={headings}
-  back={{ label: '全部写作', href: '/writing/' }}
+  back={{ label: '全部文章', href: '/writing/' }}
 >
   <header class="case-header" slot="header">
     <p class="mono case-label">

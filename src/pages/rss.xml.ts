@@ -4,7 +4,7 @@ import { writing, writingTopics } from '../config/writing';
 import { site } from '../config/site';
 
 export const GET: APIRoute = ({ site: origin }) => rss({
-  title: `${site.name} · Writing`,
+  title: `${site.name} · 文章`,
   description: site.writingDescription,
   site: origin!,
   customData: '<language>zh-CN</language>',

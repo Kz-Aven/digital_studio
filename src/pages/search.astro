@@ -9,12 +9,12 @@ const articleMetadata = writing.filter((entry) => !entry.localSlug).map((entry) 
   topic: writingTopics[entry.topic].label,
 }));
 ---
-<BaseLayout title="搜索" description="搜索项目案例、个人作品和研究文章。" noindex>
+<BaseLayout title="搜索" description="搜索项目案例、开源项目和研究文章。" noindex>
   <Container class="page-content">
     <header class="page-intro">
       
       <h1>搜索</h1>
-      <p class="page-description">搜索项目案例、个人作品和研究文章。</p>
+      <p class="page-description">搜索项目案例、开源项目和研究文章。</p>
     </header>
     <div class="search-panel">
       <form class="search-form" action="/search/" method="get" role="search">
