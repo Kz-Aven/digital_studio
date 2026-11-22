@@ -2,71 +2,153 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';
 import { site } from '../config/site';
+import { pad, portfolio } from '../config/content';
+import { writing, writingTopics, topicIds } from '../config/writing';
 
 const { email, github, linkedIn, resume } = site.contact;
-const skills = [
-  '企业 AI Agent 产品设计',
-  '复杂 B2B 系统',
-  '业务流程与权限治理',
-  'AI 产品评测与落地',
-];
+const { items } = await portfolio();
+const topics = topicIds
+  .map((id) => ({ id, label: writingTopics[id].short, n: writing.filter((e) => e.topic === id).length }))
+  .sort((a, b) => b.n - a.n);
+const maxTopic = Math.max(...topics.map((t) => t.n));
+
 const methods = [
   { title: '业务问题', text: '从角色、任务和现有流程入手，厘清产品需要解决的具体问题。' },
   { title: '系统抽象', text: '将业务目标拆成可接入的数据、知识、工具和权限。' },
   { title: '关键取舍', text: '根据任务风险决定哪里需要 Agent 判断，哪里需要确定性流程。' },
   { title: '交付验证', text: '用真实任务检查产品表现，并据此调整能力与权限。' },
 ];
+const skills = ['企业 AI Agent 产品设计', '复杂 B2B 系统', '业务流程与权限治理', 'AI 产品评测与落地'];
 ---
-<BaseLayout title="About / 关于" description={site.about}>
+<BaseLayout title="关于" description={site.about}>
   <Container class="page-content">
-    <header class="page-intro">
-      
-      <h1>{site.author === 'YOUR_NAME' ? '关于我' : site.author}</h1>
-      <p class="about-positioning">{site.positioning}</p>
-      <p class="page-description">{site.about}</p>
+    <header class="ab-hero">
+      <p class="mono ab-meta" data-reveal>{site.heroMeta.join(' · ')}</p>
+      <h1 data-reveal="2">{site.author}</h1>
+      <p class="ab-position" data-reveal="3">{site.positioning}</p>
     </header>
-    <section class="about-section" aria-labelledby="expertise">
-      <h2 id="expertise">能力方向</h2>
-      <ul class="about-list">
-        {skills.map((skill) => <li>{skill}</li>)}
-      </ul>
+
+    <section class="ab-grid ab-intro" aria-labelledby="ab-intro">
+      <h2 id="ab-intro">简介</h2>
+      <p class="ab-lede">{site.about}</p>
+      <aside class="ab-now"><b>NOW · {site.nowUpdated}</b>{site.now}</aside>
     </section>
-    <section class="about-section" aria-labelledby="process">
-      <h2 id="process">工作方式</h2>
-      <ol class="about-list">
-        {methods.map(({ title, text }) => <li><strong>{title}</strong><p>{text}</p></li>)}
+
+    <section class="ab-grid" aria-labelledby="ab-method">
+      <h2 id="ab-method">工作方式：从问题到验证的四步</h2>
+      <ol class="ab-steps">
+        {methods.map(({ title, text }, i) => (
+          <li><span class="n">{pad(i + 1)}</span><strong>{title}</strong><p>{text}</p></li>
+        ))}
       </ol>
     </section>
-    {site.experience.length > 0 && <section class="about-section" aria-labelledby="experience">
-      <h2 id="experience">经历</h2>
-      <ul class="about-list">
-        {site.experience.map(({ period, organization, role }) => <li><strong>{organization}</strong><p>{period} · {role}</p></li>)}
+
+    <section class="ab-grid" aria-labelledby="ab-focus">
+      <h2 id="ab-focus">关注的方向</h2>
+      <div class="ab-focus">
+        <ul class="ab-skills">{skills.map((s) => <li>{s}</li>)}</ul>
+        <div class="ab-topics" aria-label="写作领域分布">
+          <p class="mono">写作 · {writing.length} 篇</p>
+          {topics.map((t) => (
+            <a href={`/writing/topics/${t.id}/`} style={`--w:${Math.round((t.n / maxTopic) * 100)}%`}><span>{t.label}</span><span class="mono">{t.n}</span></a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="ab-grid" aria-labelledby="ab-work">
+      <h2 id="ab-work">做过的东西</h2>
+      <ol class="ab-index">
+        {items.map((item, i) => (
+          <li><a href={item.href}><span class="mono">No.{pad(i + 1)}</span><span>{item.title.split('：')[0]}</span><span class="mono">{item.kind === 'work' ? '作品' : '工具'} →</span></a></li>
+        ))}
+      </ol>
+    </section>
+
+    {site.experience.length > 0 && <section class="ab-grid" aria-labelledby="ab-exp">
+      <h2 id="ab-exp">经历</h2>
+      <ul class="ab-index">
+        {site.experience.map(({ period, organization, role }) => <li><span class="mono">{period}</span><span>{organization}</span><span class="mono">{role}</span></li>)}
       </ul>
     </section>}
-    <section class="about-section" aria-labelledby="contact">
-      <h2 id="contact">联系方式</h2>
-      <div class="about-contact">
-      <ul class="contact-links">
-        {email && <li><a href={`mailto:${email}`}>{email}</a></li>}
-        {github && <li><a href={github}>GitHub</a></li>}
-        {linkedIn && <li><a href={linkedIn}>LinkedIn</a></li>}
-        {resume && <li><a href={resume}>简历 PDF</a></li>}
-      </ul>
-      <figure class="about-wechat">
-        <img src="/images/wechat-qr.jpg" width="430" height="430" alt="微信公众号「超越产品思维」二维码" loading="lazy" decoding="async" />
-        <figcaption><span class="mono">微信公众号</span><strong>超越产品思维</strong><span>微信扫一扫关注，新文章会先发在这里。手机上可长按图片识别。</span></figcaption>
-      </figure>
+
+    <section class="ab-grid ab-contact" aria-labelledby="ab-contact">
+      <h2 id="ab-contact">联系我</h2>
+      <div class="ab-contact-body">
+        <ul class="ab-links">
+          {email && <li><span class="mono">邮件</span><a href={`mailto:${email}`}>{email}</a></li>}
+          {github && <li><span class="mono">GitHub</span><a href={github}>{github.replace('https://github.com/', '')}</a></li>}
+          {linkedIn && <li><span class="mono">LinkedIn</span><a href={linkedIn}>LinkedIn</a></li>}
+          {resume && <li><span class="mono">简历</span><a href={resume}>PDF</a></li>}
+          <li><span class="mono">RSS</span><a href="/rss.xml">/rss.xml</a></li>
+        </ul>
+        <figure class="ab-wechat">
+          <img src="/images/wechat-qr.jpg" width="430" height="430" alt="微信公众号「超越产品思维」二维码" loading="lazy" decoding="async" />
+          <figcaption><span class="mono">微信公众号</span><strong>超越产品思维</strong><span>微信扫一扫关注，新文章会先发在这里。手机上可长按图片识别。</span></figcaption>
+        </figure>
       </div>
     </section>
   </Container>
 </BaseLayout>
 
 <style>
-  .about-contact { min-width: 0; }
-  .about-wechat { display: flex; align-items: center; gap: 24px; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
-  .about-wechat img { flex: none; width: 160px; height: 160px; background: #fff; padding: 8px; border: 1px solid var(--line); }
-  .about-wechat figcaption { display: grid; gap: 4px; min-width: 0; }
-  .about-wechat strong { font: 700 1.4rem/1.3 var(--font-serif); }
-  .about-wechat figcaption > span:last-child { color: var(--mute); font-size: .875rem; }
-  @media (max-width: 480px) { .about-wechat { flex-direction: column; align-items: flex-start; } }
+  .ab-hero { padding-block: clamp(56px, 9vw, 128px) clamp(40px, 6vw, 80px); }
+  .ab-hero h1 { margin-top: 18px; font: 900 clamp(56px, 11vw, 168px)/.92 var(--font-serif); }
+  .ab-position { max-width: 22em; margin-top: clamp(18px, 2.5vw, 32px); font: 500 clamp(20px, 2.8vw, 36px)/1.35 var(--font-serif); }
+
+  .ab-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding-block: 24px clamp(48px, 6vw, 80px); border-top: 2px solid var(--ink); }
+  .ab-grid > * { min-width: 0; }
+  .ab-grid > h2, .ab-grid > .mono:first-child { grid-column: 1 / 4; font-size: clamp(1.15rem, 1.8vw, 1.5rem); }
+  .ab-grid > :not(:first-child) { grid-column: 4 / 13; }
+
+  .ab-intro { border-top-width: 1px; border-top-color: var(--line); }
+  .ab-intro .ab-lede { grid-column: 4 / 10; font: 400 clamp(1.05rem, 1.4vw, 1.2rem)/2 var(--font-serif); color: var(--body-ink); }
+  .ab-now { grid-column: 10 / 13 !important; align-self: start; padding-left: 14px; border-left: 2px solid var(--red); font-size: .875rem; line-height: 1.7; }
+  .ab-now b { display: block; margin-bottom: 4px; color: var(--red); font: 500 11px var(--font-label); letter-spacing: .06em; }
+
+  .ab-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .ab-steps li { padding-top: 12px; border-top: 1px solid var(--line); }
+  .ab-steps .n { display: block; color: var(--red); font: 500 28px/1 var(--font-label); }
+  .ab-steps strong { display: block; margin-top: 18px; font: 700 1.2rem/1.4 var(--font-serif); }
+  .ab-steps p { margin-top: 8px; color: var(--mute); font-size: .9rem; line-height: 1.75; }
+
+  .ab-focus { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 40px; }
+  .ab-skills li { padding: 12px 0; border-bottom: 1px solid var(--line); font: 500 1.1rem/1.5 var(--font-serif); }
+  .ab-topics { display: grid; gap: 6px; align-content: start; }
+  .ab-topics > .mono { margin-bottom: 6px; }
+  .ab-topics a { position: relative; display: flex; justify-content: space-between; align-items: center; min-height: 36px; padding: 0 10px; font-size: .875rem; isolation: isolate; }
+  .ab-topics a::before { content: ''; position: absolute; inset: 0 auto 0 0; z-index: -1; width: var(--w); background: var(--soft); transition: background 200ms; }
+  .ab-topics a:hover::before { background: #d9b9b0; }
+  .ab-topics a:hover { color: var(--ink); }
+
+  .ab-index li { border-bottom: 1px solid var(--line); }
+  .ab-index a, .ab-index li:not(:has(a)) { display: grid; grid-template-columns: 72px minmax(0, 1fr) auto; gap: 16px; align-items: baseline; padding: 16px 0; }
+  .ab-index a span:nth-child(2), .ab-index li > span:nth-child(2) { font: 700 clamp(1.15rem, 2vw, 1.6rem)/1.35 var(--font-serif); transition: padding-left 300ms ease-out; }
+  .ab-index a:hover span:nth-child(2) { padding-left: 8px; color: var(--red); }
+  .ab-index a:hover .mono { color: var(--red); }
+
+  .ab-contact-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+  .ab-links li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .ab-links a { font-weight: 500; }
+  .ab-wechat { display: flex; align-items: center; gap: 24px; min-width: 0; }
+  .ab-wechat img { flex: none; width: 150px; height: 150px; padding: 8px; border: 1px solid var(--line); background: #fff; }
+  .ab-wechat figcaption { display: grid; gap: 4px; min-width: 0; }
+  .ab-wechat strong { font: 700 1.4rem/1.3 var(--font-serif); }
+  .ab-wechat figcaption > span:last-child { color: var(--mute); font-size: .85rem; }
+
+  @media (max-width: 1100px) {
+    .ab-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ab-contact-body, .ab-focus { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 900px) {
+    .ab-grid > h2, .ab-grid > .mono:first-child, .ab-grid > :not(:first-child), .ab-intro .ab-lede, .ab-now { grid-column: 1 / -1 !important; }
+    .ab-grid > h2, .ab-grid > .mono:first-child { margin-bottom: 18px; }
+    .ab-now { margin-top: 24px; }
+  }
+  @media (max-width: 560px) {
+    .ab-steps { grid-template-columns: minmax(0, 1fr); }
+    .ab-index a, .ab-index li:not(:has(a)) { grid-template-columns: 56px minmax(0, 1fr); }
+    .ab-index a .mono:last-child { display: none; }
+    .ab-wechat { flex-direction: column; align-items: flex-start; }
+  }
 </style>

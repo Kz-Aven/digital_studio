@@ -9,6 +9,13 @@ platform: macOS
 stack: [Python, SQLite, MCP]
 githubUrl: https://github.com/Kz-Aven/agent-asset-expert
 featured: true
+cover:
+  src: /images/studio/agent-asset-expert-cover.webp
+  small: /images/studio/agent-asset-expert-cover-small.webp
+  alt: 示意图：Tigerose、Codex、WorkBuddy 的工作被采集为本机工作档案，再通过只读 MCP 整理成失败案例、人工修订和成功基线三类评测样本
+  caption: 示意图，根据项目 README 描述的数据流绘制；档案中的数字为示例
+  width: 1440
+  height: 1080
 ---
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Kz-Aven/agent-asset-expert/blob/main/LICENSE)
