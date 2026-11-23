@@ -80,12 +80,22 @@
         off.width = Math.ceil(wr.width + pad * 2); off.height = Math.ceil(wr.height + pad * 2);
         const oc = off.getContext('2d', { willReadFrequently: true })!;
         oc.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
-        oc.textBaseline = 'alphabetic'; oc.fillStyle = '#000';
-        oc.fillText(word.textContent.trim(), pad, baseline - wr.top + pad);
+        oc.textBaseline = 'alphabetic'; oc.fillStyle = oc.strokeStyle = '#000';
+        const tx = word.textContent.trim(), ty = baseline - wr.top + pad;
+        oc.fillText(tx, pad, ty);
+        // Thin strokes (the H crossbar, serifs) fall between grid rows at small sizes; thicken them before sampling.
+        oc.lineJoin = 'round'; oc.lineWidth = Math.max(1, fs * (small ? .05 : .025));
+        oc.strokeText(tx, pad, ty);
         const data = oc.getImageData(0, 0, off.width, off.height).data;
-        const st = Math.min(4, Math.max(2.4, fs / 30)), ox = wr.left - r.left - pad, oy = wr.top - r.top - pad;
+        const st = small ? Math.max(1.9, fs / 22) : Math.min(4, Math.max(2.4, fs / 30)), ox = wr.left - r.left - pad, oy = wr.top - r.top - pad;
         for (let y = st / 2; y < off.height; y += st) for (let x = st / 2; x < off.width; x += st) {
-          if (data[((y | 0) * off.width + (x | 0)) * 4 + 3] <= 90) continue;
+          // take the strongest pixel in the cell, so a stroke thinner than one step still yields a dot
+          let a = 0;
+          for (let sy = -1; sy <= 1; sy++) for (let sx = -1; sx <= 1; sx++) {
+            const px = (x + sx * st * .3) | 0, py = (y + sy * st * .3) | 0;
+            if (px >= 0 && py >= 0 && px < off.width && py < off.height) a = Math.max(a, data[(py * off.width + px) * 4 + 3]);
+          }
+          if (a <= 90) continue;
           const n = .85 + .15 * Math.cos(.31 * x + .17 * y);
           A.x.push(x + ox); A.y.push(y + oy); A.r.push(st * .5 * n); A.a.push(1); A.t.push(WORD);
         }

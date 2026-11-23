@@ -457,3 +457,6 @@ main:has(.hero-field) .home-hero { cursor: crosshair; }
 /* The breathing-room block styles every .home-hero h1 span as the small statement line; undo that for the name. */
 .home-hero h1 .hero-dot-word { display: inline; max-width: none; margin: 0; font: inherit; line-height: inherit; }
 .home-hero[data-field-ready] .hero-dot-word { color: transparent; text-shadow: none; }
+
+/* All article titles share one weight (featured ones were bold, others were not). */
+.writing-row h2, .writing-row h3, .writing-row[data-featured] h2, .writing-row[data-featured] h3 { font-weight: 700; }
