@@ -6,12 +6,12 @@ interface Props { entry: CollectionEntry<'studio'> }
 const { entry } = Astro.props;
 const { data } = entry;
 ---
-<article class="studio-card">
+<article class="studio-card" data-cat={data.category}>
   <div class:list={['shot', { 'shot--empty': !data.cover }]}>
     {data.cover ? <img src={data.cover.small ?? data.cover.src} alt={data.cover.alt} loading="lazy" decoding="async" /> : '[ 产品截图 ]'}
   </div>
   <div>
-    <span class="mono">{[data.platform, studioStatuses[data.status]].filter(Boolean).join(' · ')}</span>
+    <span class="mono">{[data.platform, data.version && `v${data.version}`, studioStatuses[data.status]].filter(Boolean).join(' · ')}</span>
     <h3><a href={`/studio/${entry.id}/`}>{data.title}</a></h3>
     {data.tagline && <p class="tagline">{data.tagline}</p>}
     <p>{data.description}</p>

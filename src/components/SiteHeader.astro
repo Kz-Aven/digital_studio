@@ -12,7 +12,7 @@ const [work, studio] = await Promise.all([
 const index = [
   ...work.map((e) => ({ t: e.data.title.split('：')[0], k: '项目', u: `/work/${e.id}/` })),
   ...studio.map((e) => ({ t: e.data.title, k: '开源', u: `/studio/${e.id}/` })),
-  ...writing.map((e) => ({ t: e.title, k: writingTopics[e.topic].short, u: e.localSlug ? `/writing/${e.localSlug}/` : e.sourceUrl, x: !e.localSlug })),
+  ...writing.map((e) => ({ t: e.title, k: writingTopics[e.topic].short, u: e.localSlug ? `/writing/${e.localSlug}/` : e.sourceUrl!, x: !e.localSlug })),
 ];
 ---
 <header class="site-header" data-site-header>

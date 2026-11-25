@@ -3,6 +3,9 @@ title: 制造业问题追溯专家
 description: 沿订单、工单、生产批次、设备和检验记录核查质量异常，整理证据、影响范围与下一步建议。
 publishedAt: 2026-09-23
 status: released
+category: industry
+skillhubUrl: https://skillhub.cn/skills/indiv-aven/manufacturing-traceability-expert
+version: 1.0.0
 platform: Agent Skill
 stack: [Agent Skill]
 tags: [制造业, 质量追溯]

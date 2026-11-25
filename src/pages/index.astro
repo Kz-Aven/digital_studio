@@ -34,17 +34,32 @@ const years = rows.map((r) => r.year?.slice(0, 4)).filter(Boolean).sort();
     </section>
   </Container>
 
-  <section class="tea-band" aria-labelledby="tea-title">
-    <img src="/teahouse-assets/poster.webp" alt="" loading="lazy" decoding="async" />
-    <Container class="tea-band-inner">
-      <div class="tea-copy">
-        <p class="mono">实验 · 3D 高斯泼溅场景</p>
-        <h2 id="tea-title">一间茶舍</h2>
-        <p>{site.teahouse.description}</p>
-        <a class="tea-enter" href="/teahouse/">进入茶舍 <span class="mono">{site.teahouse.size}</span></a>
-      </div>
-    </Container>
-  </section>
+  <Container>
+    <div class="feature-pair">
+      <section class="tea-band" aria-labelledby="tea-title">
+        <img src="/teahouse-assets/poster.webp" alt="" loading="lazy" decoding="async" />
+        <div class="tea-band-inner">
+          <div class="tea-copy">
+            <p class="mono">实验 · 3D 高斯泼溅场景</p>
+            <h2 id="tea-title">一间茶舍</h2>
+            <p>{site.teahouse.description}</p>
+            <a class="tea-enter" href="/teahouse/">进入茶舍 <span class="mono">{site.teahouse.size}</span></a>
+          </div>
+        </div>
+      </section>
+      <section class="tea-band research-band" aria-labelledby="research-title">
+        <img src="/images/research-hero.webp" alt="" loading="lazy" decoding="async" />
+        <div class="tea-band-inner">
+          <div class="tea-copy">
+            <p class="mono">行研 · 12 个行业 · 706 个案例</p>
+            <h2 id="research-title">行业微缩图</h2>
+            <p>跟着一件小事走一遍，看懂一个陌生行业里谁拿着什么、交给了谁。</p>
+            <a class="tea-enter" href="/research/">进入行研 <span class="mono">12 个行业</span></a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </Container>
 
   <Container>
     <div class="home-split">
@@ -57,7 +72,7 @@ const years = rows.map((r) => r.year?.slice(0, 4)).filter(Boolean).sort();
         <ul class="feature-list">
           {featuredWriting.slice(0, 5).map((e) => (
             <li>
-              <a href={e.localSlug ? `/writing/${e.localSlug}/` : e.sourceUrl} target={e.localSlug ? undefined : '_blank'} rel={e.localSlug ? undefined : 'noopener noreferrer'}>{e.title}</a>
+              <a href={e.localSlug ? `/writing/${e.localSlug}/` : e.sourceUrl!} target={e.localSlug ? undefined : '_blank'} rel={e.localSlug ? undefined : 'noopener noreferrer'}>{e.title}</a>
               <div class="mono"><span>{writingTopics[e.topic].short}</span><span>{e.localSlug ? '站内' : '公众号 ↗'}</span></div>
             </li>
           ))}

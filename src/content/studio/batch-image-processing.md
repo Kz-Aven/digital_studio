@@ -3,6 +3,9 @@ title: 批量处理图片 · Batch Image Processing Toolbox
 description: 用本地 ImageMagick 批量转换格式、调整尺寸、压缩图片和处理 GIF，默认保留原图。
 publishedAt: 2026-09-08
 status: released
+category: media
+skillhubUrl: https://skillhub.cn/skills/indiv-aven/batch-image-processing
+version: 1.0.1
 platform: Agent Skill
 stack: [ImageMagick]
 tags: [图像处理, 批量处理]

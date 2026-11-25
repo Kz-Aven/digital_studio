@@ -51,7 +51,7 @@ export const seriesIds = Object.keys(writingSeries) as WritingSeries[];
 const itemSchema = z.object({
   id: z.string().regex(/^[A-Za-z0-9_-]+$/),
   title: z.string().min(1),
-  sourceUrl: z.url(),
+  sourceUrl: z.url().optional(),
   canonicalUrl: z.url({ protocol: /^https$/ }).optional(),
   source: z.literal('wechat'),
   topic: z.enum(topicIds),
@@ -84,12 +84,13 @@ const writingSchema = z.array(itemSchema).superRefine((items, context) => {
     });
 
     if (ids.has(item.id)) report('id', '文章 ID 重复');
-    if (urls.has(item.sourceUrl)) report('sourceUrl', '原文链接重复');
-    if (item.sourceUrl !== `https://mp.weixin.qq.com/s/${item.id}`) {
+    if (!item.sourceUrl && !item.localSlug) report('sourceUrl', '没有原文链接的文章必须有站内页面');
+    if (item.sourceUrl && urls.has(item.sourceUrl)) report('sourceUrl', '原文链接重复');
+    if (item.sourceUrl && item.sourceUrl !== `https://mp.weixin.qq.com/s/${item.id}`) {
       report('sourceUrl', '原文链接须使用与 ID 对应的微信公众号文章路径');
     }
     ids.add(item.id);
-    urls.add(item.sourceUrl);
+    if (item.sourceUrl) urls.add(item.sourceUrl);
     if (item.localSlug) {
       if (slugs.has(item.localSlug)) report('localSlug', '站内文章路径重复');
       slugs.add(item.localSlug);

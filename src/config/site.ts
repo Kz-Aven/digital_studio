@@ -15,6 +15,7 @@ export const site = {
   workDescription: '企业 AI 与复杂 B2B 产品从问题定义、方案取舍到交付验证的过程。',
   studioDescription: '我公开的代码与技能，涵盖 Agent 协作、硬件实验、图像处理和制造业追溯。',
   writingDescription: '大多来自工厂和企业一线的复盘：表格怎么理、权限怎么放、Agent 什么时候不该上。',
+  research: { title: '行业微观全景图', description: '把 12 个行业里 706 个真实工作案例，画成一个个等距微缩的工位。跟着一件小事走一遍，看懂行业的分工与交接。' },
   teahouse: { size: '18 MB', description: '从主视角欣赏圆窗、木案和庭植。拖动旋转，也可以平移视野。' },
   contact: { github: 'https://github.com/Kz-Aven' } as Partial<{ email: string; github: string; linkedIn: string; resume: string }>,
   experience: [] as { period: string; organization: string; role: string }[],
@@ -24,6 +25,7 @@ export const navigation = [
   { label: '项目', href: '/work/' },
   { label: '开源', href: '/studio/' },
   { label: '文章', href: '/writing/' },
+  { label: '行研', href: '/research/' },
   { label: '茶舍', href: '/teahouse/', optional: true },
   { label: '关于', href: '/about/', optional: true },
 ];

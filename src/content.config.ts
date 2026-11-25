@@ -56,6 +56,9 @@ const studio = defineCollection({
     platform: z.string().optional(),
     githubUrl: z.url({ protocol: /^https$/ }).optional(),
     demoUrl: z.url({ protocol: /^https$/ }).optional(),
+    skillhubUrl: z.url({ protocol: /^https$/ }).optional(),
+    category: z.enum(['agent', 'industry', 'media', 'life', 'hardware']).default('hardware'),
+    version: z.string().optional(),
   }),
 });
 

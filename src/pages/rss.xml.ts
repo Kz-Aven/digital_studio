@@ -12,7 +12,7 @@ export const GET: APIRoute = ({ site: origin }) => rss({
     title: entry.title,
     description: entry.excerpt,
     pubDate: entry.publishedAt ? new Date(entry.publishedAt) : undefined,
-    link: entry.sourceUrl,
+    link: entry.localSlug ? `/writing/${entry.localSlug}/` : entry.sourceUrl,
     categories: [writingTopics[entry.topic].label, ...entry.tags],
   })),
 });

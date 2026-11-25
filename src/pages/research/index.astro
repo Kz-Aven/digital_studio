@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import data from '../../data/research.json';
+import { site } from '../../config/site';
+
+const { industries, views, groups } = data;
+const total = industries.reduce((n, i) => n + i.cases, 0);
+const scenes = industries.reduce((n, i) => n + i.scenes, 0);
+const thumb = (id: string) => `/research/lib/outputs/case-library/thumbs/${id}.webp`;
+---
+<BaseLayout title="行研" description={site.research.description}>
+  <Container class="page-content research">
+    <header class="research-hero">
+      <img class="research-hero-art" src="/images/research-hero.webp" alt="" aria-hidden="true" />
+      <div class="research-hero-copy">
+        <p class="mono">行研 · {industries.length} 个行业 · {total} 个真实案例</p>
+        <h1>{site.research.title}</h1>
+        <p class="page-description">{site.research.description}</p>
+        <div class="article-actions">
+          <a class="button" href="#industries">挑一个行业 <span aria-hidden="true">↓</span></a>
+          <a class="button button--ghost" href="/studio/industry-panorama/">它是怎么做出来的</a>
+        </div>
+      </div>
+    </header>
+
+    <section class="research-how" aria-labelledby="how-title">
+      <div class="section-heading"><h2 id="how-title">每个行业都有 4 种看法</h2><span class="mono">由浅入深 · {scenes} 个工作场景</span></div>
+      <ol>
+        {views.map((v, i) => <li><span class="mono">0{i + 1} · {v.short}</span><h3>{v.label}</h3><p>{v.desc}</p></li>)}
+      </ol>
+    </section>
+
+    <section id="industries" aria-labelledby="ind-title">
+      <div class="section-heading"><h2 id="ind-title">挑一个行业开始</h2><span class="mono" data-count>{industries.length} / {industries.length}</span></div>
+      <div class="research-tools">
+        <div class="research-chips" role="group" aria-label="按类型筛选">
+          {Object.entries(groups).map(([k, v]) => <button type="button" data-f={k === 'all' ? 'all' : v} aria-pressed={k === 'all' ? 'true' : 'false'}>{v}</button>)}
+        </div>
+        <input type="search" data-q placeholder="搜行业或词，如：理赔、报关" aria-label="搜索行业" />
+      </div>
+      <div class="research-grid">
+        {industries.map((ind, n) => (
+          <article class="research-card" data-g={ind.group} data-k={`${ind.name}${ind.desc}${ind.story}${ind.terms.flat().join('')}`}>
+            <a class="research-shot" href={ind.views[0].href}><img src={thumb(ind.id)} alt={`${ind.name}行业的等距微缩工作现场`} loading="lazy" decoding="async" /><span class="mono">{ind.group}</span></a>
+            <p class="mono">{String(n + 1).padStart(2, '0')} · {ind.scenes} 个场景 · {ind.cases} 个案例</p>
+            <h3>{ind.name}</h3>
+            <p class="research-desc">{ind.desc}</p>
+            <a class="research-story" href={ind.views[0].href}><span class="mono">从这里开始</span><strong>{ind.story}？</strong></a>
+            <details><summary>先认识 2 个行话</summary><ul class="research-terms">{ind.terms.map(([a, b]) => <li><b>{a}</b>：{b}</li>)}</ul></details>
+            <details><summary>更多看法</summary><ol class="research-views">{ind.views.map((v, i) => <li><a href={v.href}><span class="mono">0{i + 1}</span>{v.label}<span class="mono">{v.short} →</span></a></li>)}</ol></details>
+          </article>
+        ))}
+      </div>
+      <p class="research-empty" data-empty hidden>没有匹配的行业，换个词试试。</p>
+      <p class="mono research-foot">所有场景依据真实案例整理，工位与布局为示意。<a class="text-link" href="/research/lib/outputs/asset-library.html">场景素材库 →</a></p>
+    </section>
+  </Container>
+</BaseLayout>
+
+<script>
+  const cards = [...document.querySelectorAll<HTMLElement>('.research-card')];
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('[data-f]')];
+  const q = document.querySelector<HTMLInputElement>('[data-q]')!;
+  let f = 'all';
+  function run() {
+    const t = q.value.trim(); let n = 0;
+    for (const c of cards) { const ok = (f === 'all' || c.dataset.g === f) && (!t || c.dataset.k!.includes(t)); c.hidden = !ok; n += Number(ok); }
+    document.querySelector('[data-count]')!.textContent = `${n} / ${cards.length}`;
+    document.querySelector<HTMLElement>('[data-empty]')!.hidden = n > 0;
+  }
+  chips.forEach((b) => b.addEventListener('click', () => { f = b.dataset.f!; chips.forEach((x) => x.setAttribute('aria-pressed', String(x === b))); run(); }));
+  q.addEventListener('input', run);
+</script>

@@ -38,6 +38,14 @@ export async function portfolio() {
 
 export const pad = (n: number) => String(n).padStart(2, '0');
 
+export const studioCategories = {
+  agent: 'Agent 工程',
+  industry: '行业研究',
+  media: '设计与多媒体',
+  life: '生活与趣味',
+  hardware: '硬件与实验',
+};
+
 export const studioStatuses = {
   released: '已发布',
   prototype: '原型',

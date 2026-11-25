@@ -32,7 +32,7 @@ const reads = featuredWriting.slice(0, 3);
       <section aria-labelledby="nf-read">
         <h2 id="nf-read" class="mono">先读这几篇</h2>
         <ol>
-          {reads.map((e) => <li><a href={e.localSlug ? `/writing/${e.localSlug}/` : e.sourceUrl}><span>{e.title}</span></a></li>)}
+          {reads.map((e) => <li><a href={e.localSlug ? `/writing/${e.localSlug}/` : e.sourceUrl!}><span>{e.title}</span></a></li>)}
         </ol>
       </section>
     </div>

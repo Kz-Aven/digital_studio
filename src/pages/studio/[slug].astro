@@ -29,13 +29,15 @@ const date = data.publishedAt.toISOString().slice(0, 7).replace('-', '.');
   back={{ label: '全部开源项目', href: '/studio/' }}
 >
   <header class="case-header" slot="header">
-    <p class="mono case-label">{[`No.${pad(no)} / ${pad(total)}`, data.platform, studioStatuses[data.status], date].filter(Boolean).join(' · ')}</p>
+    <p class="mono case-label">{[`No.${pad(no)} / ${pad(total)}`, data.platform, data.version && `v${data.version}`, studioStatuses[data.status], date].filter(Boolean).join(' · ')}</p>
     <h1 data-pagefind-meta="title">{data.title}</h1>
     {data.tagline && <p class="product-tagline">{data.tagline}</p>}
     <p class="page-description">{data.description}</p>
     <div class="article-actions" data-pagefind-ignore>
-      {data.githubUrl && <a class="button" href={data.githubUrl}>GitHub 源码 <span aria-hidden="true">↗</span></a>}
+      {data.skillhubUrl && <a class="button" href={data.skillhubUrl}>SkillHub 安装 <span aria-hidden="true">↗</span></a>}
+      {data.githubUrl && <a class:list={['button', { 'button--ghost': data.skillhubUrl }]} href={data.githubUrl}>GitHub 源码 <span aria-hidden="true">↗</span></a>}
       {data.demoUrl && <a class="button button--ghost" href={data.demoUrl}>查看 Demo</a>}
+      {entry.id === 'industry-panorama' && <a class="button button--ghost" href="/research/">在「行研」查看效果 →</a>}
     </div>
     {(data.stack.length > 0 || data.tags.length > 0) && <div class="product-specs mono">
       {data.stack.length > 0 && <span>{data.stack.join(' · ')}</span>}

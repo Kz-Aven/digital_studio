@@ -1,0 +1,515 @@
+{
+ "groups": {
+  "all": "全部",
+  "life": "生活里天天接触",
+  "prod": "把东西造出来、运出去",
+  "pro": "专业服务",
+  "pub": "公共与社会"
+ },
+ "views": [
+  {
+   "label": "跟一件事走一遍",
+   "short": "故事线",
+   "desc": "3 分钟入门：沿着一个真实小任务，走完行业里的几个工位。"
+  },
+  {
+   "label": "看谁和谁打交道",
+   "short": "业务全景",
+   "desc": "看清上下游：客户、本方、协作方之间交接了什么。"
+  },
+  {
+   "label": "逛遍所有工作场景",
+   "short": "场景地图",
+   "desc": "全行业的工作场景摆在一张图上，每个场景背后是真实案例。"
+  },
+  {
+   "label": "拆开一个流程",
+   "short": "流程拆解",
+   "desc": "把一条典型流程拆成几站，逐站看人、资料和产出。"
+  }
+ ],
+ "industries": [
+  {
+   "id": "universal",
+   "name": "通用",
+   "group": "生活里天天接触",
+   "scenes": 8,
+   "cases": 156,
+   "desc": "几乎每家公司都有的活：销售、财务、人事、采购怎么配合。",
+   "story": "一笔应收款，怎么查清还欠多少",
+   "terms": [
+    [
+     "应收账款",
+     "货卖出去了、钱还没收回来的那部分"
+    ],
+    [
+     "账龄",
+     "这笔钱已经拖了多久没收"
+    ]
+   ],
+   "views": [
+    {
+     "label": "跟一件事走一遍",
+     "short": "故事线",
+     "href": "/research/lib/outputs/case-library/universal-floor-map.html"
+    },
+    {
+     "label": "看谁和谁打交道",
+     "short": "业务全景",
+     "href": "/research/lib/outputs/case-library/universal-business-journey.html"
+    },
+    {
+     "label": "逛遍所有工作场景",
+     "short": "场景地图",
+     "href": "/research/lib/outputs/case-library/universal-atlas.html"
+    },
+    {
+     "label": "拆开一个流程",
+     "short": "流程拆解",
+     "href": "/research/lib/outputs/case-library/universal-journey.html"
+    }
+   ]
+  },
+  {
+   "id": "consumer-retail",
+   "name": "消费零售",
+   "group": "生活里天天接触",
+   "scenes": 11,
+   "cases": 146,
+   "desc": "商品从工厂到仓库、到货架、再到你手上的全过程。",
+   "story": "一批货进海外仓，怎么核对短收和索赔",
+   "terms": [
+    [
+     "头程",
+     "把货从国内运到海外仓库的这一段"
+    ],
+    [
+     "短收",
+     "实际到货比发货单上少"
+    ]
+   ],
+   "views": [
+    {
+     "label": "跟一件事走一遍",
+     "short": "故事线",
+     "href": "/research/lib/outputs/case-library/consumer-retail-floor-map.html"
+    },
+    {
+     "label": "看谁和谁打交道",
+     "short": "业务全景",
+     "href": "/research/lib/outputs/case-library/consumer-retail-business-journey.html"
+    },
+    {
+     "label": "逛遍所有工作场景",
+     "short": "场景地图",
+     "href": "/research/lib/outputs/case-library/consumer-retail-atlas.html"
+    },
+    {
+     "label": "拆开一个流程",
+     "short": "流程拆解",
+     "href": "/research/lib/outputs/case-library/consumer-retail-journey.html"
+    }
+   ]
+  },
+  {
+   "id": "finance",
+   "name": "金融",
+   "group": "专业服务",
+   "scenes": 6,
+   "cases": 36,
+   "desc": "保险、银行、投资机构怎么服务客户，同时守住风险。",
+   "story": "一次理赔报案，怎么形成材料告知单",
+   "terms": [
+    [
+     "理赔",
+     "出险后向保险公司申请赔付"
+    ],
+    [
+     "一次性告知",
+     "一次把要补的材料讲全，客户不用反复跑"
+    ]
+   ],
+   "views": [
+    {
+     "label": "跟一件事走一遍",
+     "short": "故事线",
+     "href": "/research/lib/outputs/case-library/finance-floor-map.html"
+    },
+    {
+     "label": "看谁和谁打交道",
+     "short": "业务全景",
+     "href": "/research/lib/outputs/case-library/finance-business-journey.html"
+    },
+    {
+     "label": "逛遍所有工作场景",
+     "short": "场景地图",
+     "href": "/research/lib/outputs/case-library/finance-atlas.html"
+    },
+    {
+     "label": "拆开一个流程",
+     "short": "流程拆解",
+     "href": "/research/lib/outputs/case-library/finance-journey.html"
+    }
+   ]
+  },
+  {
+   "id": "medical-health",
+   "name": "医疗健康",
+   "group": "专业服务",
+   "scenes": 8,
+   "cases": 37,
+   "desc": "医院和药械企业怎么照顾病人、管好合规材料。",
+   "story": "一份出院名单，怎么变成随访台账",
+   "terms": [
+    [
+     "随访",
+     "病人出院后定期回访，看恢复情况"
+    ],
+    [
+     "分层",
+     "按风险高低安排不同的回访频率"
+    ]
+   ],
+   "views": [
+    {
+     "label": "跟一件事走一遍",
+     "short": "故事线",
+     "href": "/research/lib/outputs/case-library/medical-health-floor-map.html"
+    },
+    {
+     "label": "看谁和谁打交道",
+     "short": "业务全景",
+     "href": "/research/lib/outputs/case-library/medical-health-business-journey.html"
+    },
+    {
+     "label": "逛遍所有工作场景",
+     "short": "场景地图",
+     "href": "/research/lib/outputs/case-library/medical-health-atlas.html"
+    },
+    {
+     "label": "拆开一个流程",
+     "short": "流程拆解",
+     "href": "/research/lib/outputs/case-library/medical-health-journey.html"
+    }
+   ]
+  },
+  {
+   "id": "manufacturing",
+   "name": "制造业",
+   "group": "把东西造出来、运出去",
+   "scenes": 9,
+   "cases": 66,
+   "desc": "把原料变成产品：接单、排产、生产、质检、发货。",
+   "story": "一张急单，如何走完工厂",
+   "terms": [
+    [
+     "排产",
+     "决定先做哪张单、用哪条线、哪天做"
+    ],
+    [
+     "放行",
+     "质检合格后允许出厂的那一步"
+    ]
+   ],
+   "views": [
+    {
+     "label": "跟一件事走一遍",
+     "short": "故事线",
+     "href": "/research/lib/outputs/manufacturing-floor-map.html"
+    },
+    {
+     "label": "看谁和谁打交道",
+     "short": "业务全景",
+     "href": "/research/lib/outputs/manufacturing-business-journey.html"
+    },
+    {
+     "label": "逛遍所有工作场景",
+     "short": "场景地图",
+     "href": "/research/lib/outputs/manufacturing-atlas.html"
+    }
+   ]
+  },
+  {
+   "id": "logistics",
+   "name": "交通物流",
+   "group": "把东西造出来、运出去",
+   "scenes": 6,
+   "cases": 24,
+   "desc": "让货物在仓库、港口、车辆之间准确流动，账和货对得上。",
+   "story": "一笔库存差异，怎么追到责任环节",
+   "terms": [
+    [
+     "账实差异",
+     "系统里记的数和货架上的数不一致"
+    ],
+    [
+     "报关",
+     "货物进出境时向海关申报"
+    ]
+   ],
+   "views": [
+    {
+     "label": "跟一件事走一遍",
+     "short": "故事线",
+     "href": "/research/lib/outputs/case-library/logistics-floor-map.html"
+    },
+    {
+     "label": "看谁和谁打交道",
+     "short": "业务全景",
+     "href": "/research/lib/outputs/case-library/logistics-business-journey.html"
+    },
+    {
+     "label": "逛遍所有工作场景",
+     "short": "场景地图",
+     "href": "/research/lib/outputs/case-library/logistics-atlas.html"
+    },
+    {
+     "label": "拆开一个流程",
+     "short": "流程拆解",
+     "href": "/research/lib/outputs/case-library/logistics-journey.html"
+    }
+   ]
+  },
+  {
+   "id": "energy-utilities",
+   "name": "能源公用",
+   "group": "把东西造出来、运出去",
+   "scenes": 7,
+   "cases": 56,
+   "desc": "水、电、热的生产和输送，关键是安全、稳定、可追溯。",
+   "story": "一个水质异常点，怎么追到管网记录",
+   "terms": [
+    [
+     "余氯",
+     "自来水里残留的消毒剂，太低可能有污染风险"
+    ],
+    [
+     "末梢",
+     "管网最远端的用水点"
+    ]
+   ],
+   "views": [
+    {
+     "label": "跟一件事走一遍",
+     "short": "故事线",
+     "href": "/research/lib/outputs/case-library/energy-utilities-floor-map.html"
+    },
+    {
+     "label": "看谁和谁打交道",
+     "short": "业务全景",
+     "href": "/research/lib/outputs/case-library/energy-utilities-business-journey.html"
+    },
+    {
+     "label": "逛遍所有工作场景",
+     "short": "场景地图",
+     "href": "/research/lib/outputs/case-library/energy-utilities-atlas.html"
+    },
+    {
+     "label": "拆开一个流程",
+     "short": "流程拆解",
+     "href": "/research/lib/outputs/case-library/energy-utilities-journey.html"
+    }
+   ]
+  },
+  {
+   "id": "information-technology",
+   "name": "信息技术",
+   "group": "专业服务",
+   "scenes": 9,
+   "cases": 50,
+   "desc": "让系统和机房稳定运行，出了问题能查到原因。",
+   "story": "一次机房巡检，怎么形成可追溯日报",
+   "terms": [
+    [
+     "巡检",
+     "按固定路线检查设备状态"
+    ],
+    [
+     "动环",
+     "机房的电力、温湿度等「动力与环境」"
+    ]
+   ],
+   "views": [
+    {
+     "label": "跟一件事走一遍",
+     "short": "故事线",
+     "href": "/research/lib/outputs/case-library/information-technology-floor-map.html"
+    },
+    {
+     "label": "看谁和谁打交道",
+     "short": "业务全景",
+     "href": "/research/lib/outputs/case-library/information-technology-business-journey.html"
+    },
+    {
+     "label": "逛遍所有工作场景",
+     "short": "场景地图",
+     "href": "/research/lib/outputs/information-technology-atlas.html"
+    }
+   ]
+  },
+  {
+   "id": "digital-creative",
+   "name": "数字创意",
+   "group": "专业服务",
+   "scenes": 8,
+   "cases": 51,
+   "desc": "影视、内容和营销作品从创意、制作到发行。",
+   "story": "一份粗剪字幕，怎么交给剪辑和译制",
+   "terms": [
+    [
+     "粗剪",
+     "先把素材拼出大致版本"
+    ],
+    [
+     "时间码",
+     "视频里每一帧的时间位置"
+    ]
+   ],
+   "views": [
+    {
+     "label": "跟一件事走一遍",
+     "short": "故事线",
+     "href": "/research/lib/outputs/case-library/digital-creative-floor-map.html"
+    },
+    {
+     "label": "看谁和谁打交道",
+     "short": "业务全景",
+     "href": "/research/lib/outputs/case-library/digital-creative-business-journey.html"
+    },
+    {
+     "label": "逛遍所有工作场景",
+     "short": "场景地图",
+     "href": "/research/lib/outputs/case-library/digital-creative-atlas.html"
+    },
+    {
+     "label": "拆开一个流程",
+     "short": "流程拆解",
+     "href": "/research/lib/outputs/case-library/digital-creative-journey.html"
+    }
+   ]
+  },
+  {
+   "id": "education-research",
+   "name": "教育科研",
+   "group": "公共与社会",
+   "scenes": 6,
+   "cases": 22,
+   "desc": "老师怎么备课、上课、评价，学校怎么办学和做科研。",
+   "story": "一份教案，怎么从课堂回到教研库",
+   "terms": [
+    [
+     "教研",
+     "老师们一起研究怎么教"
+    ],
+    [
+     "学情",
+     "学生对知识的掌握程度"
+    ]
+   ],
+   "views": [
+    {
+     "label": "跟一件事走一遍",
+     "short": "故事线",
+     "href": "/research/lib/outputs/case-library/education-research-floor-map.html"
+    },
+    {
+     "label": "看谁和谁打交道",
+     "short": "业务全景",
+     "href": "/research/lib/outputs/case-library/education-research-business-journey.html"
+    },
+    {
+     "label": "逛遍所有工作场景",
+     "short": "场景地图",
+     "href": "/research/lib/outputs/case-library/education-research-atlas.html"
+    },
+    {
+     "label": "拆开一个流程",
+     "short": "流程拆解",
+     "href": "/research/lib/outputs/case-library/education-research-journey.html"
+    }
+   ]
+  },
+  {
+   "id": "public-services",
+   "name": "政务公共",
+   "group": "公共与社会",
+   "scenes": 6,
+   "cases": 38,
+   "desc": "市民的诉求和办事，怎么流转到对的部门。",
+   "story": "一通 12345 来电，怎么找到承办单位",
+   "terms": [
+    [
+     "12345",
+     "政务服务便民热线"
+    ],
+    [
+     "分拨",
+     "把工单派给负责的单位"
+    ]
+   ],
+   "views": [
+    {
+     "label": "跟一件事走一遍",
+     "short": "故事线",
+     "href": "/research/lib/outputs/case-library/public-services-floor-map.html"
+    },
+    {
+     "label": "看谁和谁打交道",
+     "short": "业务全景",
+     "href": "/research/lib/outputs/case-library/public-services-business-journey.html"
+    },
+    {
+     "label": "逛遍所有工作场景",
+     "short": "场景地图",
+     "href": "/research/lib/outputs/case-library/public-services-atlas.html"
+    },
+    {
+     "label": "拆开一个流程",
+     "short": "流程拆解",
+     "href": "/research/lib/outputs/case-library/public-services-journey.html"
+    }
+   ]
+  },
+  {
+   "id": "construction-tourism",
+   "name": "建筑文旅",
+   "group": "公共与社会",
+   "scenes": 7,
+   "cases": 24,
+   "desc": "盖楼、修景区、办活动，每一次改动都要留下证据。",
+   "story": "一次施工变更，怎么留下签证证据",
+   "terms": [
+    [
+     "工程变更",
+     "施工中修改原设计或工程量"
+    ],
+    [
+     "签证",
+     "甲乙双方对额外工作量的书面确认，不是出国签证"
+    ]
+   ],
+   "views": [
+    {
+     "label": "跟一件事走一遍",
+     "short": "故事线",
+     "href": "/research/lib/outputs/case-library/construction-tourism-floor-map.html"
+    },
+    {
+     "label": "看谁和谁打交道",
+     "short": "业务全景",
+     "href": "/research/lib/outputs/case-library/construction-tourism-business-journey.html"
+    },
+    {
+     "label": "逛遍所有工作场景",
+     "short": "场景地图",
+     "href": "/research/lib/outputs/case-library/construction-tourism-atlas.html"
+    },
+    {
+     "label": "拆开一个流程",
+     "short": "流程拆解",
+     "href": "/research/lib/outputs/case-library/construction-tourism-journey.html"
+    }
+   ]
+  }
+ ]
+}

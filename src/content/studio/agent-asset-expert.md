@@ -3,6 +3,9 @@ title: Agent Asset Expert
 description: 记录本地 Agent 的任务过程、工具活动和结果，为复盘与评测保留证据。
 publishedAt: 2026-09-20
 status: released
+category: agent
+skillhubUrl: https://skillhub.cn/skills/indiv-aven/agent-asset-expert
+version: 1.0.0
 tags: [Agent 评测, 本地工具]
 tagline: 每一次工作，都该留下证据。
 platform: macOS

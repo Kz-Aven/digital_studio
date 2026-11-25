@@ -21,7 +21,7 @@ const topic = writingTopics[entry.topic];
 const minutes = Math.max(1, Math.round((markdown.body ?? '').replace(/\s/g, '').length / 500));
 const series = entry.series ? writing.filter((e) => e.series === entry.series).sort((a, b) => a.seriesOrder! - b.seriesOrder!) : [];
 const pos = series.findIndex((e) => e.id === entry.id);
-const hrefOf = (e: typeof entry) => e.localSlug ? `/writing/${e.localSlug}/` : e.sourceUrl;
+const hrefOf = (e: typeof entry) => e.localSlug ? `/writing/${e.localSlug}/` : e.sourceUrl!;
 ---
 <ReadingPage
   title={entry.title}
@@ -39,7 +39,7 @@ const hrefOf = (e: typeof entry) => e.localSlug ? `/writing/${e.localSlug}/` : e
     {entry.excerpt && <p class="page-description">{entry.excerpt}</p>}
     <div class="article-actions mono" data-pagefind-ignore>
       {entry.publishedAt ? <time datetime={entry.publishedAt}>{formatDate(new Date(entry.publishedAt))}</time> : <span>发表日期待核实</span>}
-      <a class="text-link" href={entry.sourceUrl} target="_blank" rel="noopener noreferrer">公众号原文 ↗</a>
+      {entry.sourceUrl && <a class="text-link" href={entry.sourceUrl} target="_blank" rel="noopener noreferrer">公众号原文 ↗</a>}
     </div>
   </header>
   {series.length > 1 && <nav class="series-rail" aria-label="专题进度" data-pagefind-ignore>

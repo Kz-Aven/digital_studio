@@ -3,6 +3,7 @@ title: ESP32 to iPhone
 description: 通过 ESP32-S3、AirPlay 和 MCP，让视觉 Agent 在真实 iPhone 上识别画面并执行操作。
 publishedAt: 2026-10-18
 status: released
+category: hardware
 platform: macOS / iPhone
 stack: [ESP32-S3, Python, MCP]
 tags: [硬件实验, iPhone 自动化]

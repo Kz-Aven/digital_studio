@@ -4,7 +4,7 @@ import Container from '../components/Container.astro';
 import { writing, writingTopics } from '../config/writing';
 const articleMetadata = writing.filter((entry) => !entry.localSlug).map((entry) => ({
   title: entry.title,
-  url: entry.sourceUrl,
+  url: entry.sourceUrl!,
   tags: entry.tags,
   topic: writingTopics[entry.topic].label,
 }));

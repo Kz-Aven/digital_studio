@@ -3,6 +3,9 @@ title: 桌宠红绿灯 · TrafficLightController
 description: 用 Agent 的任务事件驱动 macOS 菜单栏红绿灯，随时看到空闲、运行或完成状态。
 publishedAt: 2026-09-16
 status: released
+category: life
+skillhubUrl: https://skillhub.cn/skills/indiv-aven/traffic-light-controller
+version: 1.0.2
 platform: macOS
 stack: [CLI, Hook, MCP]
 tags: [Agent 状态, 桌面应用]
